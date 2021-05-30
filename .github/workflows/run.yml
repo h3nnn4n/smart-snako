@@ -1,4 +1,4 @@
-name: Benchmarks Test
+name: Smoke Test
 
 on: push
 
