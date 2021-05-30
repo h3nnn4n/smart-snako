@@ -1,0 +1,10 @@
+build/
+cubotron
+*_tables
+
+*.csv
+
+.ipynb_checkpoints
+
+.cache/
+c_template
