@@ -18,7 +18,8 @@ It has the following set up:
 3) cppcheck (Linter)
 4) cpplint (Linter)
 5) gproftools (Heap checker)
-6) Unity (C Unit Testing framework)
+6) Valgrind (Heap checker)
+7) Unity (C Unit Testing framework)
 
 It also has a smoke test CI stage that simply runs the executable with a few
 different args. This is mostly to check that it at least runs and exits
