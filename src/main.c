@@ -64,8 +64,15 @@ int main(int argc, char **argv) {
                 break;
 
             case 'f': {
-                config->fail_on_match       = 1;
-                config->fail_on_match_value = atoi(optarg);
+                config->fail_on_match = 1;
+
+                if (optarg != NULL) {
+                    config->fail_on_match_value = atoi(optarg);
+                } else {
+                    fprintf(stderr, "Argument is necessary for this option\n");
+
+                    return EXIT_FAILURE;
+                }
             } break;
 
             case 'h': {
