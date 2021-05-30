@@ -20,16 +20,11 @@ jobs:
       - name: Build
         run: make
 
-      - name: Cache Tables
-        id: cache-tables
-        uses: actions/cache@v2
-        with:
-          path: cache
-          key: cache-tables
-
-      - name: Build Tables
-        if: steps.cache-tables.outputs.cache-hit != 'true'
-        run: ./cubotron --rebuild-tables
-
-      - name: Run benchmarks
-        run: ./cubotron --benchmarks
+      - name: Run
+        run: |
+          - ./c_template 1 2
+          - ./c_template 0 1 --verbose
+          - ./c_template 1 2 --quiet
+          - ./c_template 1 2 --say-hi
+          - ./c_template 1 2 --say-hi=CI
+          - ./c_template 1 2 --say-hi=CI --fail-on-match 42
