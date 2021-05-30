@@ -35,4 +35,4 @@ typedef struct {
 void      init_config();
 config_t *get_config();
 
-#endif // SRC_CONFIG_H_
+#endif  // SRC_CONFIG_H_
