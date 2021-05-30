@@ -34,4 +34,6 @@ properly.
 
 # License
 
-See [LICENSE](LICENSE).
+All the contents of this repository are released under a MIT No Attribution
+License, unless otherwise noted (such as the files under `deps/`). See
+[LICENSE](LICENSE) for more details.
