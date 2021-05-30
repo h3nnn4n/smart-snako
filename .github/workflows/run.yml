@@ -22,9 +22,9 @@ jobs:
 
       - name: Run
         run: |
-          - ./c_template 1 2
-          - ./c_template 0 1 --verbose
-          - ./c_template 1 2 --quiet
-          - ./c_template 1 2 --say-hi
-          - ./c_template 1 2 --say-hi=CI
-          - ./c_template 1 2 --say-hi=CI --fail-on-match 42
+          - ./C-Template 1 2
+          - ./C-Template 0 1 --verbose
+          - ./C-Template 1 2 --quiet
+          - ./C-Template 1 2 --say-hi
+          - ./C-Template 1 2 --say-hi=CI
+          - ./C-Template 1 2 --say-hi=CI --fail-on-match 42
