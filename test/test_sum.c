@@ -17,7 +17,7 @@ void tearDown() {}
 int main() {
     UNITY_BEGIN();
 
-    RUN_TEST(test_random_phase1_solving);
+    RUN_TEST(test_one_plus_two_equals_three);
 
     return UNITY_END();
 }
