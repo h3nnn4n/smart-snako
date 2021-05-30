@@ -21,4 +21,4 @@ jobs:
         run: make callgrind
 
       - name: Run valgrind on sudoku gen
-        run: ./C-Template 1 2
+        run: ./C_Template 1 2
