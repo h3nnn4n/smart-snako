@@ -18,41 +18,21 @@
  *
  */
 
-#ifndef SRC_GRID_H_
-#define SRC_GRID_H_
+#ifndef SRC_STATS_H_
+#define SRC_STATS_H_
 
 #include <stdint.h>
 
-#include "cell.h"
-#include "stats.h"
-
-typedef enum {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-} direction_t;
-
 typedef struct {
-    bool game_over;
+    uint32_t cherries_eaten;
+    uint32_t total_moves;
+    uint32_t moves_since_last_cherry;
+} stats_t;
 
-    uint8_t  width;
-    uint8_t  height;
-    uint16_t max_moves_without_cherry;
+stats_t *create_stats();
+void     destroy_stats(stats_t *stats);
+void     register_move(stats_t *stats);
+void     register_cherry_eaten(stats_t *stats);
+void     print_stats(stats_t *stats);
 
-    uint8_t snake_head_x;
-    uint8_t snake_head_y;
-
-    cell_t **cells;
-
-    stats_t *stats;
-} grid_t;
-
-grid_t *create_grid(uint8_t width, uint8_t height);
-void    destroy_grid(grid_t *grid);
-void    print_grid(grid_t *grid);
-void    simulate(grid_t *grid, direction_t direction);
-void    set_game_over(grid_t *grid);
-bool    is_game_over(grid_t *grid);
-
-#endif  // SRC_GRID_H_
+#endif  // SRC_STATS_H_

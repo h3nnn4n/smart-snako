@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "agents/random_agent.h"
 #include "config.h"
 #include "grid.h"
 #include "utils.h"
@@ -34,21 +35,23 @@ int main(int argc, char **argv) {
     init_config();
     config = get_config();
 
-    uint8_t width  = 10;
-    uint8_t height = 10;
+    uint8_t width      = 10;
+    uint8_t height     = 10;
+    char *  agent_name = NULL;
 
-    struct option long_options[] = {{"verbose", no_argument, &config->verbose, 1},
-                                    {"quiet", no_argument, &config->verbose, 0},
-                                    {"width", optional_argument, 0, 'w'},
-                                    {"height", optional_argument, 0, 'h'},
-                                    {0, 0, 0, 0}};
+    direction_t (*agent)(grid_t *);
+
+    struct option long_options[] = {
+        {"verbose", no_argument, &config->verbose, 1}, {"quiet", no_argument, &config->verbose, 0},
+        {"agent", required_argument, NULL, 'a'},       {"width", required_argument, NULL, 'w'},
+        {"height", required_argument, NULL, 'h'},      {0, 0, 0, 0}};
 
     int option_index = 0;
 
     while (1) {
         int c;
 
-        c = getopt_long(argc, argv, "vqh::p::w::", long_options, &option_index);
+        c = getopt_long(argc, argv, "vqa:h:w:", long_options, &option_index);
 
         if (c == -1)
             break;
@@ -65,13 +68,16 @@ int main(int argc, char **argv) {
                 printf("\n");
                 break;
 
-            case 'p': {
-                config->say_hi = 1;
+            case 'a': {
+                assert(optarg != NULL);
 
-                if (optarg != NULL) {
-                    config->name = malloc(strlen(optarg) * sizeof(char));
-                    memcpy(config->name, optarg, sizeof(char) * (strlen(optarg)));
-                }
+                // Deallocate, so we can reallocate it again with the right size
+                if (agent_name != NULL)
+                    free(agent_name);
+
+                agent_name = malloc(strlen(optarg) * sizeof(char));
+
+                memcpy(agent_name, optarg, sizeof(char) * (strlen(optarg)));
             } break;
 
             case 'w':
@@ -95,16 +101,28 @@ int main(int argc, char **argv) {
         }
     }
 
+    if (agent_name == NULL || strcmp(agent_name, "random") == 0) {
+        agent = random_agent;
+    } else {
+        fprintf(stderr, "\"%s\" is not a valid agent\n", agent_name);
+        free(agent_name);
+        return EXIT_FAILURE;
+    }
+
     grid_t *grid = create_grid(width, height);
 
     print_grid(grid);
     while (!is_game_over(grid)) {
-        direction_t direction = get_random_direction();
+        direction_t direction = agent(grid);
         simulate(grid, direction);
         print_grid(grid);
+        print_stats(grid->stats);
     }
 
     destroy_grid(grid);
+
+    if (agent_name != NULL)
+        free(agent_name);
 
     return EXIT_SUCCESS;
 }

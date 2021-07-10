@@ -25,5 +25,6 @@
 
 void spawn_cherry(grid_t *grid);
 bool has_cherry(grid_t *grid);
+void eat_cherry(grid_t *grid, uint8_t x, uint8_t y);
 
 #endif  // SRC_CHERRY_H_

@@ -26,6 +26,7 @@
 #include "cherry.h"
 #include "grid.h"
 #include "snake.h"
+#include "stats.h"
 
 void snake_init(grid_t *grid) {
     int counter = 0;
@@ -54,6 +55,8 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
     grid->width  = width;
     grid->height = height;
 
+    grid->max_moves_without_cherry = grid->width * grid->height;
+
     cell_t *cells = malloc(sizeof(cell_t) * grid->width * grid->height);
     memset(cells, 0, sizeof(cell_t) * grid->width * grid->height);
 
@@ -66,10 +69,13 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
 
     snake_init(grid);
 
+    grid->stats = create_stats();
+
     return grid;
 }
 
 void destroy_grid(grid_t *grid) {
+    destroy_stats(grid->stats);
     free(grid->cells[0]);
     free(grid->cells);
     free(grid);
@@ -80,6 +86,13 @@ void simulate(grid_t *grid, direction_t direction) {
         spawn_cherry(grid);
 
     if (is_snake_colliding(grid, direction)) {
+        printf("snake collided\n");
+        set_game_over(grid);
+        return;
+    }
+
+    if (grid->stats->moves_since_last_cherry > grid->max_moves_without_cherry) {
+        printf("snake died of hunger\n");
         set_game_over(grid);
         return;
     }

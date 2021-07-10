@@ -11,11 +11,11 @@
             "-Isrc",
             "-Ideps/Unity/src",
             "-o",
-            "/home/h3nnn4n/progs/C_Template/build/src/sum.o",
-            "src/sum.c"
+            "/home/h3nnn4n/progs/smart-snako/build/src/grid.o",
+            "src/grid.c"
         ],
-        "directory": "/home/h3nnn4n/progs/C_Template",
-        "file": "src/sum.c"
+        "directory": "/home/h3nnn4n/progs/smart-snako",
+        "file": "src/grid.c"
     },
     {
         "arguments": [
@@ -29,10 +29,10 @@
             "-Isrc",
             "-Ideps/Unity/src",
             "-o",
-            "/home/h3nnn4n/progs/C_Template/build/src/config.o",
+            "/home/h3nnn4n/progs/smart-snako/build/src/config.o",
             "src/config.c"
         ],
-        "directory": "/home/h3nnn4n/progs/C_Template",
+        "directory": "/home/h3nnn4n/progs/smart-snako",
         "file": "src/config.c"
     },
     {
@@ -47,10 +47,100 @@
             "-Isrc",
             "-Ideps/Unity/src",
             "-o",
-            "/home/h3nnn4n/progs/C_Template/build/src/main.o",
+            "/home/h3nnn4n/progs/smart-snako/build/src/cell.o",
+            "src/cell.c"
+        ],
+        "directory": "/home/h3nnn4n/progs/smart-snako",
+        "file": "src/cell.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-pedantic",
+            "-std=gnu11",
+            "-O3",
+            "-Isrc",
+            "-Ideps/Unity/src",
+            "-o",
+            "/home/h3nnn4n/progs/smart-snako/build/src/snake.o",
+            "src/snake.c"
+        ],
+        "directory": "/home/h3nnn4n/progs/smart-snako",
+        "file": "src/snake.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-pedantic",
+            "-std=gnu11",
+            "-O3",
+            "-Isrc",
+            "-Ideps/Unity/src",
+            "-o",
+            "/home/h3nnn4n/progs/smart-snako/build/src/agents/random_agent.o",
+            "src/agents/random_agent.c"
+        ],
+        "directory": "/home/h3nnn4n/progs/smart-snako",
+        "file": "src/agents/random_agent.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-pedantic",
+            "-std=gnu11",
+            "-O3",
+            "-Isrc",
+            "-Ideps/Unity/src",
+            "-o",
+            "/home/h3nnn4n/progs/smart-snako/build/src/main.o",
             "src/main.c"
         ],
-        "directory": "/home/h3nnn4n/progs/C_Template",
+        "directory": "/home/h3nnn4n/progs/smart-snako",
         "file": "src/main.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-pedantic",
+            "-std=gnu11",
+            "-O3",
+            "-Isrc",
+            "-Ideps/Unity/src",
+            "-o",
+            "/home/h3nnn4n/progs/smart-snako/build/src/utils.o",
+            "src/utils.c"
+        ],
+        "directory": "/home/h3nnn4n/progs/smart-snako",
+        "file": "src/utils.c"
+    },
+    {
+        "arguments": [
+            "cc",
+            "-c",
+            "-Wall",
+            "-Wextra",
+            "-pedantic",
+            "-std=gnu11",
+            "-O3",
+            "-Isrc",
+            "-Ideps/Unity/src",
+            "-o",
+            "/home/h3nnn4n/progs/smart-snako/build/src/cherry.o",
+            "src/cherry.c"
+        ],
+        "directory": "/home/h3nnn4n/progs/smart-snako",
+        "file": "src/cherry.c"
     }
 ]

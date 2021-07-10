@@ -18,41 +18,42 @@
  *
  */
 
-#ifndef SRC_GRID_H_
-#define SRC_GRID_H_
+#include <grid.h>
+#include <snake.h>
+#include <utils.h>
 
-#include <stdint.h>
+#include "random_agent.h"
 
-#include "cell.h"
-#include "stats.h"
+static direction_t last_direction;
 
-typedef enum {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-} direction_t;
+// TODO(@h3nnn4n): This is very dumb and wasteful of cpu time, but since this
+// is supposed to be a baseline agent it is fine for now.
+direction_t random_agent(grid_t *grid) {
+    direction_t new_direction = LEFT;
 
-typedef struct {
-    bool game_over;
+    uint8_t max_tries = 50;
 
-    uint8_t  width;
-    uint8_t  height;
-    uint16_t max_moves_without_cherry;
+    do {
+        max_tries--;
+        new_direction = get_random_direction();
 
-    uint8_t snake_head_x;
-    uint8_t snake_head_y;
+        if (new_direction == RIGHT && last_direction == LEFT)
+            continue;
+        if (new_direction == LEFT && last_direction == RIGHT)
+            continue;
 
-    cell_t **cells;
+        if (new_direction == UP && last_direction == DOWN)
+            continue;
+        if (new_direction == DOWN && last_direction == UP)
+            continue;
 
-    stats_t *stats;
-} grid_t;
+        if (is_snake_colliding(grid, new_direction))
+            continue;
 
-grid_t *create_grid(uint8_t width, uint8_t height);
-void    destroy_grid(grid_t *grid);
-void    print_grid(grid_t *grid);
-void    simulate(grid_t *grid, direction_t direction);
-void    set_game_over(grid_t *grid);
-bool    is_game_over(grid_t *grid);
+        break;
+    } while (max_tries > 0);
 
-#endif  // SRC_GRID_H_
+    last_direction = new_direction;
+
+    return new_direction;
+}

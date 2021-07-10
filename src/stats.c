@@ -18,41 +18,35 @@
  *
  */
 
-#ifndef SRC_GRID_H_
-#define SRC_GRID_H_
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include <stdint.h>
-
-#include "cell.h"
 #include "stats.h"
 
-typedef enum {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-} direction_t;
+stats_t *create_stats() {
+    stats_t *stats = malloc(sizeof(stats_t));
+    memset(stats, 0, sizeof(stats_t));
 
-typedef struct {
-    bool game_over;
+    return stats;
+}
 
-    uint8_t  width;
-    uint8_t  height;
-    uint16_t max_moves_without_cherry;
+void destroy_stats(stats_t *stats) { free(stats); }
 
-    uint8_t snake_head_x;
-    uint8_t snake_head_y;
+void register_move(stats_t *stats) {
+    stats->total_moves++;
+    stats->moves_since_last_cherry++;
+}
 
-    cell_t **cells;
+void register_cherry_eaten(stats_t *stats) {
+    stats->cherries_eaten++;
+    stats->moves_since_last_cherry = 0;
+}
 
-    stats_t *stats;
-} grid_t;
+void print_stats(stats_t *stats) {
+    printf("cherries_eaten: %4u    ", stats->cherries_eaten);
+    printf("moves: %7u    ", stats->total_moves);
+    printf("moves_since_last_cherry: %7u", stats->moves_since_last_cherry);
 
-grid_t *create_grid(uint8_t width, uint8_t height);
-void    destroy_grid(grid_t *grid);
-void    print_grid(grid_t *grid);
-void    simulate(grid_t *grid, direction_t direction);
-void    set_game_over(grid_t *grid);
-bool    is_game_over(grid_t *grid);
-
-#endif  // SRC_GRID_H_
+    printf("\n");
+}

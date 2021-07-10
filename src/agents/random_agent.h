@@ -18,41 +18,11 @@
  *
  */
 
-#ifndef SRC_GRID_H_
-#define SRC_GRID_H_
+#ifndef SRC_AGENTS_RANDOM_AGENT_H_
+#define SRC_AGENTS_RANDOM_AGENT_H_
 
-#include <stdint.h>
+#include <grid.h>
 
-#include "cell.h"
-#include "stats.h"
+direction_t random_agent(grid_t *t);
 
-typedef enum {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-} direction_t;
-
-typedef struct {
-    bool game_over;
-
-    uint8_t  width;
-    uint8_t  height;
-    uint16_t max_moves_without_cherry;
-
-    uint8_t snake_head_x;
-    uint8_t snake_head_y;
-
-    cell_t **cells;
-
-    stats_t *stats;
-} grid_t;
-
-grid_t *create_grid(uint8_t width, uint8_t height);
-void    destroy_grid(grid_t *grid);
-void    print_grid(grid_t *grid);
-void    simulate(grid_t *grid, direction_t direction);
-void    set_game_over(grid_t *grid);
-bool    is_game_over(grid_t *grid);
-
-#endif  // SRC_GRID_H_
+#endif  // SRC_AGENTS_RANDOM_AGENT_H_
