@@ -23,6 +23,12 @@
 
 #include <grid.h>
 
+typedef struct {
+    bool stuff;
+} raw_hamilton_context_t;
+
+void        raw_hamilton_agent_create(grid_t *grid);
+void        raw_hamilton_agent_destroy(grid_t *grid);
 direction_t raw_hamilton_agent(grid_t *grid);
 
 #endif  // SRC_AGENTS_RAW_HAMILTON_AGENT_H_

@@ -18,13 +18,33 @@
  *
  */
 
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include <grid.h>
 #include <snake.h>
 #include <utils.h>
 
 #include "raw_hamilton_agent.h"
 
+void raw_hamilton_agent_create(grid_t *grid) {
+    grid->agent_context = malloc(sizeof(direction_t));
+    memset(grid->agent_context, 0, sizeof(raw_hamilton_context_t));
+}
+
+void raw_hamilton_agent_destroy(grid_t *grid) {
+    assert(grid->agent_context != NULL);
+    free(grid->agent_context);
+}
+
 direction_t raw_hamilton_agent(grid_t *grid) {
-    // TODO
-    return RIGHT;
+    raw_hamilton_context_t *context = (raw_hamilton_context_t *)grid->agent_context;
+
+    context->stuff = !context->stuff;
+
+    if (context->stuff)
+        return RIGHT;
+
+    return DOWN;
 }
