@@ -18,13 +18,15 @@
  *
  */
 
+#include <assert.h>
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "config.h"
-#include "sum.h"
+#include "grid.h"
+#include "utils.h"
 
 static config_t *config;
 
@@ -32,10 +34,13 @@ int main(int argc, char **argv) {
     init_config();
     config = get_config();
 
+    uint8_t width  = 10;
+    uint8_t height = 10;
+
     struct option long_options[] = {{"verbose", no_argument, &config->verbose, 1},
                                     {"quiet", no_argument, &config->verbose, 0},
-                                    {"fail-on-match", required_argument, 0, 'f'},
-                                    {"say-hi", optional_argument, 0, 'h'},
+                                    {"width", optional_argument, 0, 'w'},
+                                    {"height", optional_argument, 0, 'h'},
                                     {0, 0, 0, 0}};
 
     int option_index = 0;
@@ -43,7 +48,7 @@ int main(int argc, char **argv) {
     while (1) {
         int c;
 
-        c = getopt_long(argc, argv, "vqh::", long_options, &option_index);
+        c = getopt_long(argc, argv, "vqh::p::w::", long_options, &option_index);
 
         if (c == -1)
             break;
@@ -60,19 +65,7 @@ int main(int argc, char **argv) {
                 printf("\n");
                 break;
 
-            case 'f': {
-                config->fail_on_match = 1;
-
-                if (optarg != NULL) {
-                    config->fail_on_match_value = atoi(optarg);
-                } else {
-                    fprintf(stderr, "Argument is necessary for this option\n");
-
-                    return EXIT_FAILURE;
-                }
-            } break;
-
-            case 'h': {
+            case 'p': {
                 config->say_hi = 1;
 
                 if (optarg != NULL) {
@@ -80,6 +73,16 @@ int main(int argc, char **argv) {
                     memcpy(config->name, optarg, sizeof(char) * (strlen(optarg)));
                 }
             } break;
+
+            case 'w':
+                assert(optarg != NULL);
+                width = atoi(optarg);
+                break;
+
+            case 'h':
+                assert(optarg != NULL);
+                height = atoi(optarg);
+                break;
 
             case '?':
                 /* getopt_long already printed an error message. */
@@ -92,27 +95,16 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (config->say_hi) {
-        option_index--;
-        if (config->name != NULL) {
-            printf("hi %s\n", config->name);
-        } else {
-            printf("hi\n");
-        }
+    grid_t *grid = create_grid(width, height);
+
+    print_grid(grid);
+    while (!is_game_over(grid)) {
+        direction_t direction = get_random_direction();
+        simulate(grid, direction);
+        print_grid(grid);
     }
 
-    // TODO(h3nnn4n): Ensure argv is long enough
-    int x = atoi(argv[option_index++]);
-    int y = atoi(argv[option_index++]);
-
-    int result = sum(x, y);
-
-    if (config->fail_on_match && config->fail_on_match_value == result) {
-        if (config->verbose)
-            fprintf(stderr, "result matched %d.\naborting!\n", result);
-
-        return EXIT_FAILURE;
-    }
+    destroy_grid(grid);
 
     return EXIT_SUCCESS;
 }

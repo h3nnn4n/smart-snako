@@ -8,4 +8,6 @@ cubotron
 
 .cache/
 
+gmon.out
+
 smart-snako

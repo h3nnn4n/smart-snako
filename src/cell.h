@@ -18,9 +18,19 @@
  *
  */
 
-#ifndef SRC_SUM_H_
-#define SRC_SUM_H_
+#ifndef SRC_CELL_H_
+#define SRC_CELL_H_
 
-int sum(int x, int y);
+#include <stdbool.h>
+#include <stdint.h>
 
-#endif  // SRC_SUM_H_
+struct cell_s;
+
+typedef struct cell_s {
+    bool           has_cherry;
+    bool           has_snake;
+    uint8_t        snake_counter;
+    struct cell_s *previous_snake_cell;
+} cell_t;
+
+#endif  // SRC_CELL_H_

@@ -18,22 +18,14 @@
  *
  */
 
-#include <stdio.h>
+#ifndef SRC_SNAKE_H_
+#define SRC_SNAKE_H_
 
-#include "config.h"
-#include "sum.h"
+#include <stdbool.h>
 
-int sum(int x, int y) {
-    config_t *config;
-    config = get_config();
+#include "grid.h"
 
-    if (config->verbose)
-        printf("summing %d with %d\n", x, y);
+bool is_snake_colliding(grid_t *grid, direction_t direction);
+void move_snake(grid_t *grid, direction_t direction);
 
-    int result = x + y;
-
-    if (config->verbose)
-        printf("result is %d\n", result);
-
-    return result;
-}
+#endif  // SRC_SNAKE_H_
