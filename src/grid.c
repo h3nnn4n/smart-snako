@@ -76,22 +76,10 @@ void simulate(grid_t *grid, direction_t direction) {
     uint8_t new_head_y = grid->snake_head_y;
 
     switch (direction) {
-        case RIGHT:
-            //
-            new_head_x++;
-            break;
-        case LEFT:
-            //
-            new_head_x--;
-            break;
-        case UP:
-            //
-            new_head_y--;
-            break;
-        case DOWN:
-            //
-            new_head_y++;
-            break;
+        case RIGHT: new_head_x++; break;
+        case LEFT: new_head_x--; break;
+        case UP: new_head_y--; break;
+        case DOWN: new_head_y++; break;
     }
 
     grid->cells[new_head_x][new_head_y].has_snake           = true;
