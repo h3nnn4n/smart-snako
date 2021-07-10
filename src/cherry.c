@@ -53,3 +53,10 @@ void spawn_cherry(grid_t *grid) {
         break;
     }
 }
+
+void eat_cherry(grid_t *grid, uint8_t x, uint8_t y) {
+    if (!grid->cells[x][y].has_cherry)
+        return;
+
+    grid->cells[x][y].has_cherry = false;
+}
