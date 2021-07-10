@@ -88,13 +88,17 @@ void simulate(grid_t *grid, direction_t direction) {
         spawn_cherry(grid);
 
     if (is_snake_colliding(grid, direction)) {
-        printf("snake collided\n");
+        if (get_config()->verbose)
+            printf("snake collided\n");
+
         set_game_over(grid);
         return;
     }
 
     if (grid->stats->moves_since_last_cherry > grid->max_moves_without_cherry) {
-        printf("snake died of hunger\n");
+        if (get_config()->verbose)
+            printf("snake died of hunger\n");
+
         set_game_over(grid);
         return;
     }
