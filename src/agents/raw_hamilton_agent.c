@@ -86,7 +86,8 @@ void raw_hamilton_agent_create(grid_t *grid) {
     }
 
     bool result = build_halmiton_with_dfs(grid, 0, 0);
-    assert(result);
+    if (!result)
+        printf("WARN: failed to build halmitonian cycle\n");
 }
 
 void raw_hamilton_agent_destroy(grid_t *grid) {
