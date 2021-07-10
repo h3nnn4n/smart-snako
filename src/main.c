@@ -18,6 +18,7 @@
  *
  */
 
+#include <assert.h>
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,9 +73,15 @@ int main(int argc, char **argv) {
                 }
             } break;
 
-            case 'w': width = atoi(optarg); break;
+            case 'w':
+                assert(optarg != NULL);
+                width = atoi(optarg);
+                break;
 
-            case 'h': height = atoi(optarg); break;
+            case 'h':
+                assert(optarg != NULL);
+                height = atoi(optarg);
+                break;
 
             case '?':
                 /* getopt_long already printed an error message. */
