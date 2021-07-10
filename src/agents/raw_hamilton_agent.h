@@ -31,6 +31,9 @@ typedef struct {
     tuple_t **path;
 } raw_hamilton_context_t;
 
+bool all_cells_visited(grid_t *grid);
+bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y);
+
 void        raw_hamilton_agent_create(grid_t *grid);
 void        raw_hamilton_agent_destroy(grid_t *grid);
 direction_t raw_hamilton_agent(grid_t *grid);

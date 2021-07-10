@@ -30,12 +30,26 @@
 #include "agent_utils.h"
 #include "raw_hamilton_agent.h"
 
+bool all_cells_visited(grid_t *grid) {
+    raw_hamilton_context_t *agent_context = (raw_hamilton_context_t *)grid->agent_context;
+
+    for (int x = 0; x < grid->width; x++) {
+        for (int y = 0; y < grid->width; y++) {
+            if (!agent_context->path[x][y].visited)
+                return false;
+        }
+    }
+
+    return true;
+}
+
 bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
     raw_hamilton_context_t *agent_context = (raw_hamilton_context_t *)grid->agent_context;
     static direction_t      directions[4] = {RIGHT, DOWN, UP, LEFT};
 
     if (x == 0 && y == 0 && agent_context->path[x][y].visited)
-        return true;
+        if (all_cells_visited(grid))
+            return true;
 
     if (agent_context->path[x][y].visited)
         return false;
