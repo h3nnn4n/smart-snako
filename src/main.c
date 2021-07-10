@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
     grid_t *grid = create_grid(width, height);
 
     print_grid(grid);
-    for (int i = 0; i < 5; i++) {
+    while (!is_game_over(grid)) {
         simulate(grid, RIGHT);
         print_grid(grid);
     }

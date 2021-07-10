@@ -18,37 +18,14 @@
  *
  */
 
-#ifndef SRC_GRID_H_
-#define SRC_GRID_H_
+#ifndef SRC_SNAKE_H_
+#define SRC_SNAKE_H_
 
-#include <stdint.h>
+#include <stdbool.h>
 
-#include "cell.h"
+#include "grid.h"
 
-typedef enum {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-} direction_t;
+bool is_snake_oob(grid_t *grid, direction_t direction);
+void move_snake(grid_t *grid, direction_t direction);
 
-typedef struct {
-    bool game_over;
-
-    uint8_t width;
-    uint8_t height;
-
-    uint8_t snake_head_x;
-    uint8_t snake_head_y;
-
-    cell_t **cells;
-} grid_t;
-
-grid_t *create_grid(uint8_t width, uint8_t height);
-void    destroy_grid(grid_t *grid);
-void    print_grid(grid_t *grid);
-void    simulate(grid_t *grid, direction_t direction);
-void    set_game_over(grid_t *grid);
-bool    is_game_over(grid_t *grid);
-
-#endif  // SRC_GRID_H_
+#endif  // SRC_SNAKE_H_

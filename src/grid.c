@@ -24,6 +24,7 @@
 #include <string.h>
 
 #include "grid.h"
+#include "snake.h"
 
 void snake_init(grid_t *grid) {
     int counter = 0;
@@ -72,38 +73,12 @@ void destroy_grid(grid_t *grid) {
 }
 
 void simulate(grid_t *grid, direction_t direction) {
-    uint8_t new_head_x = grid->snake_head_x;
-    uint8_t new_head_y = grid->snake_head_y;
-
-    switch (direction) {
-        case RIGHT: new_head_x++; break;
-        case LEFT: new_head_x--; break;
-        case UP: new_head_y--; break;
-        case DOWN: new_head_y++; break;
+    if (is_snake_oob(grid, direction)) {
+        set_game_over(grid);
+        return;
     }
 
-    grid->cells[new_head_x][new_head_y].has_snake           = true;
-    grid->cells[new_head_x][new_head_y].previous_snake_cell = &grid->cells[grid->snake_head_x][grid->snake_head_y];
-    grid->cells[new_head_x][new_head_y].snake_counter =
-        grid->cells[grid->snake_head_x][grid->snake_head_y].snake_counter;
-
-    cell_t *cell = &grid->cells[new_head_x][new_head_y];
-
-    do {
-        cell = cell->previous_snake_cell;
-        cell->snake_counter--;
-
-        if (cell->snake_counter == 1) {
-            cell->previous_snake_cell->snake_counter = 0;
-            cell->previous_snake_cell->has_snake     = false;
-            cell->previous_snake_cell                = NULL;
-            cell                                     = NULL;
-            break;
-        }
-    } while (cell != NULL);
-
-    grid->snake_head_x = new_head_x;
-    grid->snake_head_y = new_head_y;
+    move_snake(grid, direction);
 }
 
 void print_grid(grid_t *grid) {
@@ -125,3 +100,7 @@ void print_grid(grid_t *grid) {
         printf("\n");
     }
 }
+
+void set_game_over(grid_t *grid) { grid->game_over = true; }
+
+bool is_game_over(grid_t *grid) { return grid->game_over; }
