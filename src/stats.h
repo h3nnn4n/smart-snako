@@ -26,6 +26,7 @@
 #include "grid.h"
 
 typedef struct stats_s {
+    char *   agent_name;
     uint32_t cherries_eaten;
     uint32_t total_moves;
     uint32_t moves_since_last_cherry;
@@ -39,5 +40,6 @@ void     register_move(stats_t *stats);
 void     register_cherry_eaten(stats_t *stats);
 void     print_stats(stats_t *stats);
 void     dump_stats(stats_t *stats);
+void     set_agent_name(stats_t *stats, char *agent_name);
 
 #endif  // SRC_STATS_H_

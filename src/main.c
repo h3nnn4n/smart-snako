@@ -31,10 +31,10 @@
 #include "agents/random_agent.h"
 #include "agents/raw_hamilton_agent.h"
 
+#include "cherry.h"
 #include "config.h"
 #include "grid.h"
 #include "utils.h"
-#include "cherry.h"
 
 static config_t *config;
 
@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
                 if (agent_name != NULL)
                     free(agent_name);
 
-                agent_name = malloc(strlen(optarg) * sizeof(char));
+                agent_name = malloc(strlen(optarg) * sizeof(char) + 1);
 
                 memcpy(agent_name, optarg, sizeof(char) * (strlen(optarg)));
             } break;
@@ -114,7 +114,12 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (agent_name == NULL || strcmp(agent_name, "random") == 0) {
+    if (agent_name == NULL) {
+        agent_name = malloc(strlen("random") * sizeof(char));
+        memcpy(agent_name, "random", sizeof(char) * (strlen("random")));
+    }
+
+    if (strcmp(agent_name, "random") == 0) {
         agent         = random_agent;
         agent_create  = random_agent_create;
         agent_destroy = random_agent_destroy;
@@ -133,8 +138,9 @@ int main(int argc, char **argv) {
     }
 
     grid_t *grid = create_grid(width, height);
-    agent_create(grid);
+    set_agent_name(grid->stats, agent_name);
     spawn_cherry(grid);
+    agent_create(grid);
 
     while (!is_game_over(grid)) {
         print_grid(grid);

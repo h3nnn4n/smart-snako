@@ -18,6 +18,7 @@
  *
  */
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +34,12 @@ stats_t *create_stats() {
     return stats;
 }
 
-void destroy_stats(stats_t *stats) { free(stats); }
+void destroy_stats(stats_t *stats) {
+    if (stats->agent_name != NULL)
+        free(stats->agent_name);
+
+    free(stats);
+}
 
 void register_move(stats_t *stats) {
     stats->total_moves++;
@@ -72,9 +78,18 @@ void dump_stats(stats_t *stats) {
         f = fopen(filename, "at");
     }
 
-    fprintf(f, "%s,%u,%u,", "random", stats->cherries_eaten, stats->total_moves);
+    fprintf(f, "%s,%u,%u,", stats->agent_name, stats->cherries_eaten, stats->total_moves);
     fprintf(f, "%u,%u,%u", grid->max_moves_without_cherry, grid->width, grid->height);
     fprintf(f, "\n");
 
     fclose(f);
+}
+
+void set_agent_name(stats_t *stats, char *agent_name) {
+    assert(stats->agent_name == NULL);
+    assert(agent_name != NULL);
+
+    stats->agent_name = malloc(sizeof(char) * (strlen(agent_name) + 5));
+
+    snprintf(stats->agent_name, strlen(agent_name) + 1, "%s", agent_name);
 }
