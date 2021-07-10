@@ -18,12 +18,16 @@
  *
  */
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "grid.h"
 
 grid_t *allocate_grid(uint8_t width, uint8_t height) {
+    assert(width > 0);
+    assert(height > 0);
+
     grid_t *grid = malloc(sizeof(grid_t));
     memset(grid, 0, sizeof(grid_t));
 
