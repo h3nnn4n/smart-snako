@@ -35,9 +35,9 @@ bool is_snake_oob(grid_t *grid, direction_t direction) {
         case DOWN: new_head_y++; break;
     }
 
-    if (new_head_x < 0 || new_head_y < 0)
-        return true;
-
+    // No need to check for lower bounds because var type is unsigned If it
+    // tries to go below zero it underflows and becomes bigger than the size
+    // limit
     if (new_head_x >= grid->width)
         return true;
 
