@@ -57,7 +57,7 @@ int mkdir_p(const char *path) {
         return -1;
     }
 
-    sprintf(_path, "%s", path);
+    snprintf(_path, 256, "%s", path);
 
     for (p = _path + 1; *p; p++) {
         if (*p == '/') {
