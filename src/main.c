@@ -24,6 +24,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <entropy.h>
+#include <pcg_variants.h>
+
 #include "agents/random_agent.h"
 #include "config.h"
 #include "grid.h"
@@ -32,6 +35,10 @@
 static config_t *config;
 
 int main(int argc, char **argv) {
+    uint64_t seeds[2];
+    entropy_getbytes((void *)seeds, sizeof(seeds));
+    pcg32_srandom(seeds[0], seeds[1]);
+
     init_config();
     config = get_config();
 
