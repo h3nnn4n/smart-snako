@@ -29,19 +29,19 @@
 #include <utils.h>
 
 #include "agent_utils.h"
-#include "mahattan_agent.h"
+#include "manhattan_agent.h"
 
-void mahattan_agent_create(grid_t *grid) {
+void manhattan_agent_create(grid_t *grid) {
     grid->agent_context                   = malloc(sizeof(direction_t));
     *(direction_t *)(grid->agent_context) = RIGHT;
 }
 
-void mahattan_agent_destroy(grid_t *grid) {
+void manhattan_agent_destroy(grid_t *grid) {
     assert(grid->agent_context != NULL);
     free(grid->agent_context);
 }
 
-direction_t mahattan_agent(grid_t *grid) {
+direction_t manhattan_agent(grid_t *grid) {
     direction_t *last_direction = (direction_t *)grid->agent_context;
     direction_t  new_direction  = get_safe_random_direction(grid, *last_direction);
 

@@ -25,10 +25,10 @@
 
 typedef struct {
     bool stuff;
-} mahattan_context_t;
+} manhattan_context_t;
 
-void        mahattan_agent_create(grid_t *grid);
-void        mahattan_agent_destroy(grid_t *grid);
-direction_t mahattan_agent(grid_t *grid);
+void        manhattan_agent_create(grid_t *grid);
+void        manhattan_agent_destroy(grid_t *grid);
+direction_t manhattan_agent(grid_t *grid);
 
 #endif  // SRC_AGENTS_MAHATTAN_AGENT_H_
