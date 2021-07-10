@@ -22,6 +22,8 @@ jobs:
 
       - name: Run
         run: |
-          ./smart-snako
+          ./smart-snako --verbose
           ./smart-snako --width=10 --height=10
-          ./smart-snako --width=50 --height=50
+          ./smart-snako --width=30 --height=30 --agent="random"
+          ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
+          ./smart-snako --width=30 --height=30 --agent="manhattan"
