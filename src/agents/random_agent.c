@@ -25,8 +25,8 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "random_agent.h"
 #include "agent_utils.h"
+#include "random_agent.h"
 
 void random_agent_create(grid_t *grid) {
     grid->agent_context                   = malloc(sizeof(direction_t));

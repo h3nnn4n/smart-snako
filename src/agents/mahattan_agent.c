@@ -28,8 +28,8 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "mahattan_agent.h"
 #include "agent_utils.h"
+#include "mahattan_agent.h"
 
 void mahattan_agent_create(grid_t *grid) {
     grid->agent_context                   = malloc(sizeof(direction_t));
