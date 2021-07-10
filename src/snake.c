@@ -61,6 +61,9 @@ void move_snake(grid_t *grid, direction_t direction) {
         case DOWN: new_head_y++; break;
     }
 
+    if (grid->cells[new_head_x][new_head_y].has_cherry)
+        grid->cells[new_head_x][new_head_y].has_cherry = false;
+
     grid->cells[new_head_x][new_head_y].has_snake           = true;
     grid->cells[new_head_x][new_head_y].previous_snake_cell = &grid->cells[grid->snake_head_x][grid->snake_head_y];
     grid->cells[new_head_x][new_head_y].snake_counter =
