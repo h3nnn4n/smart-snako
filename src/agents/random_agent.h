@@ -23,6 +23,8 @@
 
 #include <grid.h>
 
+void        random_agent_create(grid_t *grid);
+void        random_agent_destroy(grid_t *grid);
 direction_t random_agent(grid_t *t);
 
 #endif  // SRC_AGENTS_RANDOM_AGENT_H_

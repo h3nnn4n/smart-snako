@@ -48,7 +48,9 @@ int main(int argc, char **argv) {
     uint8_t height     = 10;
     char *  agent_name = NULL;
 
-    direction_t (*agent)(grid_t *);
+    void (*agent_create)(grid_t *)  = NULL;
+    void (*agent_destroy)(grid_t *) = NULL;
+    direction_t (*agent)(grid_t *)  = NULL;
 
     struct option long_options[] = {
         {"verbose", no_argument, &config->verbose, 1}, {"quiet", no_argument, &config->verbose, 0},
@@ -111,9 +113,13 @@ int main(int argc, char **argv) {
     }
 
     if (agent_name == NULL || strcmp(agent_name, "random") == 0) {
-        agent = random_agent;
+        agent         = random_agent;
+        agent_create  = random_agent_create;
+        agent_destroy = random_agent_destroy;
     } else if (strcmp(agent_name, "raw_hamilton") == 0) {
-        agent = raw_hamilton_agent;
+        agent         = raw_hamilton_agent;
+        agent_create  = raw_hamilton_agent_create;
+        agent_destroy = raw_hamilton_agent_destroy;
     } else {
         fprintf(stderr, "\"%s\" is not a valid agent\n", agent_name);
         free(agent_name);
@@ -121,6 +127,7 @@ int main(int argc, char **argv) {
     }
 
     grid_t *grid = create_grid(width, height);
+    agent_create(grid);
 
     while (!is_game_over(grid)) {
         print_grid(grid);
@@ -131,6 +138,7 @@ int main(int argc, char **argv) {
 
     dump_stats(grid->stats);
 
+    agent_destroy(grid);
     destroy_grid(grid);
 
     if (agent_name != NULL)

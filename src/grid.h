@@ -45,6 +45,8 @@ typedef struct grid_s {
 
     cell_t **cells;
 
+    void *agent_context;
+
     struct stats_s *stats;
 } grid_t;
 
