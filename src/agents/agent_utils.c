@@ -27,7 +27,7 @@
 
 #include "agent_utils.h"
 
-direction_t get_safe_random_direction(grid_t *grid, direction_t last_direction) {
+direction_t get_safe_random_direction(grid_t *grid) {
     direction_t new_direction = RIGHT;
 
     uint8_t max_tries = 50;
@@ -36,21 +36,13 @@ direction_t get_safe_random_direction(grid_t *grid, direction_t last_direction) 
         max_tries--;
         new_direction = get_random_direction();
 
-        if (new_direction == RIGHT && last_direction == LEFT)
-            continue;
-        if (new_direction == LEFT && last_direction == RIGHT)
-            continue;
-
-        if (new_direction == UP && last_direction == DOWN)
-            continue;
-        if (new_direction == DOWN && last_direction == UP)
-            continue;
-
         if (is_snake_colliding(grid, new_direction))
             continue;
+        else
+            return new_direction;
 
         break;
     } while (max_tries > 0);
 
-    return new_direction;
+    return RIGHT;
 }
