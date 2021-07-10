@@ -19,12 +19,19 @@
  */
 
 #include <stdlib.h>
+#include <time.h>
 
 #include "grid.h"
 #include "utils.h"
 
+// FIXME(@h3nnn4n): Use a decent random number generator
 direction_t get_random_direction() {
-    uint8_t num = rand() % 4;
+    static unsigned int seed = 0;
+
+    if (seed == 0)
+        seed = time(0);
+
+    uint8_t num = rand_r(&seed) % 4;
 
     return (direction_t)num;
 }
