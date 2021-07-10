@@ -57,6 +57,8 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
     memset(cells, 0, sizeof(cell_t) * grid->width * grid->height);
 
     grid->cells = malloc(sizeof(cell_t *) * grid->width);
+    memset(grid->cells, 0, sizeof(cell_t *) * grid->width);
+
     for (uint8_t i = 0; i < grid->width; i++) {
         grid->cells[i] = &cells[i * grid->height];
     }
