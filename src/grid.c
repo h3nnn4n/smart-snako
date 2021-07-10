@@ -24,7 +24,7 @@
 
 #include "grid.h"
 
-grid_t *allocate_grid(uint8_t width, uint8_t height) {
+grid_t *create_grid(uint8_t width, uint8_t height) {
     assert(width > 0);
     assert(height > 0);
 
@@ -43,4 +43,10 @@ grid_t *allocate_grid(uint8_t width, uint8_t height) {
     }
 
     return grid;
+}
+
+void destroy_grid(grid_t *grid) {
+    free(grid->cells[0]);
+    free(grid->cells);
+    free(grid);
 }

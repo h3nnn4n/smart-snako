@@ -31,6 +31,7 @@ typedef struct {
     cell_t **cells;
 } grid_t;
 
-grid_t *allocate_grid(uint8_t width, uint8_t height);
+grid_t *create_grid(uint8_t width, uint8_t height);
+void    destroy_grid(grid_t *grid);
 
 #endif  // SRC_GRID_H_
