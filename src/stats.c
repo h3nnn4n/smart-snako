@@ -73,7 +73,7 @@ void dump_stats(stats_t *stats) {
     }
 
     fprintf(f, "%s,%u,%u,", "random", stats->cherries_eaten, stats->total_moves);
-    fprintf(f, "%u,%u,%u,", grid->max_moves_without_cherry, grid->width, grid->height);
+    fprintf(f, "%u,%u,%u", grid->max_moves_without_cherry, grid->width, grid->height);
     fprintf(f, "\n");
 
     fclose(f);
