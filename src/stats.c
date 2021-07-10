@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "config.h"
 #include "file_utils.h"
 #include "stats.h"
 
@@ -45,6 +46,9 @@ void register_cherry_eaten(stats_t *stats) {
 }
 
 void print_stats(stats_t *stats) {
+    if (!get_config()->verbose)
+        return;
+
     printf("cherries_eaten: %4u    ", stats->cherries_eaten);
     printf("moves: %7u    ", stats->total_moves);
     printf("moves_since_last_cherry: %7u", stats->moves_since_last_cherry);
