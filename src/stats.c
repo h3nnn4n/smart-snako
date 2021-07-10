@@ -44,9 +44,9 @@ void register_cherry_eaten(stats_t *stats) {
 }
 
 void print_stats(stats_t *stats) {
-    printf("cherries_eaten: %4d    ", stats->cherries_eaten);
-    printf("moves: %7d    ", stats->total_moves);
-    printf("moves_since_last_cherry: %7d", stats->moves_since_last_cherry);
+    printf("cherries_eaten: %4u    ", stats->cherries_eaten);
+    printf("moves: %7u    ", stats->total_moves);
+    printf("moves_since_last_cherry: %7u", stats->moves_since_last_cherry);
 
     printf("\n");
 }
