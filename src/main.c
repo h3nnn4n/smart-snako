@@ -71,7 +71,12 @@ int main(int argc, char **argv) {
             case 'a': {
                 assert(optarg != NULL);
 
+                // Deallocate, so we can reallocate it again with the right size
+                if (agent_name != NULL)
+                    free(agent_name);
+
                 agent_name = malloc(strlen(optarg) * sizeof(char));
+
                 memcpy(agent_name, optarg, sizeof(char) * (strlen(optarg)));
             } break;
 
