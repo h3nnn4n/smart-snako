@@ -64,12 +64,19 @@ void move_snake(grid_t *grid, direction_t direction) {
         case DOWN: new_head_y++; break;
     }
 
-    eat_cherry(grid, new_head_x, new_head_y);
+    bool has_eaten = eat_cherry(grid, new_head_x, new_head_y);
 
     grid->cells[new_head_x][new_head_y].has_snake           = true;
     grid->cells[new_head_x][new_head_y].previous_snake_cell = &grid->cells[grid->snake_head_x][grid->snake_head_y];
     grid->cells[new_head_x][new_head_y].snake_counter =
-        grid->cells[grid->snake_head_x][grid->snake_head_y].snake_counter;
+        grid->cells[grid->snake_head_x][grid->snake_head_y].snake_counter + (uint8_t)has_eaten;
+
+    grid->snake_head_x = new_head_x;
+    grid->snake_head_y = new_head_y;
+
+    // Not running the code below makes the snake grow
+    if (has_eaten)
+        return;
 
     cell_t *cell = &grid->cells[new_head_x][new_head_y];
 
@@ -85,7 +92,4 @@ void move_snake(grid_t *grid, direction_t direction) {
             break;
         }
     } while (cell != NULL);
-
-    grid->snake_head_x = new_head_x;
-    grid->snake_head_y = new_head_y;
 }
