@@ -23,10 +23,14 @@
 
 #include <stdint.h>
 
-typedef struct {
+#include "grid.h"
+
+typedef struct stats_s {
     uint32_t cherries_eaten;
     uint32_t total_moves;
     uint32_t moves_since_last_cherry;
+
+    struct grid_s *grid;
 } stats_t;
 
 stats_t *create_stats();
@@ -34,5 +38,6 @@ void     destroy_stats(stats_t *stats);
 void     register_move(stats_t *stats);
 void     register_cherry_eaten(stats_t *stats);
 void     print_stats(stats_t *stats);
+void     dump_stats(stats_t *stats);
 
 #endif  // SRC_STATS_H_

@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "file_utils.h"
 #include "stats.h"
 
 stats_t *create_stats() {
@@ -49,4 +50,27 @@ void print_stats(stats_t *stats) {
     printf("moves_since_last_cherry: %7u", stats->moves_since_last_cherry);
 
     printf("\n");
+}
+
+void dump_stats(stats_t *stats) {
+    ensure_directory_exists("stats");
+
+    grid_t *grid     = stats->grid;
+    char *  filename = "stats/log.csv";
+    FILE *  f        = NULL;
+
+    if (!file_exists(filename)) {
+        f = fopen(filename, "wt");
+        fprintf(f, "agent_name,cherries_eaten,total_moves,");
+        fprintf(f, "max_moves_without_cherry,grid_width,grid_height");
+        fprintf(f, "\n");
+    } else {
+        f = fopen(filename, "at");
+    }
+
+    fprintf(f, "%s,%u,%u,", "random", stats->cherries_eaten, stats->total_moves);
+    fprintf(f, "%u,%u,%u,", grid->max_moves_without_cherry, grid->width, grid->height);
+    fprintf(f, "\n");
+
+    fclose(f);
 }

@@ -69,7 +69,8 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
 
     snake_init(grid);
 
-    grid->stats = create_stats();
+    grid->stats       = create_stats();
+    grid->stats->grid = grid;
 
     return grid;
 }

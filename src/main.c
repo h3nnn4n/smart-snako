@@ -119,6 +119,8 @@ int main(int argc, char **argv) {
         print_stats(grid->stats);
     }
 
+    dump_stats(grid->stats);
+
     destroy_grid(grid);
 
     if (agent_name != NULL)
