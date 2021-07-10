@@ -36,8 +36,9 @@ typedef enum {
 typedef struct {
     bool game_over;
 
-    uint8_t width;
-    uint8_t height;
+    uint8_t  width;
+    uint8_t  height;
+    uint16_t max_moves_without_cherry;
 
     uint8_t snake_head_x;
     uint8_t snake_head_y;

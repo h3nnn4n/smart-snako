@@ -55,6 +55,8 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
     grid->width  = width;
     grid->height = height;
 
+    grid->max_moves_without_cherry = grid->width * grid->height;
+
     cell_t *cells = malloc(sizeof(cell_t) * grid->width * grid->height);
     memset(cells, 0, sizeof(cell_t) * grid->width * grid->height);
 
@@ -84,6 +86,13 @@ void simulate(grid_t *grid, direction_t direction) {
         spawn_cherry(grid);
 
     if (is_snake_colliding(grid, direction)) {
+        printf("snake collided\n");
+        set_game_over(grid);
+        return;
+    }
+
+    if (grid->stats->moves_since_last_cherry > grid->max_moves_without_cherry) {
+        printf("snake died of hunger\n");
         set_game_over(grid);
         return;
     }
