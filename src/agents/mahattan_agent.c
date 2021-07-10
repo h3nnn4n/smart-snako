@@ -29,29 +29,48 @@
 #include <utils.h>
 
 #include "mahattan_agent.h"
+#include "utils.h"
 
-void mahattan_agent_create(grid_t *grid) { (void)grid; }
+void mahattan_agent_create(grid_t *grid) {
+    grid->agent_context                   = malloc(sizeof(direction_t));
+    *(direction_t *)(grid->agent_context) = RIGHT;
+}
 
-void mahattan_agent_destroy(grid_t *grid) { (void)grid; }
+void mahattan_agent_destroy(grid_t *grid) {
+    assert(grid->agent_context != NULL);
+    free(grid->agent_context);
+}
 
 direction_t mahattan_agent(grid_t *grid) {
+    direction_t *last_direction = (direction_t *)grid->agent_context;
+    direction_t  new_direction  = get_safe_random_direction(grid, *last_direction);
+
     uint8_t cherry_x, cherry_y;
     uint8_t snake_x = grid->snake_head_x;
     uint8_t snake_y = grid->snake_head_y;
 
     if (!get_cherry_position(grid, &cherry_x, &cherry_y)) {
         printf("WARN: found no cherry\n");
-        return RIGHT;
+        return new_direction;
     }
 
-    if (snake_x > cherry_x)
-        return LEFT;
-    if (snake_x < cherry_x)
-        return RIGHT;
-    if (snake_y > cherry_y)
-        return UP;
-    if (snake_y < cherry_y)
-        return DOWN;
+    if (snake_x > cherry_x && !is_snake_colliding(grid, LEFT)) {
+        new_direction = LEFT;
+    }
 
-    return RIGHT;
+    if (snake_x < cherry_x && !is_snake_colliding(grid, RIGHT)) {
+        new_direction = RIGHT;
+    }
+
+    if (snake_y > cherry_y && !is_snake_colliding(grid, UP)) {
+        new_direction = UP;
+    }
+
+    if (snake_y < cherry_y && !is_snake_colliding(grid, DOWN)) {
+        new_direction = DOWN;
+    }
+
+    *last_direction = new_direction;
+
+    return new_direction;
 }
