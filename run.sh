@@ -9,11 +9,12 @@ height=50
 
 n_runs=100
 
-for agent in raw_hamilton random manhattan
+for agent in random manhattan raw_hamilton
 do
     echo $agent
     for i in `seq $n_runs`
     do
+        echo $agent $i
         ./smart-snako --width=$width --height=$height --agent=$agent
     done
 done
