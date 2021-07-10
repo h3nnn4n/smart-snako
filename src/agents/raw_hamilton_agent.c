@@ -18,43 +18,34 @@
  *
  */
 
-#ifndef SRC_GRID_H_
-#define SRC_GRID_H_
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include <stdint.h>
+#include <grid.h>
+#include <snake.h>
+#include <utils.h>
 
-#include "cell.h"
-#include "stats.h"
+#include "raw_hamilton_agent.h"
 
-typedef enum {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-} direction_t;
+void raw_hamilton_agent_create(grid_t *grid) {
+    grid->agent_context = malloc(sizeof(direction_t));
+    memset(grid->agent_context, 0, sizeof(raw_hamilton_context_t));
+}
 
-typedef struct grid_s {
-    bool game_over;
+void raw_hamilton_agent_destroy(grid_t *grid) {
+    assert(grid->agent_context != NULL);
+    free(grid->agent_context);
+}
 
-    uint8_t  width;
-    uint8_t  height;
-    uint16_t max_moves_without_cherry;
+direction_t raw_hamilton_agent(grid_t *grid) {
+    // TODO(@h3nnn4n): Implement a halmitonian cycle
+    raw_hamilton_context_t *context = (raw_hamilton_context_t *)grid->agent_context;
 
-    uint8_t snake_head_x;
-    uint8_t snake_head_y;
+    context->stuff = !context->stuff;
 
-    cell_t **cells;
+    if (context->stuff)
+        return RIGHT;
 
-    void *agent_context;
-
-    struct stats_s *stats;
-} grid_t;
-
-grid_t *create_grid(uint8_t width, uint8_t height);
-void    destroy_grid(grid_t *grid);
-void    print_grid(grid_t *grid);
-void    simulate(grid_t *grid, direction_t direction);
-void    set_game_over(grid_t *grid);
-bool    is_game_over(grid_t *grid);
-
-#endif  // SRC_GRID_H_
+    return DOWN;
+}

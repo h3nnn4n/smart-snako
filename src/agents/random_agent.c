@@ -18,18 +18,30 @@
  *
  */
 
+#include <assert.h>
+#include <stdlib.h>
+
 #include <grid.h>
 #include <snake.h>
 #include <utils.h>
 
 #include "random_agent.h"
 
-static direction_t last_direction;
+void random_agent_create(grid_t *grid) {
+    grid->agent_context                   = malloc(sizeof(direction_t));
+    *(direction_t *)(grid->agent_context) = RIGHT;
+}
+
+void random_agent_destroy(grid_t *grid) {
+    assert(grid->agent_context != NULL);
+    free(grid->agent_context);
+}
 
 // TODO(@h3nnn4n): This is very dumb and wasteful of cpu time, but since this
 // is supposed to be a baseline agent it is fine for now.
 direction_t random_agent(grid_t *grid) {
-    direction_t new_direction = LEFT;
+    direction_t  new_direction  = RIGHT;
+    direction_t *last_direction = (direction_t *)grid->agent_context;
 
     uint8_t max_tries = 50;
 
@@ -37,14 +49,14 @@ direction_t random_agent(grid_t *grid) {
         max_tries--;
         new_direction = get_random_direction();
 
-        if (new_direction == RIGHT && last_direction == LEFT)
+        if (new_direction == RIGHT && *last_direction == LEFT)
             continue;
-        if (new_direction == LEFT && last_direction == RIGHT)
+        if (new_direction == LEFT && *last_direction == RIGHT)
             continue;
 
-        if (new_direction == UP && last_direction == DOWN)
+        if (new_direction == UP && *last_direction == DOWN)
             continue;
-        if (new_direction == DOWN && last_direction == UP)
+        if (new_direction == DOWN && *last_direction == UP)
             continue;
 
         if (is_snake_colliding(grid, new_direction))
@@ -53,7 +65,7 @@ direction_t random_agent(grid_t *grid) {
         break;
     } while (max_tries > 0);
 
-    last_direction = new_direction;
+    *last_direction = new_direction;
 
     return new_direction;
 }
