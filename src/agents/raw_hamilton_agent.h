@@ -22,9 +22,13 @@
 #define SRC_AGENTS_RAW_HAMILTON_AGENT_H_
 
 #include <grid.h>
+#include <utils.h>
+
+#include "agent_utils.h"
 
 typedef struct {
-    bool stuff;
+    bool      stuff;
+    tuple_t **path;
 } raw_hamilton_context_t;
 
 void        raw_hamilton_agent_create(grid_t *grid);

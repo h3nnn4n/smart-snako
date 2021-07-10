@@ -21,8 +21,19 @@
 #ifndef SRC_AGENTS_UTILS_H_
 #define SRC_AGENTS_UTILS_H_
 
+#include <stdbool.h>
+
 #include <grid.h>
 
-direction_t get_safe_random_direction(grid_t *grid, direction_t last_direction);
+typedef struct {
+    uint8_t x;
+    uint8_t y;
+
+    bool visited;
+
+    direction_t next_direction;
+} tuple_t;
+
+direction_t get_safe_random_direction(grid_t *grid);
 
 #endif  // SRC_AGENTS_UTILS_H_

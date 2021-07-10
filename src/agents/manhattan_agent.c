@@ -43,7 +43,7 @@ void manhattan_agent_destroy(grid_t *grid) {
 
 direction_t manhattan_agent(grid_t *grid) {
     direction_t *last_direction = (direction_t *)grid->agent_context;
-    direction_t  new_direction  = get_safe_random_direction(grid, *last_direction);
+    direction_t  new_direction  = get_safe_random_direction(grid);
 
     uint8_t cherry_x, cherry_y;
     uint8_t snake_x = grid->snake_head_x;

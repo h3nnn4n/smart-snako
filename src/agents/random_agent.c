@@ -38,14 +38,9 @@ void random_agent_destroy(grid_t *grid) {
     free(grid->agent_context);
 }
 
-// TODO(@h3nnn4n): This is very dumb and wasteful of cpu time, but since this
-// is supposed to be a baseline agent it is fine for now.
 direction_t random_agent(grid_t *grid) {
     direction_t *last_direction = (direction_t *)grid->agent_context;
-
-    direction_t new_direction = get_safe_random_direction(grid, *last_direction);
-
-    *last_direction = new_direction;
-
+    direction_t  new_direction  = get_safe_random_direction(grid);
+    *last_direction             = new_direction;
     return new_direction;
 }
