@@ -25,7 +25,7 @@
 
 #include "grid.h"
 
-bool is_snake_oob(grid_t *grid, direction_t direction);
+bool is_snake_colliding(grid_t *grid, direction_t direction);
 void move_snake(grid_t *grid, direction_t direction);
 
 #endif  // SRC_SNAKE_H_

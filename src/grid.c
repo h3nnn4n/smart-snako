@@ -75,7 +75,7 @@ void destroy_grid(grid_t *grid) {
 }
 
 void simulate(grid_t *grid, direction_t direction) {
-    if (is_snake_oob(grid, direction)) {
+    if (is_snake_colliding(grid, direction)) {
         set_game_over(grid);
         return;
     }

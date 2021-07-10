@@ -24,7 +24,7 @@
 #include "grid.h"
 #include "snake.h"
 
-bool is_snake_oob(grid_t *grid, direction_t direction) {
+bool is_snake_colliding(grid_t *grid, direction_t direction) {
     uint8_t new_head_x = grid->snake_head_x;
     uint8_t new_head_y = grid->snake_head_y;
 
