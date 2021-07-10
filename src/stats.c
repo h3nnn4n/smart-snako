@@ -18,6 +18,7 @@
  *
  */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -40,4 +41,12 @@ void register_move(stats_t *stats) {
 void register_cherry_eaten(stats_t *stats) {
     stats->cherries_eaten++;
     stats->moves_since_last_cherry = 0;
+}
+
+void print_stats(stats_t *stats) {
+    printf("cherries_eaten: %4d    ", stats->cherries_eaten);
+    printf("moves: %7d    ", stats->total_moves);
+    printf("moves_since_last_cherry: %7d", stats->moves_since_last_cherry);
+
+    printf("\n");
 }

@@ -33,5 +33,6 @@ stats_t *create_stats();
 void     destroy_stats(stats_t *stats);
 void     register_move(stats_t *stats);
 void     register_cherry_eaten(stats_t *stats);
+void     print_stats(stats_t *stats);
 
 #endif  // SRC_STATS_H_

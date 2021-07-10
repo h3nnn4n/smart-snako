@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
         direction_t direction = agent(grid);
         simulate(grid, direction);
         print_grid(grid);
-        printf("cherries_eaten: %d    moves: %d\n", grid->stats->cherries_eaten, grid->stats->total_moves);
+        print_stats(grid->stats);
     }
 
     destroy_grid(grid);
