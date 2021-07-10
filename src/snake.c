@@ -44,6 +44,9 @@ bool is_snake_colliding(grid_t *grid, direction_t direction) {
     if (new_head_y >= grid->height)
         return true;
 
+    if (grid->cells[new_head_x][new_head_y].snake_counter > 0)
+        return true;
+
     return false;
 }
 
