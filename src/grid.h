@@ -25,6 +25,13 @@
 
 #include "cell.h"
 
+typedef enum {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+} direction_t;
+
 typedef struct {
     uint8_t width;
     uint8_t height;
@@ -38,5 +45,6 @@ typedef struct {
 grid_t *create_grid(uint8_t width, uint8_t height);
 void    destroy_grid(grid_t *grid);
 void    print_grid(grid_t *grid);
+void    simulate(grid_t *grid, direction_t direction);
 
 #endif  // SRC_GRID_H_

@@ -35,7 +35,7 @@ void snake_init(grid_t *grid) {
         grid->cells[x][y].snake_counter = counter;
 
         if (counter > 0)
-            grid->cells[x][y].previous_snake_cell = &grid->cells[x][y];
+            grid->cells[x][y].previous_snake_cell = &grid->cells[x - 1][y];
     }
 
     grid->snake_head_x = 4;
@@ -71,7 +71,55 @@ void destroy_grid(grid_t *grid) {
     free(grid);
 }
 
+void simulate(grid_t *grid, direction_t direction) {
+    uint8_t new_head_x = grid->snake_head_x;
+    uint8_t new_head_y = grid->snake_head_y;
+
+    switch (direction) {
+        case RIGHT:
+            //
+            new_head_x++;
+            break;
+        case LEFT:
+            //
+            new_head_x--;
+            break;
+        case UP:
+            //
+            new_head_y--;
+            break;
+        case DOWN:
+            //
+            new_head_y++;
+            break;
+    }
+
+    grid->cells[new_head_x][new_head_y].has_snake           = true;
+    grid->cells[new_head_x][new_head_y].previous_snake_cell = &grid->cells[grid->snake_head_x][grid->snake_head_y];
+    grid->cells[new_head_x][new_head_y].snake_counter =
+        grid->cells[grid->snake_head_x][grid->snake_head_y].snake_counter;
+
+    cell_t *cell = &grid->cells[new_head_x][new_head_y];
+
+    do {
+        cell = cell->previous_snake_cell;
+        cell->snake_counter--;
+
+        if (cell->snake_counter == 1) {
+            cell->previous_snake_cell->snake_counter = 0;
+            cell->previous_snake_cell->has_snake     = false;
+            cell->previous_snake_cell                = NULL;
+            cell                                     = NULL;
+            break;
+        }
+    } while (cell != NULL);
+
+    grid->snake_head_x = new_head_x;
+    grid->snake_head_y = new_head_y;
+}
+
 void print_grid(grid_t *grid) {
+    printf("\n");
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
             if (grid->cells[x][y].has_cherry) {

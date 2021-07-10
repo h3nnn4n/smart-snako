@@ -97,6 +97,10 @@ int main(int argc, char **argv) {
     grid_t *grid = create_grid(width, height);
 
     print_grid(grid);
+    for (int i = 0; i < 5; i++) {
+        simulate(grid, RIGHT);
+        print_grid(grid);
+    }
 
     destroy_grid(grid);
 
