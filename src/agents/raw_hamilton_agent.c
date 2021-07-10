@@ -39,6 +39,7 @@ void raw_hamilton_agent_destroy(grid_t *grid) {
 }
 
 direction_t raw_hamilton_agent(grid_t *grid) {
+    // TODO(@h3nnn4n): Implement a halmitonian cycle
     raw_hamilton_context_t *context = (raw_hamilton_context_t *)grid->agent_context;
 
     context->stuff = !context->stuff;
