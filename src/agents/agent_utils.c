@@ -18,28 +18,39 @@
  *
  */
 
-#ifndef SRC_STATS_H_
-#define SRC_STATS_H_
+#include <assert.h>
+#include <stdlib.h>
 
-#include <stdint.h>
+#include <grid.h>
+#include <snake.h>
+#include <utils.h>
 
-#include "grid.h"
+#include "agent_utils.h"
 
-typedef struct stats_s {
-    char *   agent_name;
-    uint32_t cherries_eaten;
-    uint32_t total_moves;
-    uint32_t moves_since_last_cherry;
+direction_t get_safe_random_direction(grid_t *grid, direction_t last_direction) {
+    direction_t new_direction = RIGHT;
 
-    struct grid_s *grid;
-} stats_t;
+    uint8_t max_tries = 50;
 
-stats_t *create_stats();
-void     destroy_stats(stats_t *stats);
-void     register_move(stats_t *stats);
-void     register_cherry_eaten(stats_t *stats);
-void     print_stats(stats_t *stats);
-void     dump_stats(stats_t *stats);
-void     set_agent_name(stats_t *stats, char *agent_name);
+    do {
+        max_tries--;
+        new_direction = get_random_direction();
 
-#endif  // SRC_STATS_H_
+        if (new_direction == RIGHT && last_direction == LEFT)
+            continue;
+        if (new_direction == LEFT && last_direction == RIGHT)
+            continue;
+
+        if (new_direction == UP && last_direction == DOWN)
+            continue;
+        if (new_direction == DOWN && last_direction == UP)
+            continue;
+
+        if (is_snake_colliding(grid, new_direction))
+            continue;
+
+        break;
+    } while (max_tries > 0);
+
+    return new_direction;
+}

@@ -64,3 +64,17 @@ bool eat_cherry(grid_t *grid, uint8_t x, uint8_t y) {
 
     return true;
 }
+
+bool get_cherry_position(grid_t *grid, uint8_t *out_x, uint8_t *out_y) {
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (grid->cells[x][y].has_cherry) {
+                *out_x = x;
+                *out_y = y;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}

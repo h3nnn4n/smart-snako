@@ -84,9 +84,6 @@ void destroy_grid(grid_t *grid) {
 }
 
 void simulate(grid_t *grid, direction_t direction) {
-    if (!has_cherry(grid))
-        spawn_cherry(grid);
-
     if (is_snake_colliding(grid, direction)) {
         if (get_config()->verbose)
             printf("snake collided\n");
@@ -104,6 +101,9 @@ void simulate(grid_t *grid, direction_t direction) {
     }
 
     move_snake(grid, direction);
+
+    if (!has_cherry(grid))
+        spawn_cherry(grid);
 }
 
 void print_grid(grid_t *grid) {

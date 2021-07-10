@@ -18,28 +18,11 @@
  *
  */
 
-#ifndef SRC_STATS_H_
-#define SRC_STATS_H_
+#ifndef SRC_AGENTS_UTILS_H_
+#define SRC_AGENTS_UTILS_H_
 
-#include <stdint.h>
+#include <grid.h>
 
-#include "grid.h"
+direction_t get_safe_random_direction(grid_t *grid, direction_t last_direction);
 
-typedef struct stats_s {
-    char *   agent_name;
-    uint32_t cherries_eaten;
-    uint32_t total_moves;
-    uint32_t moves_since_last_cherry;
-
-    struct grid_s *grid;
-} stats_t;
-
-stats_t *create_stats();
-void     destroy_stats(stats_t *stats);
-void     register_move(stats_t *stats);
-void     register_cherry_eaten(stats_t *stats);
-void     print_stats(stats_t *stats);
-void     dump_stats(stats_t *stats);
-void     set_agent_name(stats_t *stats, char *agent_name);
-
-#endif  // SRC_STATS_H_
+#endif  // SRC_AGENTS_UTILS_H_

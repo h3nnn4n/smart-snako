@@ -26,5 +26,6 @@
 void spawn_cherry(grid_t *grid);
 bool has_cherry(grid_t *grid);
 bool eat_cherry(grid_t *grid, uint8_t x, uint8_t y);
+bool get_cherry_position(grid_t *grid, uint8_t *out_x, uint8_t *out_y);
 
 #endif  // SRC_CHERRY_H_

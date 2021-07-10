@@ -19,31 +19,56 @@
  */
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include <cherry.h>
 #include <grid.h>
 #include <snake.h>
 #include <utils.h>
 
 #include "agent_utils.h"
-#include "random_agent.h"
+#include "manhattan_agent.h"
 
-void random_agent_create(grid_t *grid) {
+void manhattan_agent_create(grid_t *grid) {
     grid->agent_context                   = malloc(sizeof(direction_t));
     *(direction_t *)(grid->agent_context) = RIGHT;
 }
 
-void random_agent_destroy(grid_t *grid) {
+void manhattan_agent_destroy(grid_t *grid) {
     assert(grid->agent_context != NULL);
     free(grid->agent_context);
 }
 
-// TODO(@h3nnn4n): This is very dumb and wasteful of cpu time, but since this
-// is supposed to be a baseline agent it is fine for now.
-direction_t random_agent(grid_t *grid) {
+direction_t manhattan_agent(grid_t *grid) {
     direction_t *last_direction = (direction_t *)grid->agent_context;
+    direction_t  new_direction  = get_safe_random_direction(grid, *last_direction);
 
-    direction_t new_direction = get_safe_random_direction(grid, *last_direction);
+    uint8_t cherry_x, cherry_y;
+    uint8_t snake_x = grid->snake_head_x;
+    uint8_t snake_y = grid->snake_head_y;
+
+    if (!get_cherry_position(grid, &cherry_x, &cherry_y)) {
+        printf("WARN: found no cherry\n");
+        return new_direction;
+    }
+
+    if (snake_x > cherry_x && !is_snake_colliding(grid, LEFT)) {
+        new_direction = LEFT;
+    }
+
+    if (snake_x < cherry_x && !is_snake_colliding(grid, RIGHT)) {
+        new_direction = RIGHT;
+    }
+
+    if (snake_y > cherry_y && !is_snake_colliding(grid, UP)) {
+        new_direction = UP;
+    }
+
+    if (snake_y < cherry_y && !is_snake_colliding(grid, DOWN)) {
+        new_direction = DOWN;
+    }
 
     *last_direction = new_direction;
 
