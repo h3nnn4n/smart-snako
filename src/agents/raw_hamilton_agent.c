@@ -64,6 +64,8 @@ bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
             return true;
     }
 
+    agent_context->path[x][y].visited = false;
+
     return false;
 }
 
