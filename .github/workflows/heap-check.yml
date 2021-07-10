@@ -21,6 +21,6 @@ jobs:
         run: make gperftools
 
       - name: Detect Leaks
-        run: ./C_Template 1 2
+        run: ./smart-snako 1 2
         env:
           HEAPCHECK: normal
