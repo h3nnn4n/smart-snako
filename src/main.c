@@ -27,6 +27,7 @@
 #include "agents/random_agent.h"
 #include "config.h"
 #include "grid.h"
+#include "stats.h"
 #include "utils.h"
 
 static config_t *config;
@@ -109,16 +110,20 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    grid_t *grid = create_grid(width, height);
+    grid_t * grid  = create_grid(width, height);
+    stats_t *stats = create_stats();
 
     print_grid(grid);
     while (!is_game_over(grid)) {
         direction_t direction = agent(grid);
         simulate(grid, direction);
+        register_move(stats);
         print_grid(grid);
+        printf("cherries_eaten: %d    moves: %d\n", stats->cherries_eaten, stats->total_moves);
     }
 
     destroy_grid(grid);
+    destroy_stats(stats);
 
     if (agent_name != NULL)
         free(agent_name);
