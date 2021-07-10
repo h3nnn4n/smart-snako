@@ -34,6 +34,7 @@
 #include "config.h"
 #include "grid.h"
 #include "utils.h"
+#include "cherry.h"
 
 static config_t *config;
 
@@ -133,6 +134,7 @@ int main(int argc, char **argv) {
 
     grid_t *grid = create_grid(width, height);
     agent_create(grid);
+    spawn_cherry(grid);
 
     while (!is_game_over(grid)) {
         print_grid(grid);
