@@ -27,6 +27,7 @@
 #include <entropy.h>
 #include <pcg_variants.h>
 
+#include "agents/mahattan_agent.h"
 #include "agents/random_agent.h"
 #include "agents/raw_hamilton_agent.h"
 
@@ -116,6 +117,10 @@ int main(int argc, char **argv) {
         agent         = random_agent;
         agent_create  = random_agent_create;
         agent_destroy = random_agent_destroy;
+    } else if (strcmp(agent_name, "mahattan") == 0) {
+        agent         = mahattan_agent;
+        agent_create  = mahattan_agent_create;
+        agent_destroy = mahattan_agent_destroy;
     } else if (strcmp(agent_name, "raw_hamilton") == 0) {
         agent         = raw_hamilton_agent;
         agent_create  = raw_hamilton_agent_create;
