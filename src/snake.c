@@ -36,7 +36,7 @@ bool is_snake_colliding(grid_t *grid, direction_t direction) {
         case DOWN: new_head_y++; break;
     }
 
-    // No need to check for lower bounds because var type is unsigned If it
+    // No need to check for lower bounds because var type is unsigned. If it
     // tries to go below zero it underflows and becomes bigger than the size
     // limit
     if (new_head_x >= grid->width)
