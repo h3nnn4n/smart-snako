@@ -33,7 +33,13 @@ void snake_init(grid_t *grid) {
         counter++;
         grid->cells[x][y].has_snake     = true;
         grid->cells[x][y].snake_counter = counter;
+
+        if (counter > 0)
+            grid->cells[x][y].previous_snake_cell = &grid->cells[x][y];
     }
+
+    grid->snake_head_x = 4;
+    grid->snake_head_y = 1;
 }
 
 grid_t *create_grid(uint8_t width, uint8_t height) {
@@ -71,7 +77,11 @@ void print_grid(grid_t *grid) {
             if (grid->cells[x][y].has_cherry) {
                 printf("O ");
             } else if (grid->cells[x][y].has_snake) {
-                printf("X ");
+                if (x == grid->snake_head_x && y == grid->snake_head_y) {
+                    printf("C ");
+                } else {
+                    printf("x ");
+                }
             } else {
                 printf(". ");
             }

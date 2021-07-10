@@ -26,8 +26,12 @@
 #include "cell.h"
 
 typedef struct {
-    uint8_t  width;
-    uint8_t  height;
+    uint8_t width;
+    uint8_t height;
+
+    uint8_t snake_head_x;
+    uint8_t snake_head_y;
+
     cell_t **cells;
 } grid_t;
 
