@@ -9,7 +9,10 @@ TESTDIR = $(abspath $(CURDIR)/test)
 OPTIONS =
 
 INCLUDES = -Isrc \
-           -Ideps/Unity/src
+           -Ideps/Unity/src \
+           -Ideps/pcg-c/include \
+           -Ideps/pcg-c/extras
+
 
 OPTIMIZATION=-O3
 
@@ -18,17 +21,18 @@ override CFLAGS += -Wall -Wextra -pedantic -std=gnu11 $(OPTIMIZATION) $(OPTIONS)
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
   ECHOFLAGS = -e
-  LDFLAGS = -Wl,-Ldeps/Unity/build/
+  LDFLAGS = -lpcg_random -Wl,-Ldeps/Unity/build/,-Ldeps/pcg-c/src/
 endif
 ifeq ($(UNAME_S),Darwin)
   CFLAGS += -Wno-unused-command-line-argument
-  LDFLAGS =
+  LDFLAGS = -lpcg_random -Wl,-Ldeps/pcg-c/src/
 endif
 
 CC = gcc
 
 C_FILES := $(wildcard src/*.c) \
-           $(wildcard src/**/*.c)
+           $(wildcard src/**/*.c) \
+           $(wildcard deps/pcg-c/extras/*.c)
 C_FILES_TEST := $(wildcard test/*.c)
 C_FILES_TEST_DEPS := $(wildcard deps/Unity/src/*.c)
 
@@ -45,7 +49,7 @@ OBJS_NO_MAIN := $(filter-out %main.o, $(OBJS)) \
 
 all: build
 
-build: $(TARGET)
+build: pcg pcg_full $(TARGET)
 
 debug: debug_prepare build
 
@@ -66,13 +70,19 @@ rebuild: clean $(TARGET)
 
 retest: clean test
 
+pcg:
+	@$(MAKE) -s -C deps/pcg-c/src/
+
+pcg_full:
+	@$(MAKE) -s -C deps/pcg-c/
+
 run: $(TARGET)
 	$(CURDIR)/$(TARGET)
 
 gdb: clean debug_prepare $(TARGET)
 	gdb $(CURDIR)/$(TARGET)
 
-test: $(TEST_TARGETS)
+test: pcg $(TEST_TARGETS)
 	$(foreach var,$(TEST_TARGETS),$(var) && ) echo $(ECHOFLAGS) "Everything in order"
 
 $(TEST_TARGETS): $(OBJS_NO_MAIN) $(OBJS_TEST)
