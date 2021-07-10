@@ -33,5 +33,6 @@ typedef struct {
 
 grid_t *create_grid(uint8_t width, uint8_t height);
 void    destroy_grid(grid_t *grid);
+void    print_grid(grid_t *grid);
 
 #endif  // SRC_GRID_H_

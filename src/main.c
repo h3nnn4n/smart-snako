@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
 
     grid_t *grid = create_grid(width, height);
 
-    // TODO(@h3nnn4n): Change the world as we know it
+    print_grid(grid);
 
     destroy_grid(grid);
 
