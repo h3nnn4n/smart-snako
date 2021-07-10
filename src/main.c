@@ -28,6 +28,8 @@
 #include <pcg_variants.h>
 
 #include "agents/random_agent.h"
+#include "agents/raw_hamilton_agent.h"
+
 #include "config.h"
 #include "grid.h"
 #include "utils.h"
@@ -110,6 +112,8 @@ int main(int argc, char **argv) {
 
     if (agent_name == NULL || strcmp(agent_name, "random") == 0) {
         agent = random_agent;
+    } else if (strcmp(agent_name, "raw_hamilton") == 0) {
+        agent = raw_hamilton_agent;
     } else {
         fprintf(stderr, "\"%s\" is not a valid agent\n", agent_name);
         free(agent_name);
