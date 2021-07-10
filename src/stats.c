@@ -36,3 +36,8 @@ void register_move(stats_t *stats) {
     stats->total_moves++;
     stats->moves_since_last_cherry++;
 }
+
+void register_cherry_eaten(stats_t *stats) {
+    stats->cherries_eaten++;
+    stats->moves_since_last_cherry = 0;
+}

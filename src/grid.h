@@ -24,6 +24,7 @@
 #include <stdint.h>
 
 #include "cell.h"
+#include "stats.h"
 
 typedef enum {
     LEFT,
@@ -42,6 +43,8 @@ typedef struct {
     uint8_t snake_head_y;
 
     cell_t **cells;
+
+    stats_t *stats;
 } grid_t;
 
 grid_t *create_grid(uint8_t width, uint8_t height);

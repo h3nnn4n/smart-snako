@@ -52,6 +52,8 @@ bool is_snake_colliding(grid_t *grid, direction_t direction) {
 }
 
 void move_snake(grid_t *grid, direction_t direction) {
+    register_move(grid->stats);
+
     uint8_t new_head_x = grid->snake_head_x;
     uint8_t new_head_y = grid->snake_head_y;
 

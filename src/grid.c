@@ -26,6 +26,7 @@
 #include "cherry.h"
 #include "grid.h"
 #include "snake.h"
+#include "stats.h"
 
 void snake_init(grid_t *grid) {
     int counter = 0;
@@ -66,10 +67,13 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
 
     snake_init(grid);
 
+    grid->stats = create_stats();
+
     return grid;
 }
 
 void destroy_grid(grid_t *grid) {
+    destroy_stats(grid->stats);
     free(grid->cells[0]);
     free(grid->cells);
     free(grid);

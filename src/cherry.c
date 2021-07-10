@@ -59,4 +59,6 @@ void eat_cherry(grid_t *grid, uint8_t x, uint8_t y) {
         return;
 
     grid->cells[x][y].has_cherry = false;
+
+    register_cherry_eaten(grid->stats);
 }
