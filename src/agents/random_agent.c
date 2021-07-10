@@ -31,11 +31,15 @@ direction_t random_agent(grid_t *t) {
     do {
         new_direction = get_random_direction();
 
-        if (new_direction == RIGHT && last_direction == LEFT) continue;
-        if (new_direction == LEFT && last_direction == RIGHT) continue;
+        if (new_direction == RIGHT && last_direction == LEFT)
+            continue;
+        if (new_direction == LEFT && last_direction == RIGHT)
+            continue;
 
-        if (new_direction == UP && last_direction == DOWN) continue;
-        if (new_direction == DOWN && last_direction == UP) continue;
+        if (new_direction == UP && last_direction == DOWN)
+            continue;
+        if (new_direction == DOWN && last_direction == UP)
+            continue;
 
         break;
     } while (true);

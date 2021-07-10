@@ -24,10 +24,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "agents/random_agent.h"
 #include "config.h"
 #include "grid.h"
 #include "utils.h"
-#include "agents/random_agent.h"
 
 static config_t *config;
 
@@ -35,18 +35,16 @@ int main(int argc, char **argv) {
     init_config();
     config = get_config();
 
-    uint8_t width  = 10;
-    uint8_t height = 10;
-    char *agent_name = NULL;
+    uint8_t width      = 10;
+    uint8_t height     = 10;
+    char *  agent_name = NULL;
 
-    direction_t (*agent)(grid_t*);
+    direction_t (*agent)(grid_t *);
 
-    struct option long_options[] = {{"verbose", no_argument, &config->verbose, 1},
-                                    {"quiet", no_argument, &config->verbose, 0},
-                                    {"agent", required_argument, NULL, 'a'},
-                                    {"width", required_argument, NULL, 'w'},
-                                    {"height", required_argument, NULL, 'h'},
-                                    {0, 0, 0, 0}};
+    struct option long_options[] = {
+        {"verbose", no_argument, &config->verbose, 1}, {"quiet", no_argument, &config->verbose, 0},
+        {"agent", required_argument, NULL, 'a'},       {"width", required_argument, NULL, 'w'},
+        {"height", required_argument, NULL, 'h'},      {0, 0, 0, 0}};
 
     int option_index = 0;
 
@@ -98,7 +96,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    if (agent_name == NULL || strcmp(agent_name, "random") ==0) {
+    if (agent_name == NULL || strcmp(agent_name, "random") == 0) {
         agent = random_agent;
     } else {
         fprintf(stderr, "\"%s\" is not a valid agent\n", agent_name);
