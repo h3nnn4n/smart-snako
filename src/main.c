@@ -111,13 +111,14 @@ int main(int argc, char **argv) {
 
     grid_t *grid = create_grid(width, height);
 
-    print_grid(grid);
     while (!is_game_over(grid)) {
-        direction_t direction = agent(grid);
-        simulate(grid, direction);
         print_grid(grid);
         print_stats(grid->stats);
+        direction_t direction = agent(grid);
+        simulate(grid, direction);
     }
+
+    dump_stats(grid->stats);
 
     destroy_grid(grid);
 

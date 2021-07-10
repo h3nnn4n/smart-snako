@@ -33,7 +33,7 @@ typedef enum {
     DOWN,
 } direction_t;
 
-typedef struct {
+typedef struct grid_s {
     bool game_over;
 
     uint8_t  width;
@@ -45,7 +45,7 @@ typedef struct {
 
     cell_t **cells;
 
-    stats_t *stats;
+    struct stats_s *stats;
 } grid_t;
 
 grid_t *create_grid(uint8_t width, uint8_t height);

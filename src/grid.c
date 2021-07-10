@@ -24,6 +24,7 @@
 #include <string.h>
 
 #include "cherry.h"
+#include "config.h"
 #include "grid.h"
 #include "snake.h"
 #include "stats.h"
@@ -69,7 +70,8 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
 
     snake_init(grid);
 
-    grid->stats = create_stats();
+    grid->stats       = create_stats();
+    grid->stats->grid = grid;
 
     return grid;
 }
@@ -101,6 +103,9 @@ void simulate(grid_t *grid, direction_t direction) {
 }
 
 void print_grid(grid_t *grid) {
+    if (!get_config()->verbose)
+        return;
+
     printf("\n");
     for (int y = 0; y < grid->height; y++) {
         for (int x = 0; x < grid->width; x++) {
