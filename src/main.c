@@ -39,8 +39,8 @@ int main(int argc, char **argv) {
 
     struct option long_options[] = {{"verbose", no_argument, &config->verbose, 1},
                                     {"quiet", no_argument, &config->verbose, 0},
-                                    {"width", optional_argument, 0, 'w'},
-                                    {"height", optional_argument, 0, 'h'},
+                                    {"width", required_argument, NULL, 'w'},
+                                    {"height", required_argument, NULL, 'h'},
                                     {0, 0, 0, 0}};
 
     int option_index = 0;
