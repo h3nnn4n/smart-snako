@@ -114,5 +114,8 @@ int main(int argc, char **argv) {
 
     destroy_grid(grid);
 
+    if (agent_name != NULL)
+        free(agent_name);
+
     return EXIT_SUCCESS;
 }
