@@ -22,9 +22,6 @@ jobs:
 
       - name: Run
         run: |
-          ./smart-snako 1 2
-          ./smart-snako 0 1 --verbose
-          ./smart-snako 1 2 --quiet
-          ./smart-snako 1 2 --say-hi
-          ./smart-snako 1 2 --say-hi=CI
-          ./smart-snako 1 2 --say-hi=CI --fail-on-match 42
+          ./smart-snako
+          ./smart-snako --width=10 --height=10
+          ./smart-snako --width=50 --height=50
