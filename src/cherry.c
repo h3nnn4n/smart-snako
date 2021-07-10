@@ -39,7 +39,9 @@ bool has_cherry(grid_t *grid) {
 
 // TODO(@h3nnn4n): This could be smarter
 void spawn_cherry(grid_t *grid) {
-    while (true) {
+    uint16_t tries_remaining = grid->width * grid->height * 10;
+
+    while (tries_remaining-- > 0) {
         uint8_t x = get_random_number(grid->width);
         uint8_t y = get_random_number(grid->height);
 
