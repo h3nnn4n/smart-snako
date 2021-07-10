@@ -1,13 +1,13 @@
 # C Template
 
-[![gperftools](https://github.com/h3nnn4n/C_Template/actions/workflows/heap-check.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/heap-check.yml)
-[![valgrind](https://github.com/h3nnn4n/C_Template/actions/workflows/valgrind.yml/badge.svg)](https://github.com/h3nnn4n/C_Template/actions/workflows/valgrind.yml)
-[![clang-format](https://github.com/h3nnn4n/C_Template/actions/workflows/clang-format-check.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/clang-format-check.yml)
-[![clang-tidy](https://github.com/h3nnn4n/C_Template/actions/workflows/clang-tidy.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/clang-tidy.yml)
-[![cppcheck](https://github.com/h3nnn4n/C_Template/actions/workflows/cppcheck.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/cppcheck.yml)
-[![cpplint](https://github.com/h3nnn4n/C_Template/actions/workflows/cpplint.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/cpplint.yml)
-[![Smoke Test](https://github.com/h3nnn4n/C_Template/actions/workflows/run.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/run.yml)
-[![Unit Tests](https://github.com/h3nnn4n/C_Template/actions/workflows/tests.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/tests.yml)
+[![gperftools](https://github.com/h3nnn4n/smart-snako/actions/workflows/heap-check.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/heap-check.yml)
+[![valgrind](https://github.com/h3nnn4n/smart-snako/actions/workflows/valgrind.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/valgrind.yml)
+[![clang-format](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-format-check.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/clang-format-check.yml)
+[![clang-tidy](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-tidy.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/clang-tidy.yml)
+[![cppcheck](https://github.com/h3nnn4n/smart-snako/actions/workflows/cppcheck.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/cppcheck.yml)
+[![cpplint](https://github.com/h3nnn4n/smart-snako/actions/workflows/cpplint.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/cpplint.yml)
+[![Smoke Test](https://github.com/h3nnn4n/smart-snako/actions/workflows/run.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/run.yml)
+[![Unit Tests](https://github.com/h3nnn4n/smart-snako/actions/workflows/tests.yml/badge.svg)](https://github.com/h3nnn4n/c_template/actions/workflows/tests.yml)
 
 
 Over time I have build a set of linters, checkers and other tools that I find
