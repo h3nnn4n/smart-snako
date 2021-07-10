@@ -18,31 +18,38 @@
  *
  */
 
-#include <stdlib.h>
-#include <time.h>
+#include <stdbool.h>
 
+#include "cherry.h"
 #include "grid.h"
 #include "utils.h"
 
-// FIXME(@h3nnn4n): Use a decent random number generator
-direction_t get_random_direction() {
-    static unsigned int seed = 0;
+// TODO(@h3nnn4n): We could cache this
+bool has_cherry(grid_t *grid) {
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (grid->cells[x][y].has_cherry) {
+                return true;
+            }
+        }
+    }
 
-    if (seed == 0)
-        seed = time(0);
-
-    uint8_t num = rand_r(&seed) % 4;
-
-    return (direction_t)num;
+    return false;
 }
 
-uint8_t get_random_number(uint8_t max_val) {
-    static unsigned int seed = 0;
+// TODO(@h3nnn4n): This could be smarter
+void spawn_cherry(grid_t *grid) {
+    while (true) {
+        uint8_t x = get_random_number(grid->width);
+        uint8_t y = get_random_number(grid->height);
 
-    if (seed == 0)
-        seed = time(0);
+        if (grid->cells[x][y].has_snake)
+            continue;
 
-    uint8_t num = rand_r(&seed) % max_val;
+        if (grid->cells[x][y].has_cherry)
+            continue;
 
-    return num;
+        grid->cells[x][y].has_cherry = true;
+        break;
+    }
 }

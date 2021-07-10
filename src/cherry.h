@@ -18,31 +18,12 @@
  *
  */
 
-#include <stdlib.h>
-#include <time.h>
+#ifndef SRC_CHERRY_H_
+#define SRC_CHERRY_H_
 
 #include "grid.h"
-#include "utils.h"
 
-// FIXME(@h3nnn4n): Use a decent random number generator
-direction_t get_random_direction() {
-    static unsigned int seed = 0;
+void spawn_cherry(grid_t *grid);
+bool has_cherry(grid_t *grid);
 
-    if (seed == 0)
-        seed = time(0);
-
-    uint8_t num = rand_r(&seed) % 4;
-
-    return (direction_t)num;
-}
-
-uint8_t get_random_number(uint8_t max_val) {
-    static unsigned int seed = 0;
-
-    if (seed == 0)
-        seed = time(0);
-
-    uint8_t num = rand_r(&seed) % max_val;
-
-    return num;
-}
+#endif  // SRC_CHERRY_H_

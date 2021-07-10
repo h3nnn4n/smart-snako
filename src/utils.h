@@ -24,5 +24,6 @@
 #include "grid.h"
 
 direction_t get_random_direction();
+uint8_t     get_random_number(uint8_t max_val);
 
 #endif  // SRC_UTILS_H_

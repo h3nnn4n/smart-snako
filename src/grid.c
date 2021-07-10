@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "cherry.h"
 #include "grid.h"
 #include "snake.h"
 
@@ -75,6 +76,9 @@ void destroy_grid(grid_t *grid) {
 }
 
 void simulate(grid_t *grid, direction_t direction) {
+    if (!has_cherry(grid))
+        spawn_cherry(grid);
+
     if (is_snake_colliding(grid, direction)) {
         set_game_over(grid);
         return;
