@@ -80,6 +80,7 @@ void raw_hamilton_agent_create(grid_t *grid) {
 
     agent_context->path = malloc(sizeof(tuple_t *) * grid->width);
     memset(agent_context->path, 0, sizeof(tuple_t *) * grid->width);
+    agent_context->path[0] = path;
 
     for (uint8_t i = 0; i < grid->width; i++) {
         agent_context->path[i] = &path[i * grid->height];
