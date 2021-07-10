@@ -100,6 +100,7 @@ int main(int argc, char **argv) {
         agent = random_agent;
     } else {
         fprintf(stderr, "\"%s\" is not a valid agent\n", agent_name);
+        free(agent_name);
         return EXIT_FAILURE;
     }
 
