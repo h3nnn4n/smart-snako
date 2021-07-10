@@ -26,6 +26,7 @@
 
 #include "config.h"
 #include "grid.h"
+#include "utils.h"
 
 static config_t *config;
 
@@ -98,7 +99,8 @@ int main(int argc, char **argv) {
 
     print_grid(grid);
     while (!is_game_over(grid)) {
-        simulate(grid, RIGHT);
+        direction_t direction = get_random_direction();
+        simulate(grid, direction);
         print_grid(grid);
     }
 
