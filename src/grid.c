@@ -33,7 +33,7 @@ grid_t *allocate_grid(uint8_t width, uint8_t height) {
     cell_t *cells = malloc(sizeof(cell_t) * grid->width * grid->height);
     memset(cells, 0, sizeof(cell_t) * grid->width * grid->height);
 
-    grid->cells = malloc(sizeof(cell_t) * grid->width);
+    grid->cells = malloc(sizeof(cell_t *) * grid->width);
     for (uint8_t i = 0; i < grid->width; i++) {
         grid->cells[i] = &cells[i * grid->height];
     }
