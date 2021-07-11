@@ -56,7 +56,7 @@ grid_t *create_grid(uint8_t width, uint8_t height) {
     grid->width  = width;
     grid->height = height;
 
-    grid->max_moves_without_cherry = grid->width * grid->height;
+    grid->max_moves_without_cherry = grid->width * grid->height * 5;
 
     cell_t *cells = malloc(sizeof(cell_t) * grid->width * grid->height);
     memset(cells, 0, sizeof(cell_t) * grid->width * grid->height);
