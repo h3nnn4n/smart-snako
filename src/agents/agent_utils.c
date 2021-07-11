@@ -73,7 +73,7 @@ void destroy_graph_context(graph_context_t *graph) {
     free(graph);
 }
 
-uint32_t _cells_not_visited_count(graph_context_t *graph_context) {
+uint32_t cells_not_visited_count(graph_context_t *graph_context) {
     grid_t * grid  = graph_context->grid;
     uint32_t count = 0;
 
@@ -87,7 +87,7 @@ uint32_t _cells_not_visited_count(graph_context_t *graph_context) {
     return count;
 }
 
-bool _all_cells_visited(graph_context_t *graph_context) {
+bool all_cells_visited(graph_context_t *graph_context) {
     grid_t *grid = graph_context->grid;
 
     for (int y = 0; y < grid->height; y++) {
