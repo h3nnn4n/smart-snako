@@ -24,6 +24,7 @@
 #include <string.h>
 
 #include <cherry.h>
+#include <config.h>
 #include <grid.h>
 #include <snake.h>
 #include <utils.h>
@@ -90,9 +91,11 @@ bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
     bool enable_odd_height_hack = (grid->height % 2 == 1) && (grid->height % 2 == 1);
 
     if (x == 0 && y == 0 && agent_context->path[x][y].visited) {
-        /*printf("\n");*/
-        /*print_path(grid);*/
-        /*printf("\n");*/
+        if (get_config()->verbose) {
+            printf("\n");
+            print_path(grid);
+            printf("\n");
+        }
 
         if (all_cells_visited(grid)) {
             return true;
