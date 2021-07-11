@@ -19,9 +19,13 @@
  */
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <pcg_variants.h>
+
+#include <config.h>
 #include <grid.h>
 #include <snake.h>
 #include <utils.h>
@@ -73,6 +77,12 @@ void destroy_graph_context(graph_context_t *graph) {
     free(graph);
 }
 
+void reset_graph_context(graph_context_t *graph_context) {
+    grid_t * grid = graph_context->grid;
+    tuple_t *path = graph_context->path[0];
+    memset(path, 0, sizeof(tuple_t) * grid->width * grid->height);
+}
+
 uint32_t cells_not_visited_count(graph_context_t *graph_context) {
     grid_t * grid  = graph_context->grid;
     uint32_t count = 0;
@@ -98,4 +108,120 @@ bool all_cells_visited(graph_context_t *graph_context) {
     }
 
     return true;
+}
+
+void shuffle_directions(direction_t *directions, uint8_t n) {
+    for (size_t i = n - 1; i > 0; i--) {
+        size_t j      = pcg32_boundedrand(i + 1);
+        int    t      = directions[j];
+        directions[j] = directions[i];
+        directions[i] = t;
+    }
+}
+
+bool dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, uint8_t max_depth) {
+    grid_t *           grid          = graph_context->grid;
+    static direction_t directions[4] = {LEFT, RIGHT, DOWN, UP};
+    shuffle_directions(directions, 4);
+
+    if (graph_context->path[x][y].target) {
+        if (get_config()->verbose) {
+            printf("\n");
+            print_path(graph_context);
+            printf("\n");
+        }
+
+        return true;
+    }
+
+    if (graph_context->path[x][y].visited)
+        return false;
+
+    // Ignore the snaek head
+    if (graph_context->path[x][y].blocked)
+        if (x != grid->snake_head_x || y != grid->snake_head_y)
+            return false;
+
+    if (max_depth == 0)
+        return false;
+
+    graph_context->path[x][y].visited = true;
+
+    /*printf("\n");*/
+    /*print_path(graph_context);*/
+
+    for (int i = 0; i < 4; i++) {
+        direction_t direction                    = directions[i];
+        graph_context->path[x][y].next_direction = direction;
+
+        uint8_t new_x = x;
+        uint8_t new_y = y;
+
+        switch (direction) {
+            case RIGHT: new_x++; break;
+            case LEFT: new_x--; break;
+            case UP: new_y--; break;
+            case DOWN: new_y++; break;
+        }
+
+        if (new_x >= grid->width || new_y >= grid->height)
+            continue;
+
+        // True means we found the target node
+        if (dfs(graph_context, new_x, new_y, max_depth - 1))
+            return true;
+    }
+
+    graph_context->path[x][y].visited = false;
+
+    return false;
+}
+
+void set_graph_target(graph_context_t *graph_context, uint8_t x, uint8_t y) {
+    assert(graph_context != NULL);
+    assert(graph_context->grid != NULL);
+    assert(graph_context->path != NULL);
+
+    grid_t *grid = graph_context->grid;
+
+    assert(x < grid->width);
+    assert(y < grid->height);
+
+    graph_context->path[x][y].target = true;
+}
+
+void print_path(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (graph_context->path[x][y].visited) {
+                switch (graph_context->path[x][y].next_direction) {
+                    case RIGHT: printf("> "); break;
+                    case LEFT: printf("< "); break;
+                    case UP: printf("^ "); break;
+                    case DOWN: printf("V "); break;
+                }
+            } else if (graph_context->path[x][y].target) {
+                printf("O ");
+            } else if (graph_context->path[x][y].blocked) {
+                printf("@ ");
+            } else {
+                printf(". ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void occupy_cells_with_snake(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (grid->cells[x][y].has_snake) {
+                graph_context->path[x][y].blocked = true;
+            }
+        }
+    }
 }

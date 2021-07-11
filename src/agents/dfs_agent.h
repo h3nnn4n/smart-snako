@@ -18,41 +18,24 @@
  *
  */
 
-#ifndef SRC_AGENTS_UTILS_H_
-#define SRC_AGENTS_UTILS_H_
-
-#include <stdbool.h>
+#ifndef SRC_AGENTS_DFS_AGENT_H_
+#define SRC_AGENTS_DFS_AGENT_H_
 
 #include <grid.h>
+#include <utils.h>
+
+#include "agent_utils.h"
 
 typedef struct {
-    direction_t next_direction;
+    bool    path_found;
+    uint8_t cherry_x;
+    uint8_t cherry_y;
 
-    bool visited;
-    bool hack;
-    bool target;
-    bool blocked;
-} tuple_t;
+    graph_context_t *graph_context;
+} dfs_agent_context_t;
 
-typedef struct {
-    tuple_t **path;
-    grid_t *  grid;
-} graph_context_t;
+void        dfs_agent_create(grid_t *grid);
+void        dfs_agent_destroy(grid_t *grid);
+direction_t dfs_agent(grid_t *grid);
 
-direction_t get_safe_random_direction(grid_t *grid);
-
-graph_context_t *create_graph_context(grid_t *grid);
-void             destroy_graph_context(graph_context_t *graph);
-void             reset_graph_context(graph_context_t *graph_context);
-
-void     occupy_cells_with_snake(graph_context_t *graph_context);
-void     set_graph_target(graph_context_t *graph_context, uint8_t x, uint8_t y);
-uint32_t cells_not_visited_count(graph_context_t *graph);
-bool     all_cells_visited(graph_context_t *graph);
-bool     dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, uint8_t max_depth);
-
-void print_path(graph_context_t *graph_context);
-
-void shuffle_directions(direction_t *directions, uint8_t n);
-
-#endif  // SRC_AGENTS_UTILS_H_
+#endif  // SRC_AGENTS_DFS_AGENT_H_

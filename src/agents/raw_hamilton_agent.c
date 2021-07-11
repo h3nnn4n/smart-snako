@@ -32,27 +32,6 @@
 #include "agent_utils.h"
 #include "raw_hamilton_agent.h"
 
-void print_path(grid_t *grid) {
-    raw_hamilton_context_t *agent_context = (raw_hamilton_context_t *)grid->agent_context;
-    graph_context_t *       graph_context = agent_context->graph_context;
-
-    for (int y = 0; y < grid->height; y++) {
-        for (int x = 0; x < grid->width; x++) {
-            if (graph_context->path[x][y].visited) {
-                switch (graph_context->path[x][y].next_direction) {
-                    case RIGHT: printf("> "); break;
-                    case LEFT: printf("< "); break;
-                    case UP: printf("^ "); break;
-                    case DOWN: printf("V "); break;
-                }
-            } else {
-                printf(". ");
-            }
-        }
-        printf("\n");
-    }
-}
-
 bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
     raw_hamilton_context_t *agent_context   = (raw_hamilton_context_t *)grid->agent_context;
     graph_context_t *       graph_context   = agent_context->graph_context;
@@ -68,7 +47,7 @@ bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
     if (x == 0 && y == 0 && graph_context->path[x][y].visited) {
         if (get_config()->verbose) {
             printf("\n");
-            print_path(grid);
+            print_path(graph_context);
             printf("\n");
         }
 
