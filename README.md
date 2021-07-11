@@ -9,7 +9,7 @@
 [![Smoke Test](https://github.com/h3nnn4n/smart-snako/actions/workflows/run.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/run.yml)
 [![Unit Tests](https://github.com/h3nnn4n/smart-snako/actions/workflows/tests.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/tests.yml)
 
-This is a basic snake implementation, with several build in agents. The following agents are available:
+This is a basic snake implementation, with several built in agents. The following agents are available:
 
 - `random`: Moves in a random direction, but never in a direction where it
   would kill itself. Unless there is no option.
@@ -35,9 +35,9 @@ They inspired me into researching this further.
 
 # Usage
 
-Clone and build using `make`. `--verbose` shows up what is happening. `--width`
-and `--height` can be used to customize the board size. Some statistics are
-logged into `stats/`.
+Clone this repo and it's submodules and build using `make`. `--verbose` shows
+up what is happening. `--width` and `--height` can be used to customize the
+board size. Some statistics are logged into `stats/`.
 
 Use `--agent` to set an agent to run. So far the following are available:
 `random`, `manhattan` and `raw_hamilton`.
