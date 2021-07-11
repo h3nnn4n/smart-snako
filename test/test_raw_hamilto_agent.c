@@ -19,8 +19,9 @@ void test_build_halmiton_with_dfs() {
 
             grid_t *grid = create_grid(width, height);
             raw_hamilton_agent_create(grid);
+            raw_hamilton_context_t *agent_context = (raw_hamilton_context_t *)grid->agent_context;
 
-            TEST_ASSERT_EQUAL(not_visited_expected_count, cells_not_visited_count(grid));
+            TEST_ASSERT_EQUAL(not_visited_expected_count, cells_not_visited_count(agent_context->graph_context));
 
             raw_hamilton_agent_destroy(grid);
             destroy_grid(grid);

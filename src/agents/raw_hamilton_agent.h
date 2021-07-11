@@ -27,13 +27,10 @@
 #include "agent_utils.h"
 
 typedef struct {
-    bool      stuff;
-    tuple_t **path;
+    graph_context_t *graph_context;
 } raw_hamilton_context_t;
 
-uint32_t cells_not_visited_count(grid_t *grid);
-bool     all_cells_visited(grid_t *grid);
-bool     build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y);
+bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y);
 
 void        raw_hamilton_agent_create(grid_t *grid);
 void        raw_hamilton_agent_destroy(grid_t *grid);

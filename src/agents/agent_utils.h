@@ -36,6 +36,17 @@ typedef struct {
     bool hack;
 } tuple_t;
 
+typedef struct {
+    tuple_t **path;
+    grid_t *  grid;
+} graph_context_t;
+
+graph_context_t *create_graph_context(grid_t *grid);
+void             destroy_graph_context(graph_context_t *graph);
+
 direction_t get_safe_random_direction(grid_t *grid);
+
+uint32_t cells_not_visited_count(graph_context_t *graph);
+bool     all_cells_visited(graph_context_t *graph);
 
 #endif  // SRC_AGENTS_UTILS_H_

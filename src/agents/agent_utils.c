@@ -20,6 +20,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <grid.h>
 #include <snake.h>
@@ -45,4 +46,56 @@ direction_t get_safe_random_direction(grid_t *grid) {
     } while (max_tries > 0);
 
     return RIGHT;
+}
+
+graph_context_t *create_graph_context(grid_t *grid) {
+    graph_context_t *graph = malloc(sizeof(graph_context_t));
+    memset(graph, 0, sizeof(graph_context_t));
+
+    graph->grid = grid;
+
+    tuple_t *path = malloc(sizeof(tuple_t) * grid->width * grid->height);
+    memset(path, 0, sizeof(tuple_t) * grid->width * grid->height);
+
+    graph->path = malloc(sizeof(tuple_t *) * grid->width);
+    memset(graph->path, 0, sizeof(tuple_t *) * grid->width);
+    graph->path[0] = path;
+
+    for (uint8_t i = 0; i < grid->width; i++) {
+        graph->path[i] = &path[i * grid->height];
+    }
+
+    return graph;
+}
+
+void destroy_graph_context(graph_context_t *graph) {
+    assert(graph != NULL);
+    free(graph);
+}
+
+uint32_t cells_not_visited_count(graph_context_t *graph_context) {
+    grid_t * grid  = graph_context->grid;
+    uint32_t count = 0;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (!graph_context->path[x][y].visited)
+                count++;
+        }
+    }
+
+    return count;
+}
+
+bool all_cells_visited(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (!graph_context->path[x][y].visited)
+                return false;
+        }
+    }
+
+    return true;
 }
