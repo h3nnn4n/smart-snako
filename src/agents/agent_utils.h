@@ -32,6 +32,8 @@ typedef struct {
     bool visited;
 
     direction_t next_direction;
+
+    bool hack;
 } tuple_t;
 
 direction_t get_safe_random_direction(grid_t *grid);

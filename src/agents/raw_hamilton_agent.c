@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <cherry.h>
 #include <grid.h>
 #include <snake.h>
 #include <utils.h>
@@ -99,6 +100,8 @@ bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
         /*printf("aaaa %u %u\n", cells_not_visited_count(grid), enable_odd_height_hack);*/
 
         if (cells_not_visited_count(grid) == 1 && enable_odd_height_hack) {
+            agent_context->path[1][2].hack = true;
+
             /*printf("hack\n");*/
             return true;
         }
@@ -182,6 +185,14 @@ direction_t raw_hamilton_agent(grid_t *grid) {
 
     if (is_snake_colliding(grid, next_direction))
         return get_safe_random_direction(grid);
+
+    if (context->path[x][y].hack) {
+        uint8_t cherry_x, cherry_y;
+        get_cherry_position(grid, &cherry_x, &cherry_y);
+
+        if (x == cherry_y && y == cherry_y + 1)
+            return UP;
+    }
 
     return next_direction;
 }
