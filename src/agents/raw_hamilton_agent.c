@@ -88,7 +88,7 @@ bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
     bool enable_odd_width_hack = (grid->width % 2 == 1) && (x < 2) && (y > 0);
 
     // When both the rows and columns are an odd number
-    bool enable_odd_height_hack = (grid->height % 2 == 1) && (grid->height % 2 == 1);
+    bool enable_odd_height_hack = (grid->height % 2 == 1) && (grid->width % 2 == 1);
 
     if (x == 0 && y == 0 && agent_context->path[x][y].visited) {
         if (get_config()->verbose) {
