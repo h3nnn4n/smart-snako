@@ -26,11 +26,15 @@
 #include <grid.h>
 
 typedef struct {
+    // Where this node leads to
     direction_t next_direction;
+    // What direction led to this node
+    direction_t prev_direction;
 
     bool visited;
     bool hack;
     bool target;
+    bool source;
     bool blocked;
 } tuple_t;
 
@@ -49,7 +53,8 @@ void     occupy_cells_with_snake(graph_context_t *graph_context);
 void     set_graph_target(graph_context_t *graph_context, uint8_t x, uint8_t y);
 uint32_t cells_not_visited_count(graph_context_t *graph);
 bool     all_cells_visited(graph_context_t *graph);
-bool     dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, uint8_t max_depth);
+bool     dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
+bool     ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
 
 void print_path(graph_context_t *graph_context);
 

@@ -61,8 +61,10 @@ direction_t dfs_agent(grid_t *grid) {
 
     uint8_t cherry_x, cherry_y;
     get_cherry_position(grid, &cherry_x, &cherry_y);
+    context->path_found = dfs(graph_context, x, y);
 
-    if (context->path_found && context->cherry_x == cherry_x && context->cherry_y == cherry_y) {
+    /*if (context->path_found && context->cherry_x == cherry_x && context->cherry_y == cherry_y) {*/
+    if (context->path_found) {
         /*printf("following dfs\n");*/
         return graph_context->path[x][y].next_direction;
     }
@@ -73,17 +75,14 @@ direction_t dfs_agent(grid_t *grid) {
     context->cherry_x   = cherry_x;
     context->cherry_y   = cherry_y;
 
-    reset_graph_context(graph_context);
-    set_graph_target(graph_context, cherry_x, cherry_y);
-    occupy_cells_with_snake(graph_context);
-
     /*printf("starting dfs\n");*/
-    context->path_found = dfs(graph_context, x, y, grid->width + grid->height);
+    /*context->path_found = ida_dfs(graph_context, x, y);*/
     /*printf("finished dfs\n");*/
     direction_t next_direction = graph_context->path[x][y].next_direction;
 
     if (!context->path_found || is_snake_colliding(grid, next_direction)) {
         /*printf("path not found, or suicidal\n");*/
+        /*return RIGHT;*/
         return get_safe_random_direction(grid);
     }
 

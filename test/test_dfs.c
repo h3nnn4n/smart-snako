@@ -1,9 +1,21 @@
+#include <pcg_variants.h>
 #include <unity.h>
 
 #include <cherry.h>
 #include <grid.h>
 
 #include <agents/agent_utils.h>
+
+void _remove_snake_from_grid(grid_t *grid) {
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (grid->cells[x][y].has_snake) {
+                grid->cells[x][y].has_snake     = false;
+                grid->cells[x][y].snake_counter = 0;
+            }
+        }
+    }
+}
 
 void test_graph_context() {
     for (int width = 5; width <= 10; width++) {
@@ -122,30 +134,82 @@ void test_set_target() {
 }
 
 void test_dfs() {
-    grid_t *         grid  = create_grid(15, 15);
-    graph_context_t *graph = create_graph_context(grid);
+    for (int width = 5; width <= 10; width++) {
+        for (int height = 5; height <= 10; height++) {
+            uint8_t start_x = pcg32_boundedrand(width);
+            uint8_t start_y = pcg32_boundedrand(height);
+            uint8_t goal_x;
+            uint8_t goal_y;
 
-    set_graph_target(graph, 1, 1);
-    bool result = dfs(graph, 10, 10, 25);
+            grid_t *         grid  = create_grid(width, height);
+            graph_context_t *graph = create_graph_context(grid);
+            _remove_snake_from_grid(grid);
 
-    TEST_ASSERT_TRUE(result);
+            grid->cells[start_x][start_y].has_snake     = true;
+            grid->cells[start_x][start_y].snake_counter = 1;
+            grid->snake_head_x                          = start_x;
+            grid->snake_head_y                          = start_y;
 
-    uint8_t x = 10;
-    uint8_t y = 10;
+            spawn_cherry(grid);
+            get_cherry_position(grid, &goal_x, &goal_y);
 
-    do {
-        direction_t direction = graph->path[x][y].next_direction;
+            /*printf("\n");*/
+            /*printf("%d %d\n", width, height);*/
+            /*printf("%d %d %d %d\n", start_x, start_y, goal_x, goal_y);*/
+            bool result = dfs(graph, start_x, start_y);
 
-        switch (direction) {
-            case RIGHT: x++; break;
-            case LEFT: x--; break;
-            case UP: y--; break;
-            case DOWN: y++; break;
+            TEST_ASSERT_TRUE(result);
+
+            do {
+                direction_t direction = graph->path[start_x][start_y].next_direction;
+
+                switch (direction) {
+                    case RIGHT: start_x++; break;
+                    case LEFT: start_x--; break;
+                    case UP: start_y--; break;
+                    case DOWN: start_y++; break;
+                }
+            } while (graph->path[start_x][start_y].target != true);
+
+            destroy_graph_context(graph);
+            destroy_grid(grid);
         }
-    } while (graph->path[x][y].target != true);
+    }
+}
 
-    destroy_graph_context(graph);
-    destroy_grid(grid);
+void test_ida_dfs() {
+    for (int width = 5; width <= 10; width++) {
+        for (int height = 5; height <= 10; height++) {
+            uint8_t start_x = pcg32_boundedrand(width);
+            uint8_t start_y = pcg32_boundedrand(height);
+            uint8_t goal_x;
+            uint8_t goal_y;
+
+            grid_t *         grid  = create_grid(width, height);
+            graph_context_t *graph = create_graph_context(grid);
+            spawn_cherry(grid);
+            get_cherry_position(grid, &goal_x, &goal_y);
+
+            printf("%d %d %d %d\n", start_x, start_y, goal_x, goal_y);
+            bool result = ida_dfs(graph, start_x, start_y);
+
+            TEST_ASSERT_TRUE(result);
+
+            do {
+                direction_t direction = graph->path[start_x][start_y].next_direction;
+
+                switch (direction) {
+                    case RIGHT: start_x++; break;
+                    case LEFT: start_x--; break;
+                    case UP: start_y--; break;
+                    case DOWN: start_y++; break;
+                }
+            } while (graph->path[start_x][start_y].target != true);
+
+            destroy_graph_context(graph);
+            destroy_grid(grid);
+        }
+    }
 }
 
 void test_shuffle_directions() {
@@ -174,17 +238,19 @@ void setUp() {}
 void tearDown() {}
 
 int main() {
+    pcg32_srandom(10u, 20u);
     UNITY_BEGIN();
 
-    RUN_TEST(test_graph_context);
-    RUN_TEST(test_cells_not_visited_count);
-    RUN_TEST(test_all_cells_visited);
-    RUN_TEST(test_reset_graph_context);
+    /*RUN_TEST(test_graph_context);*/
+    /*RUN_TEST(test_cells_not_visited_count);*/
+    /*RUN_TEST(test_all_cells_visited);*/
+    /*RUN_TEST(test_reset_graph_context);*/
 
-    RUN_TEST(test_set_target);
-    RUN_TEST(test_shuffle_directions);
+    /*RUN_TEST(test_set_target);*/
+    /*RUN_TEST(test_shuffle_directions);*/
 
     RUN_TEST(test_dfs);
+    /*RUN_TEST(test_ida_dfs);*/
 
     return UNITY_END();
 }
