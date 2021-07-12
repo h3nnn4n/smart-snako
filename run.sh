@@ -9,7 +9,7 @@ height=50
 
 n_runs=100
 
-for agent in random manhattan raw_hamilton
+for agent in random manhattan raw_hamilton dfs
 do
     echo $agent
     for i in `seq $n_runs`
