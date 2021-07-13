@@ -27,6 +27,7 @@
 #include <entropy.h>
 #include <pcg_variants.h>
 
+#include "agents/dfs_agent.h"
 #include "agents/manhattan_agent.h"
 #include "agents/random_agent.h"
 #include "agents/raw_hamilton_agent.h"
@@ -115,8 +116,10 @@ int main(int argc, char **argv) {
     }
 
     if (agent_name == NULL) {
-        agent_name = malloc(strlen("random") * sizeof(char));
-        memcpy(agent_name, "random", sizeof(char) * (strlen("random")));
+        char *name = "random";
+        agent_name = malloc(7);
+        memcpy(agent_name, name, 6);
+        agent_name[6] = '\0';
     }
 
     if (strcmp(agent_name, "random") == 0) {
@@ -131,6 +134,10 @@ int main(int argc, char **argv) {
         agent         = raw_hamilton_agent;
         agent_create  = raw_hamilton_agent_create;
         agent_destroy = raw_hamilton_agent_destroy;
+    } else if (strcmp(agent_name, "dfs") == 0) {
+        agent         = dfs_agent;
+        agent_create  = dfs_agent_create;
+        agent_destroy = dfs_agent_destroy;
     } else {
         fprintf(stderr, "\"%s\" is not a valid agent\n", agent_name);
         free(agent_name);

@@ -33,7 +33,7 @@ void snake_init(grid_t *grid) {
     int counter = 0;
     int y       = 1;
 
-    for (int x = 2; x < 5; x++) {
+    for (int x = 1; x < 4; x++) {
         counter++;
         grid->cells[x][y].has_snake     = true;
         grid->cells[x][y].snake_counter = counter;
@@ -42,7 +42,7 @@ void snake_init(grid_t *grid) {
             grid->cells[x][y].previous_snake_cell = &grid->cells[x - 1][y];
     }
 
-    grid->snake_head_x = 4;
+    grid->snake_head_x = 3;
     grid->snake_head_y = 1;
 }
 

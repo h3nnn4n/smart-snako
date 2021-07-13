@@ -19,14 +19,22 @@
  */
 
 #include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <pcg_variants.h>
+
+#include <cherry.h>
+#include <config.h>
 #include <grid.h>
 #include <snake.h>
 #include <utils.h>
 
 #include "agent_utils.h"
+
+bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_depth);
+void print_reverse_path(graph_context_t *graph_context);
 
 direction_t get_safe_random_direction(grid_t *grid) {
     direction_t new_direction;
@@ -73,6 +81,12 @@ void destroy_graph_context(graph_context_t *graph) {
     free(graph);
 }
 
+void reset_graph_context(graph_context_t *graph_context) {
+    grid_t * grid = graph_context->grid;
+    tuple_t *path = graph_context->path[0];
+    memset(path, 0, sizeof(tuple_t) * grid->width * grid->height);
+}
+
 uint32_t cells_not_visited_count(graph_context_t *graph_context) {
     grid_t * grid  = graph_context->grid;
     uint32_t count = 0;
@@ -98,4 +112,258 @@ bool all_cells_visited(graph_context_t *graph_context) {
     }
 
     return true;
+}
+
+void shuffle_directions(direction_t *directions, uint8_t n) {
+    for (size_t i = n - 1; i > 0; i--) {
+        size_t j      = pcg32_boundedrand(i + 1);
+        int    t      = directions[j];
+        directions[j] = directions[i];
+        directions[i] = t;
+    }
+}
+
+void build_reverse_path(graph_context_t *graph_context) {
+    grid_t *grid     = graph_context->grid;
+    uint8_t target_x = 0;
+    uint8_t target_y = 0;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (graph_context->path[x][y].target) {
+                target_x = x;
+                target_y = y;
+                /*printf("found target\n");*/
+            }
+        }
+    }
+
+    uint8_t x = target_x;
+    uint8_t y = target_y;
+
+    do {
+        direction_t direction = graph_context->path[x][y].prev_direction;
+
+        // Note that we are going backwards here. For target to source
+        switch (direction) {
+            case RIGHT: x--; break;
+            case LEFT: x++; break;
+            case UP: y++; break;
+            case DOWN: y--; break;
+        }
+
+        graph_context->path[x][y].next_direction = direction;
+    } while (graph_context->path[x][y].source != true);
+
+    /*printf("found reverse path\n");*/
+}
+
+bool dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
+    grid_t *grid = graph_context->grid;
+    uint8_t cherry_x, cherry_y;
+    get_cherry_position(grid, &cherry_x, &cherry_y);
+
+    reset_graph_context(graph_context);
+    set_graph_target(graph_context, cherry_x, cherry_y);
+    occupy_cells_with_snake(graph_context);
+    graph_context->path[x][y].source = true;
+
+    /*printf("aa\n");*/
+    /*print_grid(graph_context->grid);*/
+    /*printf("bb\n");*/
+    /*print_path(graph_context);*/
+    /*printf("cc\n");*/
+
+    bool result = _dfs(graph_context, x, y, -1);
+
+    if (result) {
+        build_reverse_path(graph_context);
+
+        if (get_config()->verbose) {
+            printf("\n");
+            print_path(graph_context);
+            printf("\n");
+        }
+    }
+
+    return result;
+}
+
+bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
+    grid_t *grid = graph_context->grid;
+    uint8_t cherry_x, cherry_y;
+    get_cherry_position(grid, &cherry_x, &cherry_y);
+
+    uint32_t depth                          = 0;
+    uint32_t last_cell_not_visited_count    = 0;
+    uint32_t current_cell_not_visited_count = 0;
+
+    /*printf("\n");*/
+    do {
+        depth++;
+        reset_graph_context(graph_context);
+        set_graph_target(graph_context, cherry_x, cherry_y);
+        occupy_cells_with_snake(graph_context);
+        graph_context->path[x][y].source = true;
+
+        if (_dfs(graph_context, x, y, depth)) {
+            build_reverse_path(graph_context);
+
+            if (get_config()->verbose) {
+                printf("\n");
+                print_path(graph_context);
+                printf("\n");
+            }
+
+            return true;
+        }
+
+        last_cell_not_visited_count    = current_cell_not_visited_count;
+        current_cell_not_visited_count = cells_not_visited_count(graph_context);
+        /*printf("\n");*/
+        /*print_path(graph_context);*/
+        /*printf("%d %d %d %d\n", depth, last_cell_not_visited_count, current_cell_not_visited_count, 0);*/
+    } while (last_cell_not_visited_count != current_cell_not_visited_count);
+
+    return false;
+}
+
+bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_depth) {
+    /*printf("%d %d %d\n", x, y, max_depth);*/
+    grid_t *    grid          = graph_context->grid;
+    direction_t directions[4] = {LEFT, RIGHT, DOWN, UP};
+    shuffle_directions(directions, 4);
+
+    /*printf("\n");*/
+    /*print_reverse_path(graph_context);*/
+
+    if (graph_context->path[x][y].target) {
+        /*printf("found target at %u %u depth: %d\n", x, y, max_depth);*/
+        return true;
+    }
+
+    if (max_depth == 0)
+        return false;
+
+    if (graph_context->path[x][y].visited)
+        return false;
+
+    graph_context->path[x][y].visited = true;
+
+    // We should skip any blocked nodes, except if it is the snake's head,
+    // because that is where the dfs usually starts at
+    if (graph_context->path[x][y].blocked)
+        if (x != grid->snake_head_x || y != grid->snake_head_y)
+            return false;
+
+    for (int i = 0; i < 4; i++) {
+        direction_t direction = directions[i];
+
+        uint8_t new_x = x;
+        uint8_t new_y = y;
+
+        switch (direction) {
+            case RIGHT: new_x++; break;
+            case LEFT: new_x--; break;
+            case UP: new_y--; break;
+            case DOWN: new_y++; break;
+            default: printf("ERROR: Got invalid direction\n"); abort();
+        }
+
+        if (new_x >= grid->width || new_y >= grid->height)
+            continue;
+
+        if (graph_context->path[new_x][new_y].visited)
+            continue;
+
+        if (graph_context->path[new_x][new_y].blocked)
+            continue;
+
+        graph_context->path[new_x][new_y].prev_direction = direction;
+
+        // True means we found the target node
+        if (_dfs(graph_context, new_x, new_y, max_depth - 1))
+            return true;
+    }
+
+    /*graph_context->path[x][y].visited = false;*/
+
+    /*printf("\n");*/
+    /*print_reverse_path(graph_context);*/
+
+    return false;
+}
+
+void set_graph_target(graph_context_t *graph_context, uint8_t x, uint8_t y) {
+    assert(graph_context != NULL);
+    assert(graph_context->grid != NULL);
+    assert(graph_context->path != NULL);
+
+    grid_t *grid = graph_context->grid;
+
+    assert(x < grid->width);
+    assert(y < grid->height);
+
+    graph_context->path[x][y].target = true;
+}
+
+void print_path(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (graph_context->path[x][y].visited) {
+                switch (graph_context->path[x][y].next_direction) {
+                    case RIGHT: printf("> "); break;
+                    case LEFT: printf("< "); break;
+                    case UP: printf("^ "); break;
+                    case DOWN: printf("V "); break;
+                }
+            } else if (graph_context->path[x][y].target) {
+                printf("O ");
+            } else if (graph_context->path[x][y].blocked) {
+                printf("@ ");
+            } else {
+                printf(". ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void print_reverse_path(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (graph_context->path[x][y].visited) {
+                switch (graph_context->path[x][y].prev_direction) {
+                    case RIGHT: printf("> "); break;
+                    case LEFT: printf("< "); break;
+                    case UP: printf("^ "); break;
+                    case DOWN: printf("V "); break;
+                    default: printf("invalid direction\n"); abort();
+                }
+            } else if (graph_context->path[x][y].target) {
+                printf("O ");
+            } else if (graph_context->path[x][y].blocked) {
+                printf("@ ");
+            } else {
+                printf(". ");
+            }
+        }
+        printf("\n");
+    }
+}
+
+void occupy_cells_with_snake(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            if (grid->cells[x][y].has_snake) {
+                graph_context->path[x][y].blocked = true;
+            }
+        }
+    }
 }
