@@ -241,16 +241,16 @@ int main() {
     pcg32_srandom(10u, 20u);
     UNITY_BEGIN();
 
-    /*RUN_TEST(test_graph_context);*/
-    /*RUN_TEST(test_cells_not_visited_count);*/
-    /*RUN_TEST(test_all_cells_visited);*/
-    /*RUN_TEST(test_reset_graph_context);*/
+    RUN_TEST(test_graph_context);
+    RUN_TEST(test_cells_not_visited_count);
+    RUN_TEST(test_all_cells_visited);
+    RUN_TEST(test_reset_graph_context);
 
-    /*RUN_TEST(test_set_target);*/
-    /*RUN_TEST(test_shuffle_directions);*/
+    RUN_TEST(test_set_target);
+    RUN_TEST(test_shuffle_directions);
 
     RUN_TEST(test_dfs);
-    /*RUN_TEST(test_ida_dfs);*/
+    RUN_TEST(test_ida_dfs);
 
     return UNITY_END();
 }
