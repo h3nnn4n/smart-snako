@@ -281,9 +281,8 @@ bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_dept
         if (graph_context->path[new_x][new_y].visited)
             continue;
 
-        // Dunno
-        /*if (graph_context->path[new_x][new_y].blocked)*/
-        /*continue;*/
+        if (graph_context->path[new_x][new_y].blocked)
+            continue;
 
         graph_context->path[new_x][new_y].prev_direction = direction;
 
