@@ -1,3 +1,6 @@
+#include <stddef.h>
+
+#include <entropy.h>
 #include <pcg_variants.h>
 #include <unity.h>
 
@@ -134,8 +137,9 @@ void test_set_target() {
 }
 
 void test_dfs() {
-    for (int width = 5; width <= 10; width++) {
-        for (int height = 5; height <= 10; height++) {
+    for (int width = 5; width <= 20; width++) {
+        for (int height = 5; height <= 20; height++) {
+
             uint8_t start_x = pcg32_boundedrand(width);
             uint8_t start_y = pcg32_boundedrand(height);
             uint8_t goal_x;
@@ -238,7 +242,11 @@ void setUp() {}
 void tearDown() {}
 
 int main() {
+    /*uint64_t seeds[2];*/
+    /*entropy_getbytes((void *)seeds, sizeof(seeds));*/
+    /*pcg32_srandom(seeds[0], seeds[1]);*/
     pcg32_srandom(10u, 20u);
+
     UNITY_BEGIN();
 
     RUN_TEST(test_graph_context);
@@ -250,7 +258,7 @@ int main() {
     RUN_TEST(test_shuffle_directions);
 
     RUN_TEST(test_dfs);
-    RUN_TEST(test_ida_dfs);
+    /*RUN_TEST(test_ida_dfs);*/
 
     return UNITY_END();
 }

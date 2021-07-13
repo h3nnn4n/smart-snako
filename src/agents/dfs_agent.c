@@ -61,10 +61,10 @@ direction_t dfs_agent(grid_t *grid) {
 
     uint8_t cherry_x, cherry_y;
     get_cherry_position(grid, &cherry_x, &cherry_y);
-    context->path_found = dfs(graph_context, x, y);
+    /*context->path_found = dfs(graph_context, x, y);*/
 
-    /*if (context->path_found && context->cherry_x == cherry_x && context->cherry_y == cherry_y) {*/
-    if (context->path_found) {
+    if (context->path_found && context->cherry_x == cherry_x && context->cherry_y == cherry_y) {
+        /*if (context->path_found) {*/
         /*printf("following dfs\n");*/
         return graph_context->path[x][y].next_direction;
     }
@@ -76,7 +76,7 @@ direction_t dfs_agent(grid_t *grid) {
     context->cherry_y   = cherry_y;
 
     /*printf("starting dfs\n");*/
-    /*context->path_found = ida_dfs(graph_context, x, y);*/
+    context->path_found = dfs(graph_context, x, y);
     /*printf("finished dfs\n");*/
     direction_t next_direction = graph_context->path[x][y].next_direction;
 

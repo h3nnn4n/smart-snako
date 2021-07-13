@@ -161,7 +161,7 @@ void build_reverse_path(graph_context_t *graph_context) {
         graph_context->path[x][y].next_direction = direction;
     } while (graph_context->path[x][y].source != true);
 
-    /*printf("yay\n");*/
+    /*printf("found reverse path\n");*/
 }
 
 bool dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
@@ -238,12 +238,13 @@ bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_dept
     /*printf("%d %d %d\n", x, y, max_depth);*/
     grid_t *           grid          = graph_context->grid;
     static direction_t directions[4] = {LEFT, RIGHT, DOWN, UP};
-    shuffle_directions(directions, 4);
+    /*shuffle_directions(directions, 4);*/
 
     /*printf("\n");*/
     /*print_reverse_path(graph_context);*/
 
     if (graph_context->path[x][y].target) {
+        /*printf("found target at %u %u depth: %d\n", x, y, max_depth);*/
         return true;
     }
 
@@ -252,17 +253,17 @@ bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_dept
 
     if (graph_context->path[x][y].visited)
         return false;
+
     graph_context->path[x][y].visited = true;
 
-    // TBH IDK what this does or why we need it
-    // Ignore the snaek head
+    // We should skip any blocked nodes, except if it is the snake's head,
+    // because that is where the dfs usually starts at
     if (graph_context->path[x][y].blocked)
         if (x != grid->snake_head_x || y != grid->snake_head_y)
             return false;
 
     for (int i = 0; i < 4; i++) {
         direction_t direction = directions[i];
-        /*graph_context->path[x][y].next_direction = direction;*/
 
         uint8_t new_x = x;
         uint8_t new_y = y;
