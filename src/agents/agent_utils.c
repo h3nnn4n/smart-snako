@@ -196,13 +196,11 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
 
     // If the cherry is 10 units away, running IDA with a depth less than that
     // wont ever find a path. So we start on a reasonably close value
-    uint32_t estimated_distance_to_cherry   = abs(x - cherry_x) + abs(y - cherry_y);
-    uint32_t depth                          = estimated_distance_to_cherry - 2;
-    uint32_t last_cell_not_visited_count    = 0;
-    uint32_t current_cell_not_visited_count = 0;
-    uint8_t  fail_count                     = 0;
+    uint32_t estimated_distance_to_cherry = abs(x - cherry_x) + abs(y - cherry_y);
+    uint32_t depth                        = estimated_distance_to_cherry - 2;
+    uint32_t last_cell_not_visited_count  = 0;
+    uint8_t  fail_count                   = 0;
 
-    /*printf("\n");*/
     do {
         depth++;
         reset_graph_context(graph_context);
@@ -222,20 +220,14 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
             return true;
         }
 
-        last_cell_not_visited_count    = current_cell_not_visited_count;
-        current_cell_not_visited_count = cells_not_visited_count(graph_context);
-        /*print_path(graph_context);*/
-        /*printf("ida_dfs loop %d %d %d %d\n", depth, last_cell_not_visited_count, current_cell_not_visited_count, 0);*/
+        uint32_t last_cell_not_visited_count = current_cell_not_visited_count;
+        current_cell_not_visited_count       = cells_not_visited_count(graph_context);
+
         if (last_cell_not_visited_count == current_cell_not_visited_count)
             fail_count++;
-        /*printf("here !!!!!\n");*/
         else
             fail_count = 0;
     } while (fail_count < 2);
-    /*} while (depth < 1000);*/
-    /*} while (last_cell_not_visited_count != current_cell_not_visited_count);*/
-
-    /*print_reverse_path(graph_context);*/
 
     return false;
 }
