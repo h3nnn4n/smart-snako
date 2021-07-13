@@ -236,9 +236,9 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
 
 bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_depth) {
     /*printf("%d %d %d\n", x, y, max_depth);*/
-    grid_t *           grid          = graph_context->grid;
-    static direction_t directions[4] = {LEFT, RIGHT, DOWN, UP};
-    /*shuffle_directions(directions, 4);*/
+    grid_t *    grid          = graph_context->grid;
+    direction_t directions[4] = {LEFT, RIGHT, DOWN, UP};
+    shuffle_directions(directions, 4);
 
     /*printf("\n");*/
     /*print_reverse_path(graph_context);*/
