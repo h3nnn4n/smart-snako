@@ -197,6 +197,8 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
     uint32_t depth                          = 0;
     uint32_t last_cell_not_visited_count    = 0;
     uint32_t current_cell_not_visited_count = 0;
+    uint8_t  fail_count                     = 0;
+    bool     failed_last_loop               = false;
 
     /*printf("\n");*/
     do {
@@ -220,10 +222,18 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
 
         last_cell_not_visited_count    = current_cell_not_visited_count;
         current_cell_not_visited_count = cells_not_visited_count(graph_context);
-        /*printf("\n");*/
         /*print_path(graph_context);*/
-        /*printf("%d %d %d %d\n", depth, last_cell_not_visited_count, current_cell_not_visited_count, 0);*/
-    } while (last_cell_not_visited_count != current_cell_not_visited_count);
+        /*printf("ida_dfs loop %d %d %d %d\n", depth, last_cell_not_visited_count, current_cell_not_visited_count, 0);*/
+        if (last_cell_not_visited_count == current_cell_not_visited_count)
+            fail_count++;
+        /*printf("here !!!!!\n");*/
+        else
+            fail_count = 0;
+    } while (fail_count < 2);
+    /*} while (depth < 1000);*/
+    /*} while (last_cell_not_visited_count != current_cell_not_visited_count);*/
+
+    /*print_reverse_path(graph_context);*/
 
     return false;
 }
