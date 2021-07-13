@@ -116,8 +116,9 @@ int main(int argc, char **argv) {
     }
 
     if (agent_name == NULL) {
-        agent_name = malloc(strlen("random") * sizeof(char));
-        memcpy(agent_name, "random", sizeof(char) * (strlen("random")));
+        char *name = "random";
+        agent_name = malloc(strlen(name) * sizeof(char));
+        memcpy(agent_name, name, sizeof(char) * (strlen(name)));
     }
 
     if (strcmp(agent_name, "random") == 0) {
