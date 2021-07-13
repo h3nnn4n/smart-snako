@@ -42,7 +42,7 @@ void snake_init(grid_t *grid) {
             grid->cells[x][y].previous_snake_cell = &grid->cells[x - 1][y];
     }
 
-    grid->snake_head_x = 4;
+    grid->snake_head_x = 3;
     grid->snake_head_y = 1;
 }
 
