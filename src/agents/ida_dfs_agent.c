@@ -66,4 +66,3 @@ direction_t ida_dfs_agent(grid_t *grid) {
 
     return get_safe_random_direction(grid);
 }
-
