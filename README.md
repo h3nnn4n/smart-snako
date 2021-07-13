@@ -28,8 +28,8 @@ This is a basic snake implementation, with several built in agents. The followin
 
 So cool references to look into:
 
-[Code Bullet's Video](https://www.youtube.com/watch?v=tjQIO1rqTBE)
-[Alpha Phoenix's Video](https://www.youtube.com/watch?v=TOpBcfbAgPg)
+- [Code Bullet's Video](https://www.youtube.com/watch?v=tjQIO1rqTBE)
+- [Alpha Phoenix's Video](https://www.youtube.com/watch?v=TOpBcfbAgPg)
 
 They inspired me into researching this further.
 
