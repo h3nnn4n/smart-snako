@@ -30,62 +30,39 @@
 #include <utils.h>
 
 #include "agent_utils.h"
-#include "dfs_agent.h"
+#include "ida_dfs_agent.h"
 
-void dfs_agent_create(grid_t *grid) {
-    grid->agent_context = malloc(sizeof(dfs_agent_context_t));
-    memset(grid->agent_context, 0, sizeof(dfs_agent_context_t));
+void ida_dfs_agent_create(grid_t *grid) {
+    grid->agent_context = malloc(sizeof(ida_dfs_agent_context_t));
+    memset(grid->agent_context, 0, sizeof(ida_dfs_agent_context_t));
 
-    dfs_agent_context_t *agent_context = (dfs_agent_context_t *)grid->agent_context;
+    ida_dfs_agent_context_t *agent_context = (ida_dfs_agent_context_t *)grid->agent_context;
 
     graph_context_t *graph_context = create_graph_context(grid);
     agent_context->graph_context   = graph_context;
 }
 
-void dfs_agent_destroy(grid_t *grid) {
+void ida_dfs_agent_destroy(grid_t *grid) {
     assert(grid->agent_context != NULL);
 
-    dfs_agent_context_t *agent_context = (dfs_agent_context_t *)grid->agent_context;
+    ida_dfs_agent_context_t *agent_context = (ida_dfs_agent_context_t *)grid->agent_context;
 
     destroy_graph_context(agent_context->graph_context);
 
     free(grid->agent_context);
 }
 
-direction_t dfs_agent(grid_t *grid) {
-    dfs_agent_context_t *context       = (dfs_agent_context_t *)grid->agent_context;
-    graph_context_t *    graph_context = context->graph_context;
+direction_t ida_dfs_agent(grid_t *grid) {
+    ida_dfs_agent_context_t *context       = (ida_dfs_agent_context_t *)grid->agent_context;
+    graph_context_t *        graph_context = context->graph_context;
 
     uint8_t x = grid->snake_head_x;
     uint8_t y = grid->snake_head_y;
 
-    uint8_t cherry_x, cherry_y;
-    get_cherry_position(grid, &cherry_x, &cherry_y);
-    /*context->path_found = dfs(graph_context, x, y);*/
+    context->path_found = ida_dfs(graph_context, x, y);
 
-    if (context->path_found && context->cherry_x == cherry_x && context->cherry_y == cherry_y) {
-        /*if (context->path_found) {*/
-        /*printf("following dfs\n");*/
+    if (context->path_found)
         return graph_context->path[x][y].next_direction;
-    }
 
-    /*printf("looking for a new path\n");*/
-
-    context->path_found = false;
-    context->cherry_x   = cherry_x;
-    context->cherry_y   = cherry_y;
-
-    /*printf("starting dfs\n");*/
-    context->path_found = dfs(graph_context, x, y);
-    /*printf("finished dfs\n");*/
-    direction_t next_direction = graph_context->path[x][y].next_direction;
-
-    if (!context->path_found || is_snake_colliding(grid, next_direction)) {
-        /*printf("path not found, or suicidal\n");*/
-        /*return RIGHT;*/
-        return get_safe_random_direction(grid);
-    }
-
-    /*printf("path found\n");*/
-    return next_direction;
+    return get_safe_random_direction(grid);
 }
