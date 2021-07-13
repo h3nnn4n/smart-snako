@@ -201,7 +201,6 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
     uint32_t last_cell_not_visited_count    = 0;
     uint32_t current_cell_not_visited_count = 0;
     uint8_t  fail_count                     = 0;
-    bool     failed_last_loop               = false;
 
     /*printf("\n");*/
     do {
