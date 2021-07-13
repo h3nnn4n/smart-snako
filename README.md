@@ -24,6 +24,9 @@ This is a basic snake implementation, with several built in agents. The followin
   exacly one cell left out. If the cherry spawns in this cell, an alternative
   cycle is used.
 
+- `dfs`: When a new cherry spawns, runs a depth first search to find a path to
+  the next cherry. If a path isn't found, the agent picks a random direction.
+
 # References
 
 So cool references to look into:
@@ -40,7 +43,7 @@ up what is happening. `--width` and `--height` can be used to customize the
 board size. Some statistics are logged into `stats/`.
 
 Use `--agent` to set an agent to run. So far the following are available:
-`random`, `manhattan` and `raw_hamilton`.
+`random`, `manhattan`, `raw_hamilton` and `dfs`.
 
 # License
 
