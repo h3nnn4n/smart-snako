@@ -196,10 +196,10 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
 
     // If the cherry is 10 units away, running IDA with a depth less than that
     // wont ever find a path. So we start on a reasonably close value
-    uint32_t estimated_distance_to_cherry = abs(x - cherry_x) + abs(y - cherry_y);
-    uint32_t depth                        = estimated_distance_to_cherry - 2;
-    uint32_t last_cell_not_visited_count  = 0;
-    uint8_t  fail_count                   = 0;
+    uint32_t estimated_distance_to_cherry   = abs(x - cherry_x) + abs(y - cherry_y);
+    uint32_t depth                          = estimated_distance_to_cherry - 2;
+    uint32_t current_cell_not_visited_count = 0;
+    uint8_t  fail_count                     = 0;
 
     do {
         depth++;
