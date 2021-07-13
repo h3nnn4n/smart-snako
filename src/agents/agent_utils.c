@@ -125,8 +125,6 @@ void shuffle_directions(direction_t *directions, uint8_t n) {
 
 void build_reverse_path(graph_context_t *graph_context) {
     grid_t *grid     = graph_context->grid;
-    uint8_t source_x = 0;
-    uint8_t source_y = 0;
     uint8_t target_x = 0;
     uint8_t target_y = 0;
 
@@ -136,10 +134,6 @@ void build_reverse_path(graph_context_t *graph_context) {
                 target_x = x;
                 target_y = y;
                 /*printf("found target\n");*/
-            } else if (graph_context->path[x][y].source) {
-                source_x = x;
-                source_y = y;
-                /*printf("found source\n");*/
             }
         }
     }
