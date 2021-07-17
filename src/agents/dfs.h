@@ -24,7 +24,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 
 bool     dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
 bool     ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);

@@ -29,7 +29,7 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 #include "dfs.h"
 #include "ida_dfs_agent.h"
 

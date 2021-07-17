@@ -7,7 +7,7 @@
 #include <cherry.h>
 #include <grid.h>
 
-#include <agents/agent_utils.h>
+#include <agents/graph_utils.h>
 #include <agents/dfs.h>
 
 void _remove_snake_from_grid(grid_t *grid) {

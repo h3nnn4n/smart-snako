@@ -24,7 +24,7 @@
 #include <grid.h>
 #include <utils.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 
 typedef struct {
     graph_context_t *graph_context;

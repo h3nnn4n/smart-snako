@@ -31,7 +31,7 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 
 direction_t get_safe_random_direction(grid_t *grid) {
     direction_t new_direction;

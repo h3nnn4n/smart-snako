@@ -27,7 +27,7 @@
 #include <config.h>
 #include <grid.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 
 bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_depth);
 
