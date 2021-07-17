@@ -18,24 +18,15 @@
  *
  */
 
-#ifndef SRC_AGENTS_IDA_DFS_AGENT_H_
-#define SRC_AGENTS_IDA_DFS_AGENT_H_
+#ifndef SRC_AGENTS_DFS_H_
+#define SRC_AGENTS_DFS_H_
 
-#include <grid.h>
-#include <utils.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 #include "graph_utils.h"
 
-typedef struct {
-    bool    path_found;
-    uint8_t cherry_x;
-    uint8_t cherry_y;
+bool dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
+bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
 
-    graph_context_t *graph_context;
-} ida_dfs_agent_context_t;
-
-void        ida_dfs_agent_create(grid_t *grid);
-void        ida_dfs_agent_destroy(grid_t *grid);
-direction_t ida_dfs_agent(grid_t *grid);
-
-#endif  // SRC_AGENTS_IDA_DFS_AGENT_H_
+#endif  // SRC_AGENTS_DFS_H_

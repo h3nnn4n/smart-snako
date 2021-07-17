@@ -29,8 +29,9 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "agent_utils.h"
+#include "dfs.h"
 #include "dfs_agent.h"
+#include "graph_utils.h"
 
 void dfs_agent_create(grid_t *grid) {
     grid->agent_context = malloc(sizeof(dfs_agent_context_t));

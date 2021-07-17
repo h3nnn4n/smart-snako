@@ -24,7 +24,7 @@
 #include <grid.h>
 #include <utils.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 
 typedef struct {
     bool    path_found;

@@ -29,7 +29,7 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 #include "raw_hamilton_agent.h"
 
 bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {

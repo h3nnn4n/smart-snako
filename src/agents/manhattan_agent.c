@@ -28,7 +28,7 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "agent_utils.h"
+#include "graph_utils.h"
 #include "manhattan_agent.h"
 
 void manhattan_agent_create(grid_t *grid) {
