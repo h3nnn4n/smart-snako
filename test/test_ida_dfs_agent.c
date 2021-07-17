@@ -19,9 +19,12 @@ void test_agent() {
                 print_stats(grid->stats);
                 direction_t direction = ida_dfs_agent(grid);
                 simulate(grid, direction);
+
+                if (grid->stats->cherries_eaten > 25)
+                    break;
             }
 
-            TEST_ASSERT_TRUE(grid->stats->cherries_eaten > 25);
+            TEST_ASSERT_TRUE(grid->stats->cherries_eaten > 20);
 
             ida_dfs_agent_destroy(grid);
             destroy_grid(grid);
