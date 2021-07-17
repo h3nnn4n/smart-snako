@@ -29,8 +29,8 @@
 #include <snake.h>
 #include <utils.h>
 
-#include "graph_utils.h"
 #include "dfs.h"
+#include "graph_utils.h"
 #include "ida_dfs_agent.h"
 
 void ida_dfs_agent_create(grid_t *grid) {
