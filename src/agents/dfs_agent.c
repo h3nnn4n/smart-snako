@@ -30,6 +30,7 @@
 #include <utils.h>
 
 #include "agent_utils.h"
+#include "dfs.h"
 #include "dfs_agent.h"
 
 void dfs_agent_create(grid_t *grid) {

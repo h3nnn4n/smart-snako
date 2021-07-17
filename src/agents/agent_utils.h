@@ -18,8 +18,8 @@
  *
  */
 
-#ifndef SRC_AGENTS_UTILS_H_
-#define SRC_AGENTS_UTILS_H_
+#ifndef SRC_AGENTS_AGENT_UTILS_H_
+#define SRC_AGENTS_AGENT_UTILS_H_
 
 #include <stdbool.h>
 
@@ -53,11 +53,12 @@ void     occupy_cells_with_snake(graph_context_t *graph_context);
 void     set_graph_target(graph_context_t *graph_context, uint8_t x, uint8_t y);
 uint32_t cells_not_visited_count(graph_context_t *graph);
 bool     all_cells_visited(graph_context_t *graph);
-bool     dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
-bool     ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
+
+void build_reverse_path(graph_context_t *graph_context);
 
 void print_path(graph_context_t *graph_context);
+void print_reverse_path(graph_context_t *graph_context);
 
 void shuffle_directions(direction_t *directions, uint8_t n);
 
-#endif  // SRC_AGENTS_UTILS_H_
+#endif  // SRC_AGENTS_AGENT_UTILS_H_
