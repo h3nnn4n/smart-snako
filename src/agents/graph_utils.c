@@ -228,3 +228,32 @@ void occupy_cells_with_snake(graph_context_t *graph_context) {
         }
     }
 }
+
+uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target) {
+    grid_t *grid = graph_context->grid;
+    assert(graph_context != NULL);
+
+    assert(source.x <= grid->width);
+    assert(source.y <= grid->height);
+    assert(target.x <= grid->width);
+    assert(target.y <= grid->height);
+
+    uint8_t  x        = source.x;
+    uint8_t  y        = source.y;
+    uint32_t distance = 0;
+
+    // TODO(@h3nnn4n): Implement loop detection
+    do {
+        distance++;
+        direction_t direction = graph_context->path[x][y].next_direction;
+
+        switch (direction) {
+            case RIGHT: x++; break;
+            case LEFT: x--; break;
+            case UP: y--; break;
+            case DOWN: y++; break;
+        }
+    } while (x != target.x || y != target.y);
+
+    return distance;
+}

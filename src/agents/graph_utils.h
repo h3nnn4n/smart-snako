@@ -26,6 +26,11 @@
 #include <grid.h>
 
 typedef struct {
+    uint8_t x;
+    uint8_t y;
+} coord_t;
+
+typedef struct {
     // Where this node leads to
     direction_t next_direction;
     // What direction led to this node
@@ -60,5 +65,7 @@ void print_path(graph_context_t *graph_context);
 void print_reverse_path(graph_context_t *graph_context);
 
 void shuffle_directions(direction_t *directions, uint8_t n);
+
+uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target);
 
 #endif  // SRC_AGENTS_AGENT_UTILS_H_
