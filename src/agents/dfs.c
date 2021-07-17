@@ -41,12 +41,6 @@ bool dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
     occupy_cells_with_snake(graph_context);
     graph_context->path[x][y].source = true;
 
-    /*printf("aa\n");*/
-    /*print_grid(graph_context->grid);*/
-    /*printf("bb\n");*/
-    /*print_path(graph_context);*/
-    /*printf("cc\n");*/
-
     bool result = _dfs(graph_context, x, y, -1);
 
     if (result) {
@@ -106,16 +100,11 @@ bool ida_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
 }
 
 bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_depth) {
-    /*printf("%d %d %d\n", x, y, max_depth);*/
     grid_t *    grid          = graph_context->grid;
     direction_t directions[4] = {LEFT, RIGHT, DOWN, UP};
     shuffle_directions(directions, 4);
 
-    /*printf("\n");*/
-    /*print_reverse_path(graph_context);*/
-
     if (graph_context->path[x][y].target) {
-        /*printf("found target at %u %u depth: %d\n", x, y, max_depth);*/
         return true;
     }
 
@@ -162,11 +151,6 @@ bool _dfs(graph_context_t *graph_context, uint8_t x, uint8_t y, int32_t max_dept
         if (_dfs(graph_context, new_x, new_y, max_depth - 1))
             return true;
     }
-
-    /*graph_context->path[x][y].visited = false;*/
-
-    /*printf("\n");*/
-    /*print_reverse_path(graph_context);*/
 
     return false;
 }
