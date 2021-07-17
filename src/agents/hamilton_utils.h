@@ -26,6 +26,6 @@
 
 #include "graph_utils.h"
 
-bool build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
+bool build_halmiton_with_dfs(graph_context_t *graph_context);
 
 #endif  // SRC_AGENTS_HAMILTON_UTILS_H_

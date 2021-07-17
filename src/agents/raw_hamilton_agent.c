@@ -42,7 +42,7 @@ void raw_hamilton_agent_create(grid_t *grid) {
     graph_context_t *graph_context = create_graph_context(grid);
     agent_context->graph_context   = graph_context;
 
-    bool result = build_halmiton_with_dfs(graph_context, 0, 0);
+    bool result = build_halmiton_with_dfs(graph_context);
     if (!result)
         printf("WARN: failed to build halmitonian cycle\n");
 }

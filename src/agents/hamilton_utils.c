@@ -27,7 +27,14 @@
 
 #include "hamilton_utils.h"
 
-bool build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
+bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
+
+bool build_halmiton_with_dfs(graph_context_t *graph_context) {
+    // :)
+    return _build_halmiton_with_dfs(graph_context, 0, 0);
+}
+
+bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y) {
     grid_t *           grid            = graph_context->grid;
     static direction_t directions[4]   = {RIGHT, DOWN, UP, LEFT};
     static direction_t directions_2[4] = {LEFT, RIGHT, UP, DOWN};
@@ -83,7 +90,7 @@ bool build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t 
             continue;
 
         // True means we found the target node (0, 0)
-        if (build_halmiton_with_dfs(graph_context, new_x, new_y))
+        if (_build_halmiton_with_dfs(graph_context, new_x, new_y))
             return true;
     }
 
