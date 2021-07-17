@@ -30,75 +30,8 @@
 #include <utils.h>
 
 #include "graph_utils.h"
+#include "hamilton_utils.h"
 #include "raw_hamilton_agent.h"
-
-bool build_halmiton_with_dfs(grid_t *grid, uint8_t x, uint8_t y) {
-    raw_hamilton_context_t *agent_context   = (raw_hamilton_context_t *)grid->agent_context;
-    graph_context_t *       graph_context   = agent_context->graph_context;
-    static direction_t      directions[4]   = {RIGHT, DOWN, UP, LEFT};
-    static direction_t      directions_2[4] = {LEFT, RIGHT, UP, DOWN};
-
-    // The two left-most columns, whe the width is odd and we are not on the first row
-    bool enable_odd_width_hack = (grid->width % 2 == 1) && (x < 2) && (y > 0);
-
-    // When both the rows and columns are an odd number
-    bool enable_odd_height_hack = (grid->height % 2 == 1) && (grid->width % 2 == 1);
-
-    if (x == 0 && y == 0 && graph_context->path[x][y].visited) {
-        if (get_config()->verbose) {
-            printf("\n");
-            print_path(graph_context);
-            printf("\n");
-        }
-
-        if (all_cells_visited(graph_context)) {
-            return true;
-        }
-        /*printf("aaaa %u %u\n", cells_not_visited_count(grid), enable_odd_height_hack);*/
-
-        if (cells_not_visited_count(graph_context) == 1 && enable_odd_height_hack) {
-            graph_context->path[1][2].hack = true;
-
-            /*printf("hack\n");*/
-            return true;
-        }
-    }
-
-    if (graph_context->path[x][y].visited)
-        return false;
-
-    graph_context->path[x][y].visited = true;
-
-    for (int i = 0; i < 4; i++) {
-        direction_t direction = directions[i];
-
-        if (enable_odd_width_hack)
-            direction = directions_2[i];
-
-        graph_context->path[x][y].next_direction = direction;
-
-        uint8_t new_x = x;
-        uint8_t new_y = y;
-
-        switch (direction) {
-            case RIGHT: new_x++; break;
-            case LEFT: new_x--; break;
-            case UP: new_y--; break;
-            case DOWN: new_y++; break;
-        }
-
-        if (new_x >= grid->width || new_y >= grid->height)
-            continue;
-
-        // True means we found the target node (0, 0)
-        if (build_halmiton_with_dfs(grid, new_x, new_y))
-            return true;
-    }
-
-    graph_context->path[x][y].visited = false;
-
-    return false;
-}
 
 void raw_hamilton_agent_create(grid_t *grid) {
     grid->agent_context = malloc(sizeof(raw_hamilton_context_t));
@@ -109,7 +42,7 @@ void raw_hamilton_agent_create(grid_t *grid) {
     graph_context_t *graph_context = create_graph_context(grid);
     agent_context->graph_context   = graph_context;
 
-    bool result = build_halmiton_with_dfs(grid, 0, 0);
+    bool result = build_halmiton_with_dfs(graph_context, 0, 0);
     if (!result)
         printf("WARN: failed to build halmitonian cycle\n");
 }
