@@ -16,17 +16,16 @@ INCLUDES = -Isrc \
 
 OPTIMIZATION=-O3
 
-LDFLAGS += -lpcg_random
-CFLAGS += -Wall -Wextra -Werror -pedantic -std=gnu11 $(OPTIMIZATION) $(OPTIONS) $(INCLUDES)
+override CFLAGS += -Werror -Wall -Wextra -pedantic -std=gnu11 $(OPTIMIZATION) $(OPTIONS) $(INCLUDES)
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
   ECHOFLAGS = -e
-  LDFLAGS += -Wl,-Ldeps/Unity/build/,-Ldeps/pcg-c/src/
+  LDFLAGS = -lpcg_random -Wl,-Ldeps/Unity/build/,-Ldeps/pcg-c/src/
 endif
 ifeq ($(UNAME_S),Darwin)
   CFLAGS += -Wno-unused-command-line-argument
-  LDFLAGS += -Wl,-Ldeps/pcg-c/src/
+  LDFLAGS = -lpcg_random -Wl,-Ldeps/pcg-c/src/
 endif
 
 CC = gcc
@@ -66,14 +65,6 @@ callgrind: callgrind_prepare build
 
 callgrind_prepare:
 	$(eval OPTIMIZATION=-g -O2 -DNDEBUG -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls -fno-default-inline -fno-inline)
-
-asan_prepare:
-	$(eval CC=clang)
-	$(eval OPTIMIZATION=-g -O0)
-	$(eval LDFLAGS+=-fsanitize=address)
-	$(eval CPPFLAGS+=-fsanitize=address -fno-omit-frame-pointer)
-
-asan: clean asan_prepare build
 
 rebuild: clean $(TARGET)
 
