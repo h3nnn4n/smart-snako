@@ -98,3 +98,32 @@ bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t
 
     return false;
 }
+
+// The splice is applied to the square defined by x and y and x+1 and y+1
+bool _apply_splice(graph_context_t *graph_context, coord_t position) {
+    uint8_t x = position.x;
+    uint8_t y = position.y;
+
+    if (graph_context->path[x][y].next_direction == RIGHT) {
+        if (graph_context->path[x + 1][y + 1].next_direction == LEFT) {
+            graph_context->path[x][y].next_direction         = DOWN;
+            graph_context->path[x + 1][y + 1].next_direction = UP;
+            return true;
+        }
+    }
+
+    if (graph_context->path[x][y].next_direction == DOWN) {
+        if (graph_context->path[x + 1][y + 1].next_direction == UP) {
+            graph_context->path[x][y].next_direction         = RIGHT;
+            graph_context->path[x + 1][y + 1].next_direction = LEFT;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+    (void)grid;
+}
