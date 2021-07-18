@@ -23,6 +23,33 @@ void test_path_distance() {
     destroy_grid(grid);
 }
 
+void test_is_graph_fully_connected() {
+    for (uint8_t width = 5; width < 15; width++) {
+        for (uint8_t height = 5; height < 15; height++) {
+            grid_t *         grid          = create_grid(width, height);
+            graph_context_t *graph_context = create_graph_context(grid);
+
+            build_halmiton_with_dfs(graph_context);
+
+            TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
+
+            // This tests a case where a portion of the graph is excluded from
+            // the path (note that it is a DAG)
+            graph_context->path[2][0].next_direction = DOWN;
+            TEST_ASSERT_FALSE(is_graph_fully_connected(graph_context));
+
+            // This tests where there is a loop somewhere that doesn't lead
+            // back from where it started (note that it is a DAG)
+            graph_context->path[2][0].next_direction = DOWN;
+            graph_context->path[2][1].next_direction = UP;
+            TEST_ASSERT_FALSE(is_graph_fully_connected(graph_context));
+
+            destroy_graph_context(graph_context);
+            destroy_grid(grid);
+        }
+    }
+}
+
 void setUp() {}
 void tearDown() {}
 
@@ -30,6 +57,7 @@ int main() {
     UNITY_BEGIN();
 
     RUN_TEST(test_path_distance);
+    RUN_TEST(test_is_graph_fully_connected);
 
     return UNITY_END();
 }

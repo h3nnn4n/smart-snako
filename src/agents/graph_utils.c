@@ -257,3 +257,43 @@ uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t t
 
     return distance;
 }
+
+bool is_graph_fully_connected(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+    assert(graph_context != NULL);
+
+    uint8_t  x               = 0;
+    uint8_t  y               = 0;
+    uint8_t  x2              = 0;
+    uint8_t  y2              = 0;
+    uint32_t visited         = 0;
+    uint32_t number_of_cells = grid->width * grid->height;
+
+    do {
+        visited++;
+        direction_t direction = graph_context->path[x][y].next_direction;
+
+        switch (direction) {
+            case RIGHT: x++; break;
+            case LEFT: x--; break;
+            case UP: y--; break;
+            case DOWN: y++; break;
+        }
+
+        for (int i = 0; i < 2; i++) {
+            direction = graph_context->path[x2][y2].next_direction;
+
+            switch (direction) {
+                case RIGHT: x2++; break;
+                case LEFT: x2--; break;
+                case UP: y2--; break;
+                case DOWN: y2++; break;
+            }
+        }
+    } while ((x != 0 || y != 0) && (x != x2 || y != y2));
+
+    if (grid->width % 2 == 1 && grid->height % 2 == 1)
+        return visited == number_of_cells - 1;
+
+    return visited == number_of_cells;
+}
