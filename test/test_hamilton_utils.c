@@ -110,20 +110,28 @@ void test__apply_splice_random() {
 }
 
 void test_perturbate_hamiltonian_cycle() {
-    uint8_t width  = 10;
-    uint8_t height = 10;
+    uint8_t width  = 20;
+    uint8_t height = 20;
 
-    for (int i = 0; i < 10; i++) {
+    /*coord_t source = {.x = 0, .y = 0};*/
+    /*coord_t target = {.x = (uint8_t)(width / 2), .y = (uint8_t)(height / 2)};*/
+
+    for (int i = 0; i < 1000; i++) {
         grid_t *         grid          = create_grid(width, height);
         graph_context_t *graph_context = create_graph_context(grid);
 
         build_halmiton_with_dfs(graph_context);
 
-        for (int j = 0; j < 10; j++) {
+        /*uint16_t original_distance = path_distance(graph_context, source, target);*/
+
+        for (int j = 0; j < 1000; j++) {
             TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
             TEST_ASSERT_EQUAL(1, tag_paths(graph_context));
 
-            TEST_ASSERT_TRUE(perturbate_hamiltonian_cycle(graph_context));
+            /*bool result =*/
+            perturbate_hamiltonian_cycle(graph_context);
+            /*printf("%3d %3d %d\n", original_distance, path_distance(graph_context, source, target), result);*/
+            /*printf("%3d %d\n", path_distance(graph_context, source, target), result);*/
 
             TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
             TEST_ASSERT_EQUAL(1, tag_paths(graph_context));
