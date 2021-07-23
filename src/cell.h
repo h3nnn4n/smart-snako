@@ -24,12 +24,15 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "direction.h"
+
 struct cell_s;
 
 typedef struct cell_s {
     bool           has_cherry;
     bool           has_snake;
     uint8_t        snake_counter;
+    direction_t    snake_direction;
     struct cell_s *previous_snake_cell;
 } cell_t;
 
