@@ -159,11 +159,8 @@ void set_graph_target(graph_context_t *graph_context, uint8_t x, uint8_t y) {
     assert(graph_context != NULL);
     assert(graph_context->grid != NULL);
     assert(graph_context->path != NULL);
-
-    grid_t *grid = graph_context->grid;
-
-    assert(x < grid->width);
-    assert(y < grid->height);
+    assert(x < graph_context->grid->width);
+    assert(y < graph_context->grid->height);
 
     graph_context->path[x][y].target = true;
 }
@@ -230,13 +227,11 @@ void occupy_cells_with_snake(graph_context_t *graph_context) {
 }
 
 uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target) {
-    grid_t *grid = graph_context->grid;
     assert(graph_context != NULL);
-
-    assert(source.x <= grid->width);
-    assert(source.y <= grid->height);
-    assert(target.x <= grid->width);
-    assert(target.y <= grid->height);
+    assert(source.x <= graph_context->grid->width);
+    assert(source.y <= graph_context->grid->height);
+    assert(target.x <= graph_context->grid->width);
+    assert(target.y <= graph_context->grid->height);
 
     uint8_t  x        = source.x;
     uint8_t  y        = source.y;
@@ -307,12 +302,11 @@ void _reset_path_ids(graph_context_t *graph_context) {
 }
 
 void _tag_path(graph_context_t *graph_context, uint8_t tag_id, coord_t position) {
-    grid_t *grid = graph_context->grid;
-    uint8_t x    = position.x;
-    uint8_t y    = position.y;
+    uint8_t x = position.x;
+    uint8_t y = position.y;
 
-    assert(x < grid->width);
-    assert(y < grid->height);
+    assert(x < graph_context->grid->width);
+    assert(y < graph_context->grid->height);
 
     /*print_path(graph_context);*/
 
@@ -328,8 +322,8 @@ void _tag_path(graph_context_t *graph_context, uint8_t tag_id, coord_t position)
         }
         /*printf("%d %d\n", x, y);*/
 
-        assert(x < grid->width);
-        assert(y < grid->height);
+        assert(x < graph_context->grid->width);
+        assert(y < graph_context->grid->height);
     } while (x != position.x || y != position.y);
 }
 
