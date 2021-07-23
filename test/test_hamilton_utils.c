@@ -2,6 +2,7 @@
 
 #include <cherry.h>
 #include <grid.h>
+#include <utils.h>
 
 #include <agents/hamilton_utils.h>
 
@@ -68,6 +69,37 @@ void test__apply_splice() {
     destroy_grid(grid);
 }
 
+void test__apply_splice_random() {
+    uint8_t width  = 20;
+    uint8_t height = 20;
+
+    grid_t *         grid          = create_grid(width, height);
+    graph_context_t *graph_context = create_graph_context(grid);
+
+    build_halmiton_with_dfs(graph_context);
+    TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
+
+    for (uint16_t i = 0; i < 1000; i++) {
+        uint8_t x = get_random_number(width - 1);
+        uint8_t y = get_random_number(height - 1);
+
+        // Not all random splices are possible
+        if (!_apply_splice(graph_context, (coord_t){.x = x, .y = y}))
+            continue;
+
+        TEST_ASSERT_FALSE(is_graph_fully_connected(graph_context));
+        TEST_ASSERT_EQUAL(2, tag_paths(graph_context));
+
+        TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = x, .y = y}));
+
+        TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
+        TEST_ASSERT_EQUAL(1, tag_paths(graph_context));
+    }
+
+    destroy_graph_context(graph_context);
+    destroy_grid(grid);
+}
+
 void test_perturbate_hamiltonian_cycle() {
     uint8_t width  = 10;
     uint8_t height = 10;
@@ -102,6 +134,7 @@ int main() {
     RUN_TEST(test_build_halmiton_with_dfs_visits_all_cells);
     RUN_TEST(test_perturbate_hamiltonian_cycle);
     RUN_TEST(test__apply_splice);
+    RUN_TEST(test__apply_splice_random);
 
     return UNITY_END();
 }
