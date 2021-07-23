@@ -172,7 +172,6 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
             first_splice_y = y;
             break;
         }
-
     } while (--first_splice_attempts > 0);
 
     if (first_splice_attempts == 0)
@@ -193,7 +192,6 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
             else
                 _apply_splice(graph_context, (coord_t){.x = x, .y = y});
         }
-
     } while (--second_splice_attempts > 0);
 
     if (second_splice_attempts == 0) {
