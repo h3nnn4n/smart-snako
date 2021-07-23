@@ -24,14 +24,8 @@
 #include <stdint.h>
 
 #include "cell.h"
+#include "direction.h"
 #include "stats.h"
-
-typedef enum {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-} direction_t;
 
 typedef struct grid_s {
     bool game_over;

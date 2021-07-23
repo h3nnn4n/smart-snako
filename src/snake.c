@@ -57,6 +57,8 @@ void move_snake(grid_t *grid, direction_t direction) {
     uint8_t new_head_x = grid->snake_head_x;
     uint8_t new_head_y = grid->snake_head_y;
 
+    grid->cells[new_head_x][new_head_y].snake_direction = direction;
+
     switch (direction) {
         case RIGHT: new_head_x++; break;
         case LEFT: new_head_x--; break;
