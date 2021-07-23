@@ -73,6 +73,9 @@ void test__apply_splice_random() {
     uint8_t width  = 20;
     uint8_t height = 20;
 
+    coord_t source = {.x = 0, .y = 0};
+    coord_t target = {.x = (uint8_t)(width / 2), .y = (uint8_t)(height / 2)};
+
     grid_t *         grid          = create_grid(width, height);
     graph_context_t *graph_context = create_graph_context(grid);
 
@@ -82,6 +85,8 @@ void test__apply_splice_random() {
     for (uint16_t i = 0; i < 1000; i++) {
         uint8_t x = get_random_number(width - 1);
         uint8_t y = get_random_number(height - 1);
+
+        uint16_t original_distance = path_distance(graph_context, source, target);
 
         // Not all random splices are possible
         if (!_apply_splice(graph_context, (coord_t){.x = x, .y = y}))
@@ -94,6 +99,10 @@ void test__apply_splice_random() {
 
         TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
         TEST_ASSERT_EQUAL(1, tag_paths(graph_context));
+
+        uint16_t final_distance = path_distance(graph_context, source, target);
+
+        TEST_ASSERT_EQUAL(original_distance, final_distance);
     }
 
     destroy_graph_context(graph_context);
