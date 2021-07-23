@@ -297,3 +297,59 @@ bool is_graph_fully_connected(graph_context_t *graph_context) {
 
     return visited == number_of_cells;
 }
+
+void _reset_path_ids(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++)
+        for (int x = 0; x < grid->width; x++)
+            graph_context->path[x][y].path_id = -1;
+}
+
+void _tag_path(graph_context_t *graph_context, uint8_t tag_id, coord_t position) {
+    grid_t *grid = graph_context->grid;
+    uint8_t x    = position.x;
+    uint8_t y    = position.y;
+
+    assert(x < grid->width);
+    assert(y < grid->height);
+
+    do {
+        graph_context->path[x][y].path_id = tag_id;
+        direction_t direction             = graph_context->path[x][y].next_direction;
+
+        switch (direction) {
+            case RIGHT: x++; break;
+            case LEFT: x--; break;
+            case UP: y--; break;
+            case DOWN: y++; break;
+        }
+    } while (x != position.x || y != position.y);
+}
+
+uint8_t tag_paths(graph_context_t *graph_context) {
+    uint8_t path_count = 0;
+
+    // FIXME: This probably wont work with odd size grids
+
+    grid_t *grid = graph_context->grid;
+
+    _reset_path_ids(graph_context);
+
+    while (true) {
+        for (int y = 0; y < grid->height; y++) {
+            for (int x = 0; x < grid->width; x++) {
+                if (graph_context->path[x][y].path_id < 0) {
+                    _tag_path(graph_context, path_count, (coord_t){.x = x, .y = y});
+                    path_count++;
+                    continue;
+                }
+            }
+        }
+
+        // Getting here means that we found no unvisited cells
+        break;
+    }
+
+    return path_count;
+}

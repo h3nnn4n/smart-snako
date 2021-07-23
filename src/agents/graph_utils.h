@@ -41,6 +41,8 @@ typedef struct {
     bool target;
     bool source;
     bool blocked;
+
+    int8_t path_id;
 } tuple_t;
 
 typedef struct {
@@ -68,5 +70,6 @@ void shuffle_directions(direction_t *directions, uint8_t n);
 
 uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target);
 bool     is_graph_fully_connected(graph_context_t *graph_context);
+uint8_t  tag_paths(graph_context_t *graph_context);
 
 #endif  // SRC_AGENTS_AGENT_UTILS_H_

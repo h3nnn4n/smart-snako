@@ -50,6 +50,44 @@ void test_is_graph_fully_connected() {
     }
 }
 
+void test_tag_paths_single() {
+    // TODO: Test multiple grid sizes
+    // TODO: Test with wonky grids (broken paths)
+
+    uint8_t width  = 10;
+    uint8_t height = 10;
+
+    grid_t *         grid          = create_grid(width, height);
+    graph_context_t *graph_context = create_graph_context(grid);
+
+    build_halmiton_with_dfs(graph_context);
+
+    TEST_ASSERT_EQUAL(1, tag_paths(graph_context));
+
+    destroy_graph_context(graph_context);
+    destroy_grid(grid);
+}
+
+void test_tag_paths_spliced() {
+    // TODO: Test multiple grid sizes
+    // TODO: Test with wonky grids (broken paths)
+
+    uint8_t width  = 10;
+    uint8_t height = 10;
+
+    grid_t *         grid          = create_grid(width, height);
+    graph_context_t *graph_context = create_graph_context(grid);
+
+    build_halmiton_with_dfs(graph_context);
+
+    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 3, .y = 0}));
+
+    TEST_ASSERT_EQUAL(2, tag_paths(graph_context));
+
+    destroy_graph_context(graph_context);
+    destroy_grid(grid);
+}
+
 void setUp() {}
 void tearDown() {}
 
@@ -58,6 +96,8 @@ int main() {
 
     RUN_TEST(test_path_distance);
     RUN_TEST(test_is_graph_fully_connected);
+    RUN_TEST(test_tag_paths_single);
+    RUN_TEST(test_tag_paths_spliced);
 
     return UNITY_END();
 }
