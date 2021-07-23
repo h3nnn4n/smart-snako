@@ -22,13 +22,13 @@ jobs:
 
       - name: Detect Leaks
         run: |
-          valgrind ./smart-snako
-          valgrind ./smart-snako --width=10 --height=10
-          valgrind ./smart-snako --width=30 --height=30 --agent="random"
-          valgrind ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
-          valgrind ./smart-snako --width=30 --height=30 --agent="manhattan"
-          valgrind ./smart-snako --width=30 --height=30 --agent="dfs"
-          valgrind ./smart-snako --width=30 --height=30 --agent="ida_dfs"
-          valgrind ./smart-snako --width=30 --height=30 --agent="smart_snako"
+          ./smart-snako
+          ./smart-snako --width=10 --height=10
+          ./smart-snako --width=30 --height=30 --agent="random"
+          ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
+          ./smart-snako --width=30 --height=30 --agent="manhattan"
+          ./smart-snako --width=30 --height=30 --agent="dfs"
+          ./smart-snako --width=30 --height=30 --agent="ida_dfs"
+          ./smart-snako --width=30 --height=30 --agent="smart_snako"
         env:
           HEAPCHECK: normal
