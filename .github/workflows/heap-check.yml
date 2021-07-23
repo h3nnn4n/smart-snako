@@ -21,6 +21,14 @@ jobs:
         run: make gperftools
 
       - name: Detect Leaks
-        run: ./smart-snako 1 2
+        run: |
+          valgrind ./smart-snako
+          valgrind ./smart-snako --width=10 --height=10
+          valgrind ./smart-snako --width=30 --height=30 --agent="random"
+          valgrind ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
+          valgrind ./smart-snako --width=30 --height=30 --agent="manhattan"
+          valgrind ./smart-snako --width=30 --height=30 --agent="dfs"
+          valgrind ./smart-snako --width=30 --height=30 --agent="ida_dfs"
+          valgrind ./smart-snako --width=30 --height=30 --agent="smart_snako"
         env:
           HEAPCHECK: normal
