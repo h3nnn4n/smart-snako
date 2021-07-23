@@ -226,6 +226,17 @@ void occupy_cells_with_snake(graph_context_t *graph_context) {
     }
 }
 
+uint32_t snake_distance_to_cherry(graph_context_t *graph_context) {
+    grid_t *grid                = graph_context->grid;
+    coord_t snake_head_position = {.x = grid->snake_head_x, .y = grid->snake_head_y};
+
+    coord_t cherry_position;
+
+    get_cherry_position(grid, &cherry_position.x, &cherry_position.y);
+
+    return path_distance(graph_context, snake_head_position, cherry_position);
+}
+
 uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target) {
     assert(graph_context != NULL);
     assert(source.x <= graph_context->grid->width);
