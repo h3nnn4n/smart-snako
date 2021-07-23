@@ -39,4 +39,3 @@ void        smart_snako_agent_destroy(grid_t *grid);
 direction_t smart_snako_agent(grid_t *grid);
 
 #endif  // SRC_AGENTS_SMART_SNAKO_AGENT_H_
-
