@@ -119,7 +119,12 @@ void print_grid(grid_t *grid) {
                 if (x == grid->snake_head_x && y == grid->snake_head_y) {
                     printf("C ");
                 } else {
-                    printf("x ");
+                    switch (grid->cells[x][y].snake_direction) {
+                        case RIGHT: printf("> "); break;
+                        case LEFT: printf("< "); break;
+                        case UP: printf("^ "); break;
+                        case DOWN: printf("V "); break;
+                    }
                 }
             } else {
                 printf(". ");

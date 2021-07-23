@@ -18,4 +18,14 @@
  *
  */
 
-#include "cell.h"
+#ifndef SRC_DIRECTION_H_
+#define SRC_DIRECTION_H_
+
+typedef enum {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+} direction_t;
+
+#endif  // SRC_DIRECTION_H_
