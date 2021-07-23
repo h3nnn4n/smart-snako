@@ -254,8 +254,8 @@ uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t t
 }
 
 bool is_graph_fully_connected(graph_context_t *graph_context) {
-    grid_t *grid = graph_context->grid;
     assert(graph_context != NULL);
+    grid_t *grid = graph_context->grid;
 
     uint8_t  x               = 0;
     uint8_t  y               = 0;
