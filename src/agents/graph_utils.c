@@ -314,6 +314,8 @@ void _tag_path(graph_context_t *graph_context, uint8_t tag_id, coord_t position)
     assert(x < grid->width);
     assert(y < grid->height);
 
+    /*print_path(graph_context);*/
+
     do {
         graph_context->path[x][y].path_id = tag_id;
         direction_t direction             = graph_context->path[x][y].next_direction;
@@ -324,6 +326,10 @@ void _tag_path(graph_context_t *graph_context, uint8_t tag_id, coord_t position)
             case UP: y--; break;
             case DOWN: y++; break;
         }
+        /*printf("%d %d\n", x, y);*/
+
+        assert(x < grid->width);
+        assert(y < grid->height);
     } while (x != position.x || y != position.y);
 }
 
@@ -335,11 +341,13 @@ uint8_t tag_paths(graph_context_t *graph_context) {
     grid_t *grid = graph_context->grid;
 
     _reset_path_ids(graph_context);
+    /*printf("paths reset\n");*/
 
     while (true) {
         for (int y = 0; y < grid->height; y++) {
             for (int x = 0; x < grid->width; x++) {
                 if (graph_context->path[x][y].path_id < 0) {
+                    /*printf("found untagged at %d %d\n", x, y);*/
                     _tag_path(graph_context, path_count, (coord_t){.x = x, .y = y});
                     path_count++;
                     continue;

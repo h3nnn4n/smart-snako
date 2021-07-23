@@ -63,7 +63,20 @@ void test__apply_splice() {
 }
 
 void test_perturbate_hamiltonian_cycle() {
-    //
+    uint8_t width  = 10;
+    uint8_t height = 10;
+
+    grid_t *         grid          = create_grid(width, height);
+    graph_context_t *graph_context = create_graph_context(grid);
+
+    build_halmiton_with_dfs(graph_context);
+
+    TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
+    TEST_ASSERT_TRUE(perturbate_hamiltonian_cycle(graph_context));
+    TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
+
+    destroy_graph_context(graph_context);
+    destroy_grid(grid);
 }
 
 void setUp() {}

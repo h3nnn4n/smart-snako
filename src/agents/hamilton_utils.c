@@ -18,14 +18,17 @@
  *
  */
 
+#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 
 #include <config.h>
 #include <grid.h>
+#include <utils.h>
 
 #include "direction.h"
+#include "graph_utils.h"
 #include "hamilton_utils.h"
 
 bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
@@ -102,6 +105,11 @@ bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t
 
 // The splice is applied to the square defined by x and y and x+1 and y+1
 bool _apply_splice(graph_context_t *graph_context, coord_t position) {
+    grid_t *grid = graph_context->grid;
+
+    assert(position.x + 1 < grid->width);
+    assert(position.y + 1 < grid->height);
+
     uint8_t x = position.x;
     uint8_t y = position.y;
 
@@ -142,7 +150,64 @@ bool _apply_splice(graph_context_t *graph_context, coord_t position) {
     return false;
 }
 
-void perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
+// This function takes a hamiltonian cycle, splices it in two, and then merge
+// the path again at a different point. This generates a slightly different
+// hamiltonian cycle. Can be used as a adjacency operator on a (meta) heuristic
+bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
+    // Can't work on a path not fully connected
+    // FIXME needs some log for odd grids
+    assert(is_graph_fully_connected(graph_context));
     grid_t *grid = graph_context->grid;
-    (void)grid;
+
+    uint8_t first_splice_attempts  = 10;
+    uint8_t second_splice_attempts = 50;
+
+    uint8_t first_splice_x = 0;
+    uint8_t first_splice_y = 0;
+
+    do {
+        uint8_t x = get_random_number(grid->width - 1);
+        uint8_t y = get_random_number(grid->height - 1);
+        /*printf("%d %d\n", x, y);*/
+        if (_apply_splice(graph_context, (coord_t){.x = x, .y = y})) {
+            first_splice_x = x;
+            first_splice_y = y;
+            break;
+        }
+
+    } while (--first_splice_attempts > 0);
+
+    if (first_splice_attempts == 0)
+        return false;
+
+    /*printf("yay first splice: %d\n", 10 - first_splice_attempts);*/
+
+    /*uint8_t path_count = tag_paths(graph_context);*/
+    /*printf("yay paths tagged: %d\n", path_count);*/
+
+    do {
+        uint8_t x = get_random_number(grid->width - 1);
+        uint8_t y = get_random_number(grid->height - 1);
+        /*printf("%d %d\n", x, y);*/
+        if (_apply_splice(graph_context, (coord_t){.x = x, .y = y})) {
+            if (is_graph_fully_connected(graph_context))
+                break;
+            else
+                _apply_splice(graph_context, (coord_t){.x = x, .y = y});
+        }
+
+    } while (--second_splice_attempts > 0);
+
+    if (second_splice_attempts == 0) {
+        // This undoes the first splice
+        _apply_splice(graph_context, (coord_t){.x = first_splice_x, .y = first_splice_y});
+        return false;
+    }
+
+    /*printf("yay second splice: %d\n", 50 - second_splice_attempts);*/
+
+    /*path_count = tag_paths(graph_context);*/
+    /*printf("yay paths tagged: %d\n", path_count);*/
+
+    return true;
 }

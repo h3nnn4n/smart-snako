@@ -27,7 +27,7 @@
 #include "graph_utils.h"
 
 bool build_halmiton_with_dfs(graph_context_t *graph_context);
-void perturbate_hamiltonian_cycle(graph_context_t *graph_context);
+bool perturbate_hamiltonian_cycle(graph_context_t *graph_context);
 bool _apply_splice(graph_context_t *graph_context, coord_t position);
 
 #endif  // SRC_AGENTS_HAMILTON_UTILS_H_
