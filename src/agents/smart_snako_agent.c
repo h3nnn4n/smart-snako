@@ -65,6 +65,14 @@ direction_t smart_snako_agent(grid_t *grid) {
     uint8_t x = grid->snake_head_x;
     uint8_t y = grid->snake_head_y;
 
+    bool result = perturbate_hamiltonian_cycle(graph_context);
+
+    if (result) {
+        printf("path perturbated\n");
+    } else {
+        printf("path not perturbated\n");
+    }
+
     direction_t next_direction = graph_context->path[x][y].next_direction;
 
     if (is_snake_colliding(grid, next_direction))
