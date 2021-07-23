@@ -25,6 +25,7 @@
 #include <config.h>
 #include <grid.h>
 
+#include "direction.h"
 #include "hamilton_utils.h"
 
 bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
@@ -104,6 +105,7 @@ bool _apply_splice(graph_context_t *graph_context, coord_t position) {
     uint8_t x = position.x;
     uint8_t y = position.y;
 
+    // Horizontal to vertical switch
     if (graph_context->path[x][y].next_direction == RIGHT) {
         if (graph_context->path[x + 1][y + 1].next_direction == LEFT) {
             graph_context->path[x][y].next_direction         = DOWN;
@@ -112,10 +114,27 @@ bool _apply_splice(graph_context_t *graph_context, coord_t position) {
         }
     }
 
+    if (graph_context->path[x + 1][y].next_direction == LEFT) {
+        if (graph_context->path[x][y + 1].next_direction == RIGHT) {
+            graph_context->path[x + 1][y].next_direction = DOWN;
+            graph_context->path[x][y + 1].next_direction = UP;
+            return true;
+        }
+    }
+
+    // Vertical to horizontal switch
     if (graph_context->path[x][y].next_direction == DOWN) {
         if (graph_context->path[x + 1][y + 1].next_direction == UP) {
             graph_context->path[x][y].next_direction         = RIGHT;
             graph_context->path[x + 1][y + 1].next_direction = LEFT;
+            return true;
+        }
+    }
+
+    if (graph_context->path[x + 1][y].next_direction == DOWN) {
+        if (graph_context->path[x][y + 1].next_direction == UP) {
+            graph_context->path[x + 1][y].next_direction = LEFT;
+            graph_context->path[x][y + 1].next_direction = RIGHT;
             return true;
         }
     }
