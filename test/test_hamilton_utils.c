@@ -40,16 +40,16 @@ void test__apply_splice() {
     build_halmiton_with_dfs(graph_context);
     TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
 
-    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 3, .y = 0}));
+    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 5, .y = 0}));
     TEST_ASSERT_FALSE(is_graph_fully_connected(graph_context));
 
-    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 3, .y = 0}));
+    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 5, .y = 0}));
     TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
 
-    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 5, .y = 0}));
+    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 7, .y = 0}));
     TEST_ASSERT_FALSE(is_graph_fully_connected(graph_context));
 
-    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 5, .y = 0}));
+    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 7, .y = 0}));
     TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
 
     TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 4, .y = 2}));

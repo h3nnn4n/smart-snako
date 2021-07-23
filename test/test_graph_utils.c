@@ -80,7 +80,7 @@ void test_tag_paths_spliced() {
 
     build_halmiton_with_dfs(graph_context);
 
-    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 3, .y = 0}));
+    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 5, .y = 5}));
 
     TEST_ASSERT_EQUAL(2, tag_paths(graph_context));
 

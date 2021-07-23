@@ -105,11 +105,17 @@ bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t
 
 // The splice is applied to the square defined by x and y and x+1 and y+1
 bool _apply_splice(graph_context_t *graph_context, coord_t position) {
-    assert(position.x + 1 < graph_context->grid->width);
-    assert(position.y + 1 < graph_context->grid->height);
+    grid_t *grid = graph_context->grid;
+    assert(position.x + 1 < grid->width);
+    assert(position.y + 1 < grid->height);
 
     uint8_t x = position.x;
     uint8_t y = position.y;
+
+    for (uint8_t x = 0; x <= 1; x++)
+        for (uint8_t y = 0; y <= 1; y++)
+            if (grid->cells[position.x + x][position.y + y].has_snake)
+                return false;
 
     // Horizontal to vertical switch
     if (graph_context->path[x][y].next_direction == RIGHT) {
