@@ -21,7 +21,7 @@ jobs:
 
       - name: Run instrumented code
         run: |
-          ./smart-snako --verbose
+          ./smart-snako
           ./smart-snako --width=10 --height=10
           ./smart-snako --width=30 --height=30 --agent="random"
           ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
