@@ -2,6 +2,7 @@
 
 #include <cherry.h>
 #include <grid.h>
+#include <utils.h>
 
 #include <agents/graph_utils.h>
 #include <agents/hamilton_utils.h>
@@ -40,6 +41,34 @@ void test_path_distance__cycle_detection() {
     TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 1, .y = 2}));
     TEST_ASSERT_EQUAL(65535, path_distance(graph_context, source, target));
 
+    destroy_graph_context(graph_context);
+    destroy_grid(grid);
+}
+
+void test_duplicate_graph_context() {
+    uint8_t width  = 20;
+    uint8_t height = 20;
+
+    grid_t *         grid          = create_grid(width, height);
+    graph_context_t *graph_context = create_graph_context(grid);
+
+    build_halmiton_with_dfs(graph_context);
+
+    for (int i = 0; i < 500; i++) {
+        uint8_t x = get_random_number(width - 1);
+        uint8_t y = get_random_number(height - 1);
+        _apply_splice(graph_context, (coord_t){.x = x, .y = y});
+    }
+
+    graph_context_t *new_graph_context = duplicate_graph_context(graph_context);
+
+    for (int y = 0; y < graph_context->grid->height; y++) {
+        for (int x = 0; x < graph_context->grid->width; x++) {
+            TEST_ASSERT_EQUAL(graph_context->path[x][y].next_direction, new_graph_context->path[x][y].next_direction);
+        }
+    }
+
+    destroy_graph_context(new_graph_context);
     destroy_graph_context(graph_context);
     destroy_grid(grid);
 }
@@ -117,6 +146,7 @@ int main() {
 
     RUN_TEST(test_path_distance);
     RUN_TEST(test_path_distance__cycle_detection);
+    RUN_TEST(test_duplicate_graph_context);
     RUN_TEST(test_is_graph_fully_connected);
     RUN_TEST(test_tag_paths_single);
     RUN_TEST(test_tag_paths_spliced);

@@ -53,6 +53,8 @@ typedef struct {
 direction_t get_safe_random_direction(grid_t *grid);
 
 graph_context_t *create_graph_context(grid_t *grid);
+graph_context_t *duplicate_graph_context(graph_context_t *graph_context);
+void             copy_graph_context(graph_context_t *source_graph_context, graph_context_t *dest_graph_context);
 void             destroy_graph_context(graph_context_t *graph);
 void             reset_graph_context(graph_context_t *graph_context);
 

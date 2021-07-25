@@ -73,6 +73,27 @@ graph_context_t *create_graph_context(grid_t *grid) {
     return graph;
 }
 
+graph_context_t *duplicate_graph_context(graph_context_t *graph_context) {
+    grid_t *         grid              = graph_context->grid;
+    graph_context_t *new_graph_context = create_graph_context(grid);
+
+    copy_graph_context(graph_context, new_graph_context);
+
+    return new_graph_context;
+}
+
+void copy_graph_context(graph_context_t *source_graph_context, graph_context_t *dest_graph_context) {
+    grid_t *grid             = source_graph_context->grid;
+    dest_graph_context->grid = grid;
+
+    // This could be a memcpy, but explicitly copying all data seems safer
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            dest_graph_context->path[x][y].next_direction = source_graph_context->path[x][y].next_direction;
+        }
+    }
+}
+
 void destroy_graph_context(graph_context_t *graph_context) {
     assert(graph_context != NULL);
     assert(graph_context->path != NULL);
