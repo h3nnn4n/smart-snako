@@ -256,7 +256,7 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
     }
 
     // Make linters happy when values are not used in assertions
-    (void *)splice_result;
+    (void)splice_result;
 
     // Ensure everything is back in place
     assert(tag_paths(graph_context) == 1);
