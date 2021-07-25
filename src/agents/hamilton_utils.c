@@ -217,9 +217,9 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
         uint8_t y = get_random_number(grid->height - 1);
         /*printf("%d %d\n", x, y);*/
         if (_apply_splice(graph_context, (coord_t){.x = x, .y = y})) {
-            if (is_graph_fully_connected(graph_context))
+            if (is_graph_fully_connected(graph_context)) {
                 break;
-            else {
+            } else {
                 splice_result = _apply_splice(graph_context, (coord_t){.x = x, .y = y});
                 assert(splice_result);
             }
