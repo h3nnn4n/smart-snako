@@ -172,17 +172,11 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
     uint8_t  first_splice_attempts  = 10;
     uint16_t second_splice_attempts = 50;
 
-    uint8_t first_splice_x = 0;
-    uint8_t first_splice_y = 0;
-
     do {
         uint8_t x = get_random_number(grid->width - 1);
         uint8_t y = get_random_number(grid->height - 1);
-        if (_apply_splice(graph_context, (coord_t){.x = x, .y = y})) {
-            first_splice_x = x;
-            first_splice_y = y;
+        if (_apply_splice(graph_context, (coord_t){.x = x, .y = y}))
             break;
-        }
     } while (--first_splice_attempts > 0);
 
     // No splices were applied
