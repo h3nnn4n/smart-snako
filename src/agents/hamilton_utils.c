@@ -181,7 +181,7 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
 
     // No splices were applied
     if (first_splice_attempts == 0)
-        return false;
+        goto exit;
 
     assert(tag_paths(graph_context) == 2);
     assert(!is_graph_fully_connected(graph_context));
@@ -202,13 +202,10 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
     // Now we need to fix up the original path.
     if (second_splice_attempts == 0) {
         copy_graph_context(graph_context_copy, graph_context);
-
-        // Ensure everything is back in place
-        assert(tag_paths(graph_context) == 1);
-        assert(is_graph_fully_connected(graph_context));
-        return false;
+        goto exit;
     }
 
+exit:
     // Ensure everything is back in place
     assert(tag_paths(graph_context) == 1);
     assert(is_graph_fully_connected(graph_context));
