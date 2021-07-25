@@ -241,6 +241,8 @@ uint32_t snake_distance_to_cherry(graph_context_t *graph_context) {
     return path_distance(graph_context, snake_head_position, cherry_position);
 }
 
+// FIXME: If we get stuck in a loop where target isn't reachable from source,
+// we should signal it in some way. Currently we just return a really big value.
 uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target) {
     assert(graph_context != NULL);
     assert(source.x <= graph_context->grid->width);
@@ -250,9 +252,10 @@ uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t t
 
     uint8_t  x        = source.x;
     uint8_t  y        = source.y;
+    uint8_t  x2       = source.x;
+    uint8_t  y2       = source.y;
     uint32_t distance = 0;
 
-    // TODO(@h3nnn4n): Implement loop detection
     do {
         distance++;
         direction_t direction = graph_context->path[x][y].next_direction;
@@ -263,7 +266,21 @@ uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t t
             case UP: y--; break;
             case DOWN: y++; break;
         }
-    } while (x != target.x || y != target.y);
+
+        for (int i = 0; i < 2; i++) {
+            direction = graph_context->path[x2][y2].next_direction;
+
+            switch (direction) {
+                case RIGHT: x2++; break;
+                case LEFT: x2--; break;
+                case UP: y2--; break;
+                case DOWN: y2++; break;
+            }
+        }
+    } while ((x != target.x || y != target.y) && (x != x2 || y != y2));
+
+    if (x == x2 && y == y2)
+        return (uint32_t)-1;
 
     return distance;
 }
