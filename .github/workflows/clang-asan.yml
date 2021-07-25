@@ -3,7 +3,7 @@ name: Clang ASAN check
 on: push
 
 jobs:
-  heapcheck-solve:
+  asan:
     runs-on: ubuntu-18.04
 
     steps:
