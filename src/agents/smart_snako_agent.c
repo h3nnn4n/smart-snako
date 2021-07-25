@@ -68,17 +68,17 @@ direction_t smart_snako_agent(grid_t *grid) {
     uint8_t x = grid->snake_head_x;
     uint8_t y = grid->snake_head_y;
 
-    uint16_t original_distance = snake_distance_to_cherry(graph_context);
+    for (uint8_t i = 0; i < SMART_SNAKO_PERTURBATE_PATH_ATTEMPTS; i++) {
+        uint16_t original_distance   = snake_distance_to_cherry(graph_context);
+        bool     perturbation_result = perturbate_hamiltonian_cycle(graph_context);
+        uint16_t new_distance        = snake_distance_to_cherry(graph_context);
 
-    bool perturbation_result = perturbate_hamiltonian_cycle(graph_context);
-
-    uint16_t new_distance = snake_distance_to_cherry(graph_context);
-
-    if (perturbation_result) {
-        if (new_distance >= original_distance) {
-            copy_graph_context(context->graph_context_, context->graph_context);
-        } else {
-            copy_graph_context(context->graph_context, context->graph_context_);
+        if (perturbation_result) {
+            if (new_distance >= original_distance) {
+                copy_graph_context(context->graph_context_, context->graph_context);
+            } else {
+                copy_graph_context(context->graph_context, context->graph_context_);
+            }
         }
     }
 

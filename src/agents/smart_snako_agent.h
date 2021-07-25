@@ -26,6 +26,8 @@
 
 #include "graph_utils.h"
 
+#define SMART_SNAKO_PERTURBATE_PATH_ATTEMPTS 10
+
 typedef struct {
     bool    path_found;
     uint8_t cherry_x;
