@@ -91,8 +91,8 @@ int main(int argc, char **argv) {
                 if (agent_name != NULL)
                     free(agent_name);
 
-                agent_name = malloc(strlen(optarg) * sizeof(char) + 1);
-
+                agent_name = malloc(strlen(optarg) * sizeof(char) + 2);
+                memset(agent_name, '\0', strlen(optarg) * sizeof(char) + 2);
                 memcpy(agent_name, optarg, sizeof(char) * (strlen(optarg)));
             } break;
 
