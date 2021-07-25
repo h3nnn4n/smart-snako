@@ -77,6 +77,7 @@ void destroy_graph_context(graph_context_t *graph_context) {
     assert(graph_context != NULL);
     assert(graph_context->path != NULL);
 
+    free(graph_context->path[0]);
     free(graph_context->path);
     free(graph_context);
 }
