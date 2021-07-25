@@ -31,6 +31,10 @@ This is a basic snake implementation, with several built in agents. The followin
 - `ida_dfs`: At every step, runs an IDA DFS search to find a path to the
   cherry. If no path is found, the agent picks a random direction.
 
+- `smart_snako`: Uses a halmitonian cycle to get to the cherry in a safe way.
+  However, at each game step, it tries to do small changes to the cycle in
+  order to reduce the number of cells between the snake head and the cherry.
+
 # References
 
 So cool references to look into:
@@ -47,7 +51,7 @@ up what is happening. `--width` and `--height` can be used to customize the
 board size. Some statistics are logged into `stats/`.
 
 Use `--agent` to set an agent to run. So far the following are available:
-`random`, `manhattan`, `raw_hamilton`, `dfs` and `ida_dfs`.
+`random`, `manhattan`, `raw_hamilton`, `dfs`, `ida_dfs` and `smart_snako`.
 
 # License
 
