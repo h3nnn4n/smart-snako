@@ -2,6 +2,7 @@
 
 [![gperftools](https://github.com/h3nnn4n/smart-snako/actions/workflows/heap-check.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/heap-check.yml)
 [![valgrind](https://github.com/h3nnn4n/smart-snako/actions/workflows/valgrind.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/valgrind.yml)
+[![Clang ASAN check](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-asan.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-asan.yml)
 [![clang-format](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-format-check.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-format-check.yml)
 [![clang-tidy](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-tidy.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/clang-tidy.yml)
 [![cppcheck](https://github.com/h3nnn4n/smart-snako/actions/workflows/cppcheck.yml/badge.svg)](https://github.com/h3nnn4n/smart-snako/actions/workflows/cppcheck.yml)
