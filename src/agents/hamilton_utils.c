@@ -33,7 +33,6 @@
 #include "hamilton_utils.h"
 
 bool _build_halmiton_with_dfs(graph_context_t *graph_context, uint8_t x, uint8_t y);
-void __print(graph_context_t *graph_context, uint8_t x_, uint8_t y_);
 
 bool build_halmiton_with_dfs(graph_context_t *graph_context) {
     // :)
@@ -166,6 +165,8 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
     assert(tag_paths(graph_context) == 1);
     assert(is_graph_fully_connected(graph_context));
 
+    graph_context_t *graph_context_copy = duplicate_graph_context(graph_context);
+
     grid_t *grid = graph_context->grid;
 
     uint8_t  first_splice_attempts  = 10;
@@ -174,80 +175,39 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
     uint8_t first_splice_x = 0;
     uint8_t first_splice_y = 0;
 
-    bool splice_result;
-
-    printf("\n");
-    printf("-------------------------\n");
-    printf("\n");
-    /*print_path(graph_context);*/
-    printf("super before\n");
-
     do {
         uint8_t x = get_random_number(grid->width - 1);
         uint8_t y = get_random_number(grid->height - 1);
-        /*printf("%d %d\n", x, y);*/
         if (_apply_splice(graph_context, (coord_t){.x = x, .y = y})) {
             first_splice_x = x;
             first_splice_y = y;
-            // This ensures that the splice is reversible
-            splice_result = _apply_splice(graph_context, (coord_t){.x = x, .y = y});
-            assert(splice_result);
-            __print(graph_context, first_splice_x, first_splice_y);
-            splice_result = _apply_splice(graph_context, (coord_t){.x = x, .y = y});
-            assert(splice_result);
             break;
         }
     } while (--first_splice_attempts > 0);
 
+    // No splices were applied
     if (first_splice_attempts == 0)
         return false;
 
     assert(tag_paths(graph_context) == 2);
     assert(!is_graph_fully_connected(graph_context));
 
-    printf("after first splice:\n");
-    __print(graph_context, first_splice_x, first_splice_y);
-
-    /*printf("yay first splice: %d\n", 10 - first_splice_attempts);*/
-    /*uint8_t path_count = tag_paths(graph_context);*/
-    /*printf("yay paths tagged: %d\n", path_count);*/
-
     do {
         uint8_t x = get_random_number(grid->width - 1);
         uint8_t y = get_random_number(grid->height - 1);
-        /*printf("%d %d\n", x, y);*/
         if (_apply_splice(graph_context, (coord_t){.x = x, .y = y})) {
             if (is_graph_fully_connected(graph_context)) {
                 break;
             } else {
-                splice_result = _apply_splice(graph_context, (coord_t){.x = x, .y = y});
-                assert(splice_result);
+                _apply_splice(graph_context, (coord_t){.x = x, .y = y});
             }
         }
     } while (--second_splice_attempts > 0);
 
-    /*printf("yay second splice: %d\n", 50 - second_splice_attempts);*/
-    /*path_count = tag_paths(graph_context);*/
-    /*printf("yay paths tagged: %d\n", path_count);*/
-    printf("after second splice:\n");
-    __print(graph_context, first_splice_x, first_splice_y);
-
+    // First splice was applied but second one failed to reconnect the cycles.
+    // Now we need to fix up the original path.
     if (second_splice_attempts == 0) {
-        // This undoes the first splice
-        /*printf("\n");*/
-        /*print_path(graph_context);*/
-        /*path_count = tag_paths(graph_context);*/
-        /*printf("??: %d\n", path_count);*/
-        /*printf("%d %d\n", first_splice_x, first_splice_y);*/
-        splice_result = _apply_splice(graph_context, (coord_t){.x = first_splice_x, .y = first_splice_y});
-        assert(splice_result);
-        printf("\n");
-        printf("after\n");
-        __print(graph_context, first_splice_x, first_splice_y);
-        /*printf("\n");*/
-        /*print_path(graph_context);*/
-        /*path_count = tag_paths(graph_context);*/
-        /*printf("??: %d\n", path_count);*/
+        copy_graph_context(graph_context_copy, graph_context);
 
         // Ensure everything is back in place
         assert(tag_paths(graph_context) == 1);
@@ -255,36 +215,10 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
         return false;
     }
 
-    // Make linters happy when values are not used in assertions
-    (void)splice_result;
-
     // Ensure everything is back in place
     assert(tag_paths(graph_context) == 1);
     assert(is_graph_fully_connected(graph_context));
+
+    destroy_graph_context(graph_context_copy);
     return true;
-}
-
-void __print(graph_context_t *graph_context, uint8_t x_, uint8_t y_) {
-    printf("\n");
-    for (int y = -2; y <= 3; y++) {
-        if ((uint8_t)(y + y_) >= graph_context->grid->height)
-            continue;
-
-        for (int x = -2; x <= 3; x++) {
-            if ((uint8_t)(x + x_) >= graph_context->grid->width)
-                continue;
-
-            switch (graph_context->path[x_ + x][y_ + y].next_direction) {
-                case RIGHT: printf("> "); break;
-                case LEFT: printf("< "); break;
-                case UP: printf("^ "); break;
-                case DOWN: printf("V "); break;
-                default:
-                    printf("wtf\n");
-                    abort();
-                    break;
-            }
-        }
-        printf("\n");
-    }
 }
