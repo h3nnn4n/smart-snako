@@ -230,7 +230,7 @@ void occupy_cells_with_snake(graph_context_t *graph_context) {
     }
 }
 
-uint32_t snake_distance_to_cherry(graph_context_t *graph_context) {
+uint16_t snake_distance_to_cherry(graph_context_t *graph_context) {
     grid_t *grid                = graph_context->grid;
     coord_t snake_head_position = {.x = grid->snake_head_x, .y = grid->snake_head_y};
 
@@ -243,7 +243,7 @@ uint32_t snake_distance_to_cherry(graph_context_t *graph_context) {
 
 // FIXME: If we get stuck in a loop where target isn't reachable from source,
 // we should signal it in some way. Currently we just return a really big value.
-uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target) {
+uint16_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target) {
     assert(graph_context != NULL);
     assert(source.x <= graph_context->grid->width);
     assert(source.y <= graph_context->grid->height);
@@ -254,7 +254,7 @@ uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t t
     uint8_t  y        = source.y;
     uint8_t  x2       = source.x;
     uint8_t  y2       = source.y;
-    uint32_t distance = 0;
+    uint16_t distance = 0;
 
     do {
         distance++;
@@ -280,7 +280,7 @@ uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t t
     } while ((x != target.x || y != target.y) && (x != x2 || y != y2));
 
     if (x == x2 && y == y2)
-        return (uint32_t)-1;
+        return (uint16_t)-1;
 
     return distance;
 }

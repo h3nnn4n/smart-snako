@@ -68,8 +68,8 @@ void print_reverse_path(graph_context_t *graph_context);
 
 void shuffle_directions(direction_t *directions, uint8_t n);
 
-uint32_t snake_distance_to_cherry(graph_context_t *graph_context);
-uint32_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target);
+uint16_t snake_distance_to_cherry(graph_context_t *graph_context);
+uint16_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target);
 bool     is_graph_fully_connected(graph_context_t *graph_context);
 uint8_t  tag_paths(graph_context_t *graph_context);
 

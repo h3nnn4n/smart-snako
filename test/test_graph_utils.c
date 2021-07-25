@@ -38,7 +38,7 @@ void test_path_distance__cycle_detection() {
     build_halmiton_with_dfs(graph_context);
 
     TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 1, .y = 2}));
-    TEST_ASSERT_EQUAL(4294967295, path_distance(graph_context, source, target));
+    TEST_ASSERT_EQUAL(65535, path_distance(graph_context, source, target));
 
     destroy_graph_context(graph_context);
     destroy_grid(grid);
