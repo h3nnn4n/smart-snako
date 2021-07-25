@@ -32,6 +32,7 @@ typedef struct {
     uint8_t cherry_y;
 
     graph_context_t *graph_context;
+    graph_context_t *graph_context_;
 } smart_snako_agent_context_t;
 
 void        smart_snako_agent_create(grid_t *grid);

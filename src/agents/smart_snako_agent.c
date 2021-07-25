@@ -40,12 +40,14 @@ void smart_snako_agent_create(grid_t *grid) {
 
     smart_snako_agent_context_t *agent_context = (smart_snako_agent_context_t *)grid->agent_context;
 
-    graph_context_t *graph_context = create_graph_context(grid);
-    agent_context->graph_context   = graph_context;
+    agent_context->graph_context  = create_graph_context(grid);
+    agent_context->graph_context_ = create_graph_context(grid);
 
-    bool result = build_halmiton_with_dfs(graph_context);
+    bool result = build_halmiton_with_dfs(agent_context->graph_context);
     if (!result)
         printf("WARN: failed to build halmitonian cycle\n");
+
+    copy_graph_context(agent_context->graph_context, agent_context->graph_context_);
 }
 
 void smart_snako_agent_destroy(grid_t *grid) {
@@ -54,6 +56,7 @@ void smart_snako_agent_destroy(grid_t *grid) {
     smart_snako_agent_context_t *agent_context = (smart_snako_agent_context_t *)grid->agent_context;
 
     destroy_graph_context(agent_context->graph_context);
+    destroy_graph_context(agent_context->graph_context_);
 
     free(grid->agent_context);
 }
@@ -65,7 +68,19 @@ direction_t smart_snako_agent(grid_t *grid) {
     uint8_t x = grid->snake_head_x;
     uint8_t y = grid->snake_head_y;
 
-    perturbate_hamiltonian_cycle(graph_context);
+    uint16_t original_distance = snake_distance_to_cherry(graph_context);
+
+    bool perturbation_result = perturbate_hamiltonian_cycle(graph_context);
+
+    uint16_t new_distance = snake_distance_to_cherry(graph_context);
+
+    if (perturbation_result) {
+        if (new_distance >= original_distance) {
+            copy_graph_context(context->graph_context_, context->graph_context);
+        } else {
+            copy_graph_context(context->graph_context, context->graph_context_);
+        }
+    }
 
     direction_t next_direction = graph_context->path[x][y].next_direction;
 
