@@ -68,6 +68,7 @@ callgrind_prepare:
 	$(eval OPTIMIZATION=-g -O2 -DNDEBUG -fno-inline-functions -fno-inline-functions-called-once -fno-optimize-sibling-calls -fno-default-inline -fno-inline)
 
 asan_prepare:
+	$(eval CC=clang)
 	$(eval OPTIMIZATION=-g -O0)
 	$(eval LDFLAGS+=-fsanitize=address)
 	$(eval CPPFLAGS+=-fsanitize=address -fno-omit-frame-pointer)

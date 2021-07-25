@@ -1,0 +1,30 @@
+name: Clang ASAN check
+
+on: push
+
+jobs:
+  heapcheck-solve:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+          submodules: true
+
+      - name: Install clang
+        run: |
+          sudo apt-get install -y clang
+
+      - name: Build
+        run: make asan
+
+      - name: Run instrumented code
+        run: |
+          ./smart-snako --verbose
+          ./smart-snako --width=10 --height=10
+          ./smart-snako --width=30 --height=30 --agent="random"
+          ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
+          ./smart-snako --width=30 --height=30 --agent="manhattan"
+          ./smart-snako --width=30 --height=30 --agent="dfs"
+          ./smart-snako --width=30 --height=30 --agent="ida_dfs"
