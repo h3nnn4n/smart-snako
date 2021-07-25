@@ -124,7 +124,6 @@ void test__apply_splice_random_super() {
     TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
 
     for (uint16_t i = 0; i < 1000; i++) {
-        printf("%d\n", i);
         uint8_t x = get_random_number(width - 1);
         uint8_t y = get_random_number(height - 1);
 
@@ -143,6 +142,28 @@ void test__apply_splice_random_super() {
         // Doing this results in several splices being applied on top of each other
         TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = x, .y = y}));
     }
+
+    destroy_graph_context(graph_context);
+    destroy_grid(grid);
+}
+
+// Test if path_distance doesn't get stuck in an infinite loop if target is
+// unreachable from source
+void test__apply_splice__path_distance_bug() {
+    uint8_t width  = 4;
+    uint8_t height = 4;
+
+    coord_t source = {.x = 0, .y = 0};
+    coord_t target = {.x = 2, .y = 2};
+
+    grid_t *         grid          = create_grid(width, height);
+    graph_context_t *graph_context = create_graph_context(grid);
+
+    build_halmiton_with_dfs(graph_context);
+
+    TEST_ASSERT_TRUE(_apply_splice(graph_context, (coord_t){.x = 1, .y = 2}));
+
+    path_distance(graph_context, source, target);
 
     destroy_graph_context(graph_context);
     destroy_grid(grid);
@@ -189,6 +210,7 @@ int main() {
 
     RUN_TEST(test_build_halmiton_with_dfs_visits_all_cells);
     RUN_TEST(test__apply_splice);
+    RUN_TEST(test__apply_splice__path_distance_bug);
     RUN_TEST(test__apply_splice_random);
     RUN_TEST(test__apply_splice_random_super);
     RUN_TEST(test_perturbate_hamiltonian_cycle);
