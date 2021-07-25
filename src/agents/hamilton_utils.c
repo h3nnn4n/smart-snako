@@ -174,6 +174,8 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
     uint8_t first_splice_x = 0;
     uint8_t first_splice_y = 0;
 
+    bool splice_result;
+
     printf("\n");
     printf("-------------------------\n");
     printf("\n");
@@ -188,9 +190,11 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
             first_splice_x = x;
             first_splice_y = y;
             // This ensures that the splice is reversible
-            assert(_apply_splice(graph_context, (coord_t){.x = x, .y = y}));
+            splice_result = _apply_splice(graph_context, (coord_t){.x = x, .y = y});
+            assert(splice_result);
             __print(graph_context, first_splice_x, first_splice_y);
-            assert(_apply_splice(graph_context, (coord_t){.x = x, .y = y}));
+            splice_result = _apply_splice(graph_context, (coord_t){.x = x, .y = y});
+            assert(splice_result);
             break;
         }
     } while (--first_splice_attempts > 0);
@@ -215,8 +219,10 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
         if (_apply_splice(graph_context, (coord_t){.x = x, .y = y})) {
             if (is_graph_fully_connected(graph_context))
                 break;
-            else
-                assert(_apply_splice(graph_context, (coord_t){.x = x, .y = y}));
+            else {
+                splice_result = _apply_splice(graph_context, (coord_t){.x = x, .y = y});
+                assert(splice_result);
+            }
         }
     } while (--second_splice_attempts > 0);
 
@@ -233,7 +239,8 @@ bool perturbate_hamiltonian_cycle(graph_context_t *graph_context) {
         /*path_count = tag_paths(graph_context);*/
         /*printf("??: %d\n", path_count);*/
         /*printf("%d %d\n", first_splice_x, first_splice_y);*/
-        assert(_apply_splice(graph_context, (coord_t){.x = first_splice_x, .y = first_splice_y}));
+        splice_result = _apply_splice(graph_context, (coord_t){.x = first_splice_x, .y = first_splice_y});
+        assert(splice_result);
         printf("\n");
         printf("after\n");
         __print(graph_context, first_splice_x, first_splice_y);
