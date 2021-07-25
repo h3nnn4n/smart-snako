@@ -1,13 +1,11 @@
 build/
-cubotron
-*_tables
+runs/
+.cache/
 
 *.csv
 
 .ipynb_checkpoints
 *.ipynb
-
-.cache/
 
 gmon.out
 
