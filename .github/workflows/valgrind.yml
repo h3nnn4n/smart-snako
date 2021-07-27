@@ -24,9 +24,9 @@ jobs:
         run: |
           valgrind ./smart-snako
           valgrind ./smart-snako --width=10 --height=10
-          valgrind ./smart-snako --width=30 --height=30 --agent="random"
-          valgrind ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
-          valgrind ./smart-snako --width=30 --height=30 --agent="manhattan"
-          valgrind ./smart-snako --width=30 --height=30 --agent="dfs"
-          valgrind ./smart-snako --width=30 --height=30 --agent="ida_dfs"
-          valgrind ./smart-snako --width=30 --height=30 --agent="smart_snako"
+          valgrind ./smart-snako --width=20 --height=20 --agent="random"
+          valgrind ./smart-snako --width=20 --height=20 --agent="raw_hamilton"
+          valgrind ./smart-snako --width=20 --height=20 --agent="manhattan"
+          valgrind ./smart-snako --width=20 --height=20 --agent="dfs"
+          valgrind ./smart-snako --width=20 --height=20 --agent="ida_dfs"
+          valgrind ./smart-snako --width=20 --height=20 --agent="smart_snako"
