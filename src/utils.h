@@ -21,9 +21,15 @@
 #ifndef SRC_UTILS_H_
 #define SRC_UTILS_H_
 
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "grid.h"
 
 direction_t get_random_direction();
 uint8_t     get_random_number(uint8_t max_val);
+double      timespec_diff(struct timespec *time_start, struct timespec *time_end);
 
 #endif  // SRC_UTILS_H_
