@@ -172,7 +172,7 @@ int main(int argc, char **argv) {
     }
 
     clock_gettime(CLOCK_MONOTONIC, &end);
-    double agent_runtime = timespec_diff(&end, &start);
+    double agent_runtime = timespec_diff(&start, &end);
     register_agent_runtime(grid->stats, agent_runtime);
 
     dump_stats(grid->stats);
