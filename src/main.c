@@ -32,6 +32,7 @@
 #include "agents/manhattan_agent.h"
 #include "agents/random_agent.h"
 #include "agents/raw_hamilton_agent.h"
+#include "agents/smart_snako_agent.h"
 
 #include "cherry.h"
 #include "config.h"
@@ -143,6 +144,10 @@ int main(int argc, char **argv) {
         agent         = ida_dfs_agent;
         agent_create  = ida_dfs_agent_create;
         agent_destroy = ida_dfs_agent_destroy;
+    } else if (strcmp(agent_name, "smart_snako") == 0) {
+        agent         = smart_snako_agent;
+        agent_create  = smart_snako_agent_create;
+        agent_destroy = smart_snako_agent_destroy;
     } else {
         fprintf(stderr, "\"%s\" is not a valid agent\n", agent_name);
         free(agent_name);

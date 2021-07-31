@@ -26,6 +26,11 @@
 #include <grid.h>
 
 typedef struct {
+    uint8_t x;
+    uint8_t y;
+} coord_t;
+
+typedef struct {
     // Where this node leads to
     direction_t next_direction;
     // What direction led to this node
@@ -36,6 +41,8 @@ typedef struct {
     bool target;
     bool source;
     bool blocked;
+
+    int8_t path_id;
 } tuple_t;
 
 typedef struct {
@@ -46,6 +53,8 @@ typedef struct {
 direction_t get_safe_random_direction(grid_t *grid);
 
 graph_context_t *create_graph_context(grid_t *grid);
+graph_context_t *duplicate_graph_context(graph_context_t *graph_context);
+void             copy_graph_context(graph_context_t *source_graph_context, graph_context_t *dest_graph_context);
 void             destroy_graph_context(graph_context_t *graph);
 void             reset_graph_context(graph_context_t *graph_context);
 
@@ -60,5 +69,10 @@ void print_path(graph_context_t *graph_context);
 void print_reverse_path(graph_context_t *graph_context);
 
 void shuffle_directions(direction_t *directions, uint8_t n);
+
+uint16_t snake_distance_to_cherry(graph_context_t *graph_context);
+uint16_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target);
+bool     is_graph_fully_connected(graph_context_t *graph_context);
+uint8_t  tag_paths(graph_context_t *graph_context);
 
 #endif  // SRC_AGENTS_AGENT_UTILS_H_

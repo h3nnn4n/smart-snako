@@ -18,20 +18,27 @@
  *
  */
 
-#ifndef SRC_AGENTS_RAW_HAMILTON_AGENT_H_
-#define SRC_AGENTS_RAW_HAMILTON_AGENT_H_
+#ifndef SRC_AGENTS_SMART_SNAKO_AGENT_H_
+#define SRC_AGENTS_SMART_SNAKO_AGENT_H_
 
 #include <grid.h>
 #include <utils.h>
 
 #include "graph_utils.h"
 
+#define SMART_SNAKO_PERTURBATE_PATH_ATTEMPTS 10
+
 typedef struct {
+    bool    path_found;
+    uint8_t cherry_x;
+    uint8_t cherry_y;
+
     graph_context_t *graph_context;
-} raw_hamilton_context_t;
+    graph_context_t *graph_context_;
+} smart_snako_agent_context_t;
 
-void        raw_hamilton_agent_create(grid_t *grid);
-void        raw_hamilton_agent_destroy(grid_t *grid);
-direction_t raw_hamilton_agent(grid_t *grid);
+void        smart_snako_agent_create(grid_t *grid);
+void        smart_snako_agent_destroy(grid_t *grid);
+direction_t smart_snako_agent(grid_t *grid);
 
-#endif  // SRC_AGENTS_RAW_HAMILTON_AGENT_H_
+#endif  // SRC_AGENTS_SMART_SNAKO_AGENT_H_

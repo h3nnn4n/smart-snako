@@ -20,5 +20,13 @@ jobs:
       - name: Build
         run: make callgrind
 
-      - name: Run valgrind on sudoku gen
-        run: ./smart-snako 1 2
+      - name: Run valgrind
+        run: |
+          valgrind ./smart-snako
+          valgrind ./smart-snako --width=10 --height=10
+          valgrind ./smart-snako --width=20 --height=20 --agent="random"
+          valgrind ./smart-snako --width=20 --height=20 --agent="raw_hamilton"
+          valgrind ./smart-snako --width=20 --height=20 --agent="manhattan"
+          valgrind ./smart-snako --width=20 --height=20 --agent="dfs"
+          valgrind ./smart-snako --width=20 --height=20 --agent="ida_dfs"
+          valgrind ./smart-snako --width=20 --height=20 --agent="smart_snako"

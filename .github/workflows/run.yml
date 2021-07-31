@@ -3,7 +3,7 @@ name: Smoke Test
 on: push
 
 jobs:
-  run-benchmarks:
+  run:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
 
@@ -24,8 +24,9 @@ jobs:
         run: |
           ./smart-snako --verbose
           ./smart-snako --width=10 --height=10
-          ./smart-snako --width=30 --height=30 --agent="random"
-          ./smart-snako --width=30 --height=30 --agent="raw_hamilton"
-          ./smart-snako --width=30 --height=30 --agent="manhattan"
-          ./smart-snako --width=30 --height=30 --agent="dfs"
-          ./smart-snako --width=30 --height=30 --agent="ida_dfs"
+          ./smart-snako --width=20 --height=20 --agent="random"
+          ./smart-snako --width=20 --height=20 --agent="raw_hamilton"
+          ./smart-snako --width=20 --height=20 --agent="manhattan"
+          ./smart-snako --width=20 --height=20 --agent="dfs"
+          ./smart-snako --width=20 --height=20 --agent="ida_dfs"
+          ./smart-snako --width=20 --height=20 --agent="smart_snako"

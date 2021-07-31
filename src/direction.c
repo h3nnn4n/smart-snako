@@ -18,20 +18,11 @@
  *
  */
 
-#ifndef SRC_AGENTS_RAW_HAMILTON_AGENT_H_
-#define SRC_AGENTS_RAW_HAMILTON_AGENT_H_
+#include "direction.h"
 
-#include <grid.h>
-#include <utils.h>
-
-#include "graph_utils.h"
-
-typedef struct {
-    graph_context_t *graph_context;
-} raw_hamilton_context_t;
-
-void        raw_hamilton_agent_create(grid_t *grid);
-void        raw_hamilton_agent_destroy(grid_t *grid);
-direction_t raw_hamilton_agent(grid_t *grid);
-
-#endif  // SRC_AGENTS_RAW_HAMILTON_AGENT_H_
+char *direction_to_str[] = {
+    "LEFT",
+    "RIGHT",
+    "UP",
+    "DOWN",
+};

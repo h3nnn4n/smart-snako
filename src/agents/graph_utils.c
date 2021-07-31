@@ -73,6 +73,27 @@ graph_context_t *create_graph_context(grid_t *grid) {
     return graph;
 }
 
+graph_context_t *duplicate_graph_context(graph_context_t *graph_context) {
+    grid_t *         grid              = graph_context->grid;
+    graph_context_t *new_graph_context = create_graph_context(grid);
+
+    copy_graph_context(graph_context, new_graph_context);
+
+    return new_graph_context;
+}
+
+void copy_graph_context(graph_context_t *source_graph_context, graph_context_t *dest_graph_context) {
+    grid_t *grid             = source_graph_context->grid;
+    dest_graph_context->grid = grid;
+
+    // This could be a memcpy, but explicitly copying all data seems safer
+    for (int y = 0; y < grid->height; y++) {
+        for (int x = 0; x < grid->width; x++) {
+            dest_graph_context->path[x][y].next_direction = source_graph_context->path[x][y].next_direction;
+        }
+    }
+}
+
 void destroy_graph_context(graph_context_t *graph_context) {
     assert(graph_context != NULL);
     assert(graph_context->path != NULL);
@@ -163,11 +184,8 @@ void set_graph_target(graph_context_t *graph_context, uint8_t x, uint8_t y) {
     assert(graph_context != NULL);
     assert(graph_context->grid != NULL);
     assert(graph_context->path != NULL);
-
-    grid_t *grid = graph_context->grid;
-
-    assert(x < grid->width);
-    assert(y < grid->height);
+    assert(x < graph_context->grid->width);
+    assert(y < graph_context->grid->height);
 
     graph_context->path[x][y].target = true;
 }
@@ -231,4 +249,173 @@ void occupy_cells_with_snake(graph_context_t *graph_context) {
             }
         }
     }
+}
+
+uint16_t snake_distance_to_cherry(graph_context_t *graph_context) {
+    assert(graph_context != NULL);
+    assert(graph_context->grid != NULL);
+
+    grid_t *grid                = graph_context->grid;
+    coord_t snake_head_position = {.x = grid->snake_head_x, .y = grid->snake_head_y};
+
+    assert(snake_head_position.x <= grid->width);
+    assert(snake_head_position.y <= grid->height);
+
+    assert(has_cherry(grid));
+
+    coord_t cherry_position;
+
+    get_cherry_position(grid, &cherry_position.x, &cherry_position.y);
+
+    assert(cherry_position.x <= grid->width);
+    assert(cherry_position.y <= grid->height);
+
+    return path_distance(graph_context, snake_head_position, cherry_position);
+}
+
+// FIXME: If we get stuck in a loop where target isn't reachable from source,
+// we should signal it in some way. Currently we just return a really big value.
+uint16_t path_distance(graph_context_t *graph_context, coord_t source, coord_t target) {
+    assert(graph_context != NULL);
+    assert(source.x <= graph_context->grid->width);
+    assert(source.y <= graph_context->grid->height);
+    assert(target.x <= graph_context->grid->width);
+    assert(target.y <= graph_context->grid->height);
+
+    uint8_t  x        = source.x;
+    uint8_t  y        = source.y;
+    uint8_t  x2       = source.x;
+    uint8_t  y2       = source.y;
+    uint16_t distance = 0;
+
+    do {
+        distance++;
+        direction_t direction = graph_context->path[x][y].next_direction;
+
+        switch (direction) {
+            case RIGHT: x++; break;
+            case LEFT: x--; break;
+            case UP: y--; break;
+            case DOWN: y++; break;
+        }
+
+        for (int i = 0; i < 2; i++) {
+            direction = graph_context->path[x2][y2].next_direction;
+
+            switch (direction) {
+                case RIGHT: x2++; break;
+                case LEFT: x2--; break;
+                case UP: y2--; break;
+                case DOWN: y2++; break;
+            }
+        }
+    } while ((x != target.x || y != target.y) && (x != x2 || y != y2));
+
+    if (x == x2 && y == y2)
+        return (uint16_t)-1;
+
+    return distance;
+}
+
+bool is_graph_fully_connected(graph_context_t *graph_context) {
+    assert(graph_context != NULL);
+    grid_t *grid = graph_context->grid;
+
+    uint8_t  x               = 0;
+    uint8_t  y               = 0;
+    uint8_t  x2              = 0;
+    uint8_t  y2              = 0;
+    uint32_t visited         = 0;
+    uint32_t number_of_cells = grid->width * grid->height;
+
+    do {
+        visited++;
+        direction_t direction = graph_context->path[x][y].next_direction;
+
+        switch (direction) {
+            case RIGHT: x++; break;
+            case LEFT: x--; break;
+            case UP: y--; break;
+            case DOWN: y++; break;
+        }
+
+        for (int i = 0; i < 2; i++) {
+            direction = graph_context->path[x2][y2].next_direction;
+
+            switch (direction) {
+                case RIGHT: x2++; break;
+                case LEFT: x2--; break;
+                case UP: y2--; break;
+                case DOWN: y2++; break;
+            }
+        }
+    } while ((x != 0 || y != 0) && (x != x2 || y != y2));
+
+    if (grid->width % 2 == 1 && grid->height % 2 == 1)
+        return visited == number_of_cells - 1;
+
+    return visited == number_of_cells;
+}
+
+void _reset_path_ids(graph_context_t *graph_context) {
+    grid_t *grid = graph_context->grid;
+
+    for (int y = 0; y < grid->height; y++)
+        for (int x = 0; x < grid->width; x++)
+            graph_context->path[x][y].path_id = -1;
+}
+
+void _tag_path(graph_context_t *graph_context, uint8_t tag_id, coord_t position) {
+    uint8_t x = position.x;
+    uint8_t y = position.y;
+
+    assert(x < graph_context->grid->width);
+    assert(y < graph_context->grid->height);
+
+    /*print_path(graph_context);*/
+
+    do {
+        graph_context->path[x][y].path_id = tag_id;
+        direction_t direction             = graph_context->path[x][y].next_direction;
+
+        switch (direction) {
+            case RIGHT: x++; break;
+            case LEFT: x--; break;
+            case UP: y--; break;
+            case DOWN: y++; break;
+        }
+        /*printf("%d %d\n", x, y);*/
+
+        assert(x < graph_context->grid->width);
+        assert(y < graph_context->grid->height);
+    } while (x != position.x || y != position.y);
+}
+
+uint8_t tag_paths(graph_context_t *graph_context) {
+    uint8_t path_count = 0;
+
+    // FIXME: This probably wont work with odd size grids
+
+    grid_t *grid = graph_context->grid;
+
+    _reset_path_ids(graph_context);
+    /*printf("paths reset\n");*/
+
+    while (true) {
+        for (int y = 0; y < grid->height; y++) {
+            for (int x = 0; x < grid->width; x++) {
+                if (graph_context->path[x][y].path_id < 0) {
+                    /*printf("found untagged at %d %d\n", x, y);*/
+                    _tag_path(graph_context, path_count, (coord_t){.x = x, .y = y});
+                    path_count++;
+                    continue;
+                }
+            }
+        }
+
+        // Getting here means that we found no unvisited cells
+        break;
+    }
+
+    return path_count;
 }

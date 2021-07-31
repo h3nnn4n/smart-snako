@@ -28,4 +28,6 @@ typedef enum {
     DOWN,
 } direction_t;
 
+extern char *direction_to_str[];
+
 #endif  // SRC_DIRECTION_H_
