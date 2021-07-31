@@ -61,12 +61,13 @@ void smart_snako_agent_destroy(grid_t *grid) {
     free(grid->agent_context);
 }
 
-direction_t smart_snako_agent(grid_t *grid) {
-    smart_snako_agent_context_t *context       = (smart_snako_agent_context_t *)grid->agent_context;
-    graph_context_t *            graph_context = context->graph_context;
+void try_reducing_distance_to_cherry(smart_snako_agent_context_t *context) {
+    graph_context_t *graph_context = context->graph_context;
+    grid_t *         grid          = graph_context->grid;
 
-    uint8_t x = grid->snake_head_x;
-    uint8_t y = grid->snake_head_y;
+    // When the snake fills the grid there won't be cherries anymore
+    if (!has_cherry(grid))
+        return;
 
     for (uint8_t i = 0; i < SMART_SNAKO_PERTURBATE_PATH_ATTEMPTS; i++) {
         uint16_t original_distance   = snake_distance_to_cherry(graph_context);
@@ -81,6 +82,16 @@ direction_t smart_snako_agent(grid_t *grid) {
             }
         }
     }
+}
+
+direction_t smart_snako_agent(grid_t *grid) {
+    smart_snako_agent_context_t *context       = (smart_snako_agent_context_t *)grid->agent_context;
+    graph_context_t *            graph_context = context->graph_context;
+
+    uint8_t x = grid->snake_head_x;
+    uint8_t y = grid->snake_head_y;
+
+    try_reducing_distance_to_cherry(context);
 
     direction_t next_direction = graph_context->path[x][y].next_direction;
 
