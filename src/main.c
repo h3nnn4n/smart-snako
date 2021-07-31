@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include <entropy.h>
 #include <pcg_variants.h>
@@ -37,6 +38,7 @@
 #include "cherry.h"
 #include "config.h"
 #include "grid.h"
+#include "stats.h"
 #include "utils.h"
 
 static config_t *config;
@@ -154,6 +156,9 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
     grid_t *grid = create_grid(width, height);
     set_agent_name(grid->stats, agent_name);
     spawn_cherry(grid);
@@ -165,6 +170,10 @@ int main(int argc, char **argv) {
         direction_t direction = agent(grid);
         simulate(grid, direction);
     }
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    double agent_runtime = timespec_diff(&start, &end);
+    register_agent_runtime(grid->stats, agent_runtime);
 
     dump_stats(grid->stats);
 
