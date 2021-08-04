@@ -22,6 +22,7 @@
 #define SRC_STATS_H_
 
 #include <stdint.h>
+#include <time.h>
 
 #include "grid.h"
 
@@ -32,6 +33,9 @@ typedef struct stats_s {
     uint32_t moves_since_last_cherry;
     double   agent_runtime;
 
+    struct timespec runtime_start;
+    struct timespec runtime_end;
+
     struct grid_s *grid;
 } stats_t;
 
@@ -39,7 +43,8 @@ stats_t *create_stats();
 void     destroy_stats(stats_t *stats);
 void     register_move(stats_t *stats);
 void     register_cherry_eaten(stats_t *stats);
-void     register_agent_runtime(stats_t *stats, double runtime);
+void     register_agent_runtime_start(stats_t *stats);
+void     register_agent_runtime_end(stats_t *stats);
 void     print_stats(stats_t *stats);
 void     dump_stats(stats_t *stats);
 void     set_agent_name(stats_t *stats, char *agent_name);

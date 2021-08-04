@@ -156,12 +156,10 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    struct timespec start, end;
-    clock_gettime(CLOCK_MONOTONIC, &start);
-
     grid_t *grid = create_grid(width, height);
     set_agent_name(grid->stats, agent_name);
     spawn_cherry(grid);
+    register_agent_runtime_start(grid->stats);
     agent_create(grid);
 
     while (!is_game_over(grid)) {
@@ -171,12 +169,8 @@ int main(int argc, char **argv) {
         simulate(grid, direction);
     }
 
-    clock_gettime(CLOCK_MONOTONIC, &end);
-    double agent_runtime = timespec_diff(&start, &end);
-    register_agent_runtime(grid->stats, agent_runtime);
-
+    register_agent_runtime_end(grid->stats);
     dump_stats(grid->stats);
-
     agent_destroy(grid);
     destroy_grid(grid);
 

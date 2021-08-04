@@ -28,6 +28,7 @@
 #include "config.h"
 #include "file_utils.h"
 #include "stats.h"
+#include "utils.h"
 
 stats_t *create_stats() {
     stats_t *stats = malloc(sizeof(stats_t));
@@ -53,7 +54,13 @@ void register_cherry_eaten(stats_t *stats) {
     stats->moves_since_last_cherry = 0;
 }
 
-void register_agent_runtime(stats_t *stats, double runtime) { stats->agent_runtime = runtime; }
+void register_agent_runtime_start(stats_t *stats) { clock_gettime(CLOCK_MONOTONIC, &stats->runtime_start); }
+
+void register_agent_runtime_end(stats_t *stats) {
+    clock_gettime(CLOCK_MONOTONIC, &stats->runtime_end);
+
+    stats->agent_runtime = timespec_diff(&stats->runtime_start, &stats->runtime_end);
+}
 
 void print_stats(stats_t *stats) {
     if (!get_config()->verbose)
