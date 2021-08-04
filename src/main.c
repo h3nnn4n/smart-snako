@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include <entropy.h>
 #include <pcg_variants.h>
@@ -37,6 +38,7 @@
 #include "cherry.h"
 #include "config.h"
 #include "grid.h"
+#include "stats.h"
 #include "utils.h"
 
 static config_t *config;
@@ -157,6 +159,7 @@ int main(int argc, char **argv) {
     grid_t *grid = create_grid(width, height);
     set_agent_name(grid->stats, agent_name);
     spawn_cherry(grid);
+    register_agent_runtime_start(grid->stats);
     agent_create(grid);
 
     while (!is_game_over(grid)) {
@@ -166,8 +169,8 @@ int main(int argc, char **argv) {
         simulate(grid, direction);
     }
 
+    register_agent_runtime_end(grid->stats);
     dump_stats(grid->stats);
-
     agent_destroy(grid);
     destroy_grid(grid);
 

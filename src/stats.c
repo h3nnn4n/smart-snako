@@ -19,13 +19,16 @@
  */
 
 #include <assert.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "config.h"
 #include "file_utils.h"
 #include "stats.h"
+#include "utils.h"
 
 stats_t *create_stats() {
     stats_t *stats = malloc(sizeof(stats_t));
@@ -51,6 +54,14 @@ void register_cherry_eaten(stats_t *stats) {
     stats->moves_since_last_cherry = 0;
 }
 
+void register_agent_runtime_start(stats_t *stats) { clock_gettime(CLOCK_MONOTONIC, &stats->runtime_start); }
+
+void register_agent_runtime_end(stats_t *stats) {
+    clock_gettime(CLOCK_MONOTONIC, &stats->runtime_end);
+
+    stats->agent_runtime = timespec_diff(&stats->runtime_start, &stats->runtime_end);
+}
+
 void print_stats(stats_t *stats) {
     if (!get_config()->verbose)
         return;
@@ -71,14 +82,14 @@ void dump_stats(stats_t *stats) {
 
     if (!file_exists(filename)) {
         f = fopen(filename, "wt");
-        fprintf(f, "agent_name,cherries_eaten,total_moves,");
+        fprintf(f, "agent_name,cherries_eaten,total_moves,agent_runtime,");
         fprintf(f, "max_moves_without_cherry,grid_width,grid_height");
         fprintf(f, "\n");
     } else {
         f = fopen(filename, "at");
     }
 
-    fprintf(f, "%s,%u,%u,", stats->agent_name, stats->cherries_eaten, stats->total_moves);
+    fprintf(f, "%s,%u,%u,%f,", stats->agent_name, stats->cherries_eaten, stats->total_moves, stats->agent_runtime);
     fprintf(f, "%u,%u,%u", grid->max_moves_without_cherry, grid->width, grid->height);
     fprintf(f, "\n");
 

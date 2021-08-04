@@ -18,6 +18,8 @@
  *
  */
 
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -29,3 +31,8 @@
 direction_t get_random_direction() { return pcg32_boundedrand(4); }
 
 uint8_t get_random_number(uint8_t max_val) { return (uint8_t)pcg32_boundedrand(max_val); }
+
+double timespec_diff(struct timespec *time_start, struct timespec *time_end) {
+    return ((time_end->tv_sec + (double)time_end->tv_nsec / 1000000000) -
+            (time_start->tv_sec + (double)time_start->tv_nsec / 1000000000));
+}
