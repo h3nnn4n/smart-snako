@@ -30,3 +30,4 @@ jobs:
           valgrind ./smart-snako --width=20 --height=20 --agent="dfs"
           valgrind ./smart-snako --width=20 --height=20 --agent="ida_dfs"
           valgrind ./smart-snako --width=20 --height=20 --agent="smart_snako"
+          valgrind ./smart-snako --width=15 --height=15 --agent="smart_snako_exaustive"

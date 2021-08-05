@@ -18,17 +18,21 @@
  *
  */
 
-#ifndef SRC_AGENTS_HAMILTON_UTILS_H_
-#define SRC_AGENTS_HAMILTON_UTILS_H_
+#ifndef SRC_AGENTS_SMART_SNAKO_EXAUSTIVE_AGENT_H_
+#define SRC_AGENTS_SMART_SNAKO_EXAUSTIVE_AGENT_H_
 
-#include <stdbool.h>
-#include <stdint.h>
+#include <grid.h>
+#include <utils.h>
 
 #include "graph_utils.h"
 
-bool build_halmiton_with_dfs(graph_context_t *graph_context);
-bool perturbate_hamiltonian_cycle(graph_context_t *graph_context);
-bool perturbate_hamiltonian_cycle_exaustive_greedy(graph_context_t *graph_context);
-bool _apply_splice(graph_context_t *graph_context, coord_t position);
+typedef struct {
+    graph_context_t *graph_context;
+    graph_context_t *graph_context_;
+} smart_snako_exaustive_agent_context_t;
 
-#endif  // SRC_AGENTS_HAMILTON_UTILS_H_
+void        smart_snako_exaustive_agent_create(grid_t *grid);
+void        smart_snako_exaustive_agent_destroy(grid_t *grid);
+direction_t smart_snako_exaustive_agent(grid_t *grid);
+
+#endif  // SRC_AGENTS_SMART_SNAKO_EXAUSTIVE_AGENT_H_

@@ -213,3 +213,66 @@ exit:
     destroy_graph_context(graph_context_copy);
     return true;
 }
+
+// Same as perturbate_hamiltonian_cycle, but it tries all positions until a
+// valid pertubation is found or all possibilities are exausted. Also, only
+// applies moves that reduce the distance
+bool perturbate_hamiltonian_cycle_exaustive_greedy(graph_context_t *graph_context) {
+    // FIXME needs some extra logic to handle odd grids
+
+    // Can't work on a path not fully connected
+    assert(tag_paths(graph_context) == 1);
+    assert(is_graph_fully_connected(graph_context));
+
+    graph_context_t *graph_context_copy = duplicate_graph_context(graph_context);
+    graph_context_t *graph_context_tmp  = duplicate_graph_context(graph_context);
+    grid_t *         grid               = graph_context->grid;
+    bool             perturbation_found = false;
+    uint16_t         original_distance  = snake_distance_to_cherry(graph_context);
+
+    for (uint8_t x = 0; x < grid->width - 1; x++) {
+        for (uint8_t y = 0; y < grid->height - 1; y++) {
+            assert(is_graph_fully_connected(graph_context));
+
+            if (!_apply_splice(graph_context, (coord_t){.x = x, .y = y}))
+                continue;
+
+            copy_graph_context(graph_context, graph_context_tmp);
+            assert(!is_graph_fully_connected(graph_context));
+
+            for (uint8_t x2 = 0; x2 < grid->width - 1; x2++) {
+                for (uint8_t y2 = 0; y2 < grid->height - 1; y2++) {
+                    bool splice_applied        = _apply_splice(graph_context, (coord_t){.x = x2, .y = y2});
+                    bool graph_fully_connected = is_graph_fully_connected(graph_context);
+                    if (splice_applied && graph_fully_connected) {
+                        assert(is_graph_fully_connected(graph_context));
+                        if (snake_distance_to_cherry(graph_context) < original_distance) {
+                            /*printf("Improved path\n");*/
+                            perturbation_found = true;
+                            goto exit;
+                        } else {
+                            /*printf("Splice failed to imrpove path \n");*/
+                            copy_graph_context(graph_context_tmp, graph_context);
+                        }
+                    } else {
+                        copy_graph_context(graph_context_tmp, graph_context);
+                    }
+                }
+            }
+
+            copy_graph_context(graph_context_copy, graph_context);
+        }
+    }
+
+exit:
+    if (!perturbation_found)
+        copy_graph_context(graph_context_copy, graph_context);
+
+    destroy_graph_context(graph_context_copy);
+    destroy_graph_context(graph_context_tmp);
+
+    assert(tag_paths(graph_context) == 1);
+    assert(is_graph_fully_connected(graph_context));
+
+    return perturbation_found;
+}
