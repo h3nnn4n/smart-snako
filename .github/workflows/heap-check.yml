@@ -30,5 +30,6 @@ jobs:
           ./smart-snako --width=20 --height=20 --agent="dfs"
           ./smart-snako --width=20 --height=20 --agent="ida_dfs"
           ./smart-snako --width=20 --height=20 --agent="smart_snako"
+          ./smart-snako --width=15 --height=15 --agent="smart_snako_exaustive"
         env:
           HEAPCHECK: normal

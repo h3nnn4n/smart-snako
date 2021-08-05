@@ -62,7 +62,6 @@ void smart_snako_exaustive_agent_destroy(grid_t *grid) {
 }
 
 static void try_reducing_distance_to_cherry(smart_snako_exaustive_agent_context_t *context) {
-    printf("yay\n");
     graph_context_t *graph_context = context->graph_context;
 
     perturbate_hamiltonian_cycle_exaustive_greedy(graph_context);
