@@ -180,6 +180,42 @@ void test_perturbate_hamiltonian_cycle() {
     }
 }
 
+void test_perturbate_hamiltonian_cycle_exaustive_greedy() {
+    uint8_t width  = 20;
+    uint8_t height = 20;
+
+    for (int i = 0; i < 5; i++) {
+        grid_t *         grid          = create_grid(width, height);
+        graph_context_t *graph_context = create_graph_context(grid);
+        spawn_cherry(grid);
+
+        build_halmiton_with_dfs(graph_context);
+
+        for (int j = 0; j < 10; j++) {
+            TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
+            TEST_ASSERT_EQUAL(1, tag_paths(graph_context));
+
+            uint16_t distance_before = snake_distance_to_cherry(graph_context);
+            bool     path_improved   = perturbate_hamiltonian_cycle_exaustive_greedy(graph_context);
+            uint16_t distance_after  = snake_distance_to_cherry(graph_context);
+            /*printf("before: %3d   after: %3d\n", distance_before, distance_after);*/
+
+            TEST_ASSERT_TRUE(is_graph_fully_connected(graph_context));
+            TEST_ASSERT_EQUAL(1, tag_paths(graph_context));
+
+            if (path_improved) {
+                TEST_ASSERT_TRUE(distance_after < distance_before);
+            } else {
+                TEST_ASSERT_EQUAL(distance_after, distance_before);
+                break;
+            }
+        }
+
+        destroy_graph_context(graph_context);
+        destroy_grid(grid);
+    }
+}
+
 void setUp() {}
 void tearDown() {}
 
@@ -191,6 +227,7 @@ int main() {
     RUN_TEST(test__apply_splice_random);
     RUN_TEST(test__apply_splice_random_super);
     RUN_TEST(test_perturbate_hamiltonian_cycle);
+    RUN_TEST(test_perturbate_hamiltonian_cycle_exaustive_greedy);
 
     return UNITY_END();
 }
