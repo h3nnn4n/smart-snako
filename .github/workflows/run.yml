@@ -22,7 +22,7 @@ jobs:
 
       - name: Run
         run: |
-          ./smart-snako --verbose
+          ./smart-snako
           ./smart-snako --width=10 --height=10
           ./smart-snako --width=20 --height=20 --agent="random"
           ./smart-snako --width=20 --height=20 --agent="raw_hamilton"
